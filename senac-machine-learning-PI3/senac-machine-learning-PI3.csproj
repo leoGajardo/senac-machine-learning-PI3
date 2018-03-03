@@ -43,12 +43,42 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataTable.cs" />
+    <Compile Include="Enums\Abalone\Sex.cs" />
+    <Compile Include="Enums\Adult\Education.cs" />
+    <Compile Include="Enums\Adult\Marital_Status.cs" />
+    <Compile Include="Enums\Adult\Native_Country.cs" />
+    <Compile Include="Enums\Adult\Occupation.cs" />
+    <Compile Include="Enums\Adult\Race.cs" />
+    <Compile Include="Enums\Adult\Relationship.cs" />
+    <Compile Include="Enums\Adult\Sex.cs" />
+    <Compile Include="Enums\Adult\Workclass.cs" />
+    <Compile Include="Enums\BreastCancer\Diagnosis.cs" />
+    <Compile Include="Enums\Iris\IrisType.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RemoverOutliers.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Data\abalone.csv" />
+    <None Include="Data\adult.csv" />
+    <None Include="Data\BreastCancer.csv" />
+    <None Include="Data\Iris.csv" />
+    <None Include="Data\wine.csv" />
+    <None Include="Data\winequality-red.csv" />
+    <None Include="Data\winequality-white.csv" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Enums\WineQuality\" />
+    <Folder Include="Enums\Wine\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Data\abalone.txt" />
+    <Content Include="Data\adult.txt" />
+    <Content Include="Data\BreastCancer.txt" />
+    <Content Include="Data\Iris.txt" />
+    <Content Include="Data\wine.txt" />
+    <Content Include="Data\winequality.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
