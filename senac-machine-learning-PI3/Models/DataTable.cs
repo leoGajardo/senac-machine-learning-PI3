@@ -19,11 +19,14 @@ namespace senac_machine_learning_PI3.Models
         public string[,] Data { get; set; }
         public DataTable(string filePath, TableSchema schema)
         {
+            ColumnsToKeep = new Dictionary<int, string>();
+            LinesToKeep = new List<int>();
+            
             //Configuring Schema of the Table
             for (int i = 0; i < schema.TotalOfRecords; i++)
                 LinesToKeep.Add(i);
 
-            Data = new string[schema.TotalOfRecords, schema.Columns.Count];
+            Data = new string[schema.Columns.Count, schema.TotalOfRecords];
 
             foreach (var column in schema.Columns)
                 ColumnsToKeep.Add(column.Key, column.Value);
@@ -48,10 +51,13 @@ namespace senac_machine_learning_PI3.Models
             {
                 foreach (var column in Schema.Columns)
                 {
-                    Data[column.Key, lineNumber++] = line.Split(',')[column.Key];
+                    Data[column.Key, lineNumber] = line.Split(',')[column.Key];
                 }
+                lineNumber++;
             }
         }
+
+
 
 
     }

@@ -9,9 +9,11 @@ namespace senac_machine_learning_PI3.Models
         public Dictionary<int, Type> EnumsByColumn { get; set; }
         public int TotalOfRecords { get; set; }
 
-        public TableSchema(List<string> columns)
+        public TableSchema(string[] columns)
         {
             int a = 0;
+            Columns = new Dictionary<int, string>();
+            EnumsByColumn = new Dictionary<int, Type>();
             foreach (var column in columns)
                 Columns.Add(a++, column);
         }
