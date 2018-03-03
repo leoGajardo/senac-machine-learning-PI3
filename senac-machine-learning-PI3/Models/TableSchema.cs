@@ -5,14 +5,14 @@ namespace senac_machine_learning_PI3.Models
 {
     public class TableSchema
     {
-        public Dictionary<int, string> Columns { get; private set; }
+        public Dictionary<int, Column> Columns { get; private set; }
         public Dictionary<int, Type> EnumsByColumn { get; set; }
         public int TotalOfRecords { get; set; }
 
-        public TableSchema(string[] columns)
+        public TableSchema(List<Column> columns)
         {
             int a = 0;
-            Columns = new Dictionary<int, string>();
+            Columns = new Dictionary<int, Column>();
             EnumsByColumn = new Dictionary<int, Type>();
             foreach (var column in columns)
                 Columns.Add(a++, column);

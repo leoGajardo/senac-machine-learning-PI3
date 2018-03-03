@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\Column.cs" />
     <Compile Include="Models\DataTable.cs" />
     <Compile Include="Enums\Abalone\Sex.cs" />
     <Compile Include="Enums\Adult\Education.cs" />
