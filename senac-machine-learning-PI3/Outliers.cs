@@ -28,6 +28,22 @@ namespace senac_machine_learning_PI3
 
         }
 
+        public List<double> ListOutliers(double[] coluna){
+
+            List<double> outliers=new List<double>();
+            foreach (var item in coluna)
+            {
+                if (item > this.LimiteSuperior){
+                    outliers.Add(item);
+                }
+                else if (item < this.LimiteInferior){
+                    outliers.Add(item);
+                }
+            }
+
+            return outliers;
+        }
+
         public double GetLimiteSuperior(double[] coluna, double IQR)
         {
             //Calcula o Limite Superior da coluna, utilizando da média e da Amplitude do Interquartil
@@ -48,10 +64,10 @@ namespace senac_machine_learning_PI3
             return IQR = Q3 - Q1;
         }
 
-        public double GetQuartil(double[] coluna, int NumeroQuartil)
+        public double GetQuartil(double[] coluna, int QuartilNumber)
         {
             double temp;
-            if (NumeroQuartil == 1)
+            if (QuartilNumber == 1)
             {   
                 temp = ((double)coluna.Length + 1) / 4; //temporário que acha a Interpolação do Quartil 1        
                 int k = (int)temp; //Parte inteira da Interpolação, para as posições do array
@@ -60,7 +76,7 @@ namespace senac_machine_learning_PI3
                 return Q1;
             }
             
-            if (NumeroQuartil == 3)
+            if (QuartilNumber == 3)
             {
                 temp =  (3 * ((double)coluna.Length + 1) / 4);//temporário que acha a Interpolação do Quartil 2
                 int k = (int)temp; //Parte inteira da Interpolação, para as posições do array
