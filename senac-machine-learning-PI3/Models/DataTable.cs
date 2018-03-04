@@ -10,8 +10,7 @@ namespace senac_machine_learning_PI3.Models
     public class DataTable
     {
         public Dictionary<int,string> ColumnsToKeep { get; private set; }
-        public List<int> LinesToKeep { get; private set; }
-
+        
         public TableSchema Schema { get; private set; }
 
         private string[] linesOfFile;
@@ -20,15 +19,11 @@ namespace senac_machine_learning_PI3.Models
         public DataTable(string filePath, TableSchema schema)
         {
             ColumnsToKeep = new Dictionary<int, string>();
-            LinesToKeep = new List<int>();
             
             //Configuring Schema of the Table
             Data = new List<Line>(schema.TotalOfRecords);
             for (int i = 0; i < schema.TotalOfRecords; i++)
-            { 
-                LinesToKeep.Add(i);
                 Data.Add(new Line() { Columns = new string[schema.Columns.Count], Id = i });
-            }
 
             foreach (var column in schema.Columns)
                 ColumnsToKeep.Add(column.Key, column.Value.Name);
@@ -44,7 +39,7 @@ namespace senac_machine_learning_PI3.Models
 
         public void RemoveColumn(int column) => ColumnsToKeep.Remove(column);
 
-        public void RemoveLine(int line) => LinesToKeep.Remove(line);
+        public void RemoveLine(int line) => Data.Remove(Data.FirstOrDefault(d => d.Id == line));
 
         public void ConvertEnums()
         {
