@@ -20,11 +20,14 @@ namespace senac_machine_learning_PI3
             foreach (var table in tables)
             {
                 table.ConvertEnums();
+
+                var teste = table.Data.OrderBy(o => o.Columns[0]);
             }
         }
 
         private static void BuildSchemaTables()
         {
+            tables = new List<Models.DataTable>();
             var AdultColumns = new List<Column> {
                 new Column(){ Name = "age", Type = Column.ColumnType.Continuous } ,
                 new Column(){ Name = "workclass", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Workclass) } ,

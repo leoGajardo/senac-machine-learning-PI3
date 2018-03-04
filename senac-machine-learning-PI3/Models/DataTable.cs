@@ -16,17 +16,19 @@ namespace senac_machine_learning_PI3.Models
 
         private string[] linesOfFile;
 
-        public string[,] Data { get; set; }
+        public List<Line> Data { get; set; }
         public DataTable(string filePath, TableSchema schema)
         {
             ColumnsToKeep = new Dictionary<int, string>();
             LinesToKeep = new List<int>();
             
             //Configuring Schema of the Table
+            Data = new List<Line>(schema.TotalOfRecords);
             for (int i = 0; i < schema.TotalOfRecords; i++)
+            { 
                 LinesToKeep.Add(i);
-
-            Data = new string[schema.TotalOfRecords, schema.Columns.Count];
+                Data.Add(new Line() { Columns = new string[schema.Columns.Count], Id = i });
+            }
 
             foreach (var column in schema.Columns)
                 ColumnsToKeep.Add(column.Key, column.Value.Name);
@@ -50,10 +52,10 @@ namespace senac_machine_learning_PI3.Models
             {
                 for (int i = 0; i < Schema.TotalOfRecords; i++)
                 {
-                    var newVal = Schema.ConvertStringToEnum(Schema.Columns[column.Key].Enum, Data[i, column.Key]);
+                    var newVal = Schema.ConvertStringToEnum(Schema.Columns[column.Key].Enum, Data[i].Columns[column.Key]);
                     if (newVal == "0")
                         Console.WriteLine("deu ruim");
-                    Data[i, column.Key] = newVal;
+                    Data[i].Columns[column.Key] = newVal;
                 }
             }
         }
@@ -65,14 +67,10 @@ namespace senac_machine_learning_PI3.Models
             {
                 foreach (var column in Schema.Columns)
                 {
-                    Data[lineNumber, column.Key] = line.Split(',')[column.Key];
+                    Data[lineNumber].Columns[column.Key] = line.Split(',')[column.Key];
                 }
                 lineNumber++;
             }
         }
-
-
-
-
     }
 }

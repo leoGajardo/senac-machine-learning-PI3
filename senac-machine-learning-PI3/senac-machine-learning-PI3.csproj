@@ -55,6 +55,7 @@
     <Compile Include="Enums\Adult\Workclass.cs" />
     <Compile Include="Enums\BreastCancer\Diagnosis.cs" />
     <Compile Include="Enums\Iris\IrisType.cs" />
+    <Compile Include="Models\Line.cs" />
     <Compile Include="Outliers.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
