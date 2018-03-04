@@ -10,5 +10,8 @@ namespace senac_machine_learning_PI3.Models
     {
         public int Id { get; set; }
         public string[] Columns { get; set; }
+
+        public override string ToString() => string.Join("/", Columns);
+
     }
 }

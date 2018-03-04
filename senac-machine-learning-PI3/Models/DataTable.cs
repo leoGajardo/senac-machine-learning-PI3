@@ -14,6 +14,7 @@ namespace senac_machine_learning_PI3.Models
         public TableSchema Schema { get; private set; }
 
         private string[] linesOfFile;
+        private string fileName;
 
         public List<Line> Data { get; set; }
         public DataTable(string filePath, TableSchema schema)
@@ -32,6 +33,7 @@ namespace senac_machine_learning_PI3.Models
 
             // Loading File
 
+            fileName = File.Open(filePath, FileMode.Open).Name;
             linesOfFile = File.ReadAllLines(filePath);
 
             ParseInternal();
@@ -53,6 +55,18 @@ namespace senac_machine_learning_PI3.Models
                     Data[i].Columns[column.Key] = newVal;
                 }
             }
+        }
+
+        public void PrintOutputTable()
+        {
+            CheckIfOutputDirectoryExists();
+            File.WriteAllLines("output/" + fileName, Data.Select(d => d.ToString()));
+        }
+
+        private void CheckIfOutputDirectoryExists()
+        {
+            if (!Directory.Exists("output"))
+                Directory.CreateDirectory("output");
         }
 
         private void ParseInternal()
