@@ -25,7 +25,7 @@ namespace senac_machine_learning_PI3.Models
                 if (value.Trim().ToLower() == Enum.GetEnumName(item).ToLower()) 
                     return ((int)item).ToString();
             }
-            return "0";
+            return "NULL";
         }
 
     }
