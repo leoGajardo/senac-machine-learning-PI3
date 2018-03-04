@@ -11,9 +11,21 @@ namespace senac_machine_learning_PI3
 {
     class Program
     {
+
+        private static List<Models.DataTable> tables;
+
         static void Main(string[] args)
         {
-            var columns = new List<Column> {
+            BuildSchemaTables();
+            foreach (var table in tables)
+            {
+                table.ConvertEnums();
+            }
+        }
+
+        private static void BuildSchemaTables()
+        {
+            var AdultColumns = new List<Column> {
                 new Column(){ Name = "age", Type = Column.ColumnType.Continuous } ,
                 new Column(){ Name = "workclass", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Workclass) } ,
                 new Column(){ Name = "fnlwgt", Type = Column.ColumnType.Continuous } ,
@@ -27,15 +39,12 @@ namespace senac_machine_learning_PI3
                 new Column(){ Name = "capital-gain", Type = Column.ColumnType.Continuous } ,
                 new Column(){ Name = "capital-loss", Type = Column.ColumnType.Continuous } ,
                 new Column(){ Name = "hours-per-week", Type = Column.ColumnType.Continuous } ,
-                new Column(){ Name = "native-country", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Native_Country) } 
+                new Column(){ Name = "native-country", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Native_Country) }
                  };
-            var ts = new TableSchema(columns);
+            var AdultSchema = new TableSchema(AdultColumns);
+            AdultSchema.TotalOfRecords = 32561;
 
-            ts.TotalOfRecords = 32561;
-
-            var dt = new Models.DataTable("Data/adult.csv", ts);
-
-
+            tables.Add(new Models.DataTable("Data/adult.csv", AdultSchema));
         }
     }
 }
