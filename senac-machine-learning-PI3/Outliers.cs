@@ -19,18 +19,16 @@ namespace senac_machine_learning_PI3
             var LimiteInferior = GetLimiteInferior(coluna, IQR); 
             var LimiteSuperior = GetLimiteSuperior(coluna, IQR);
 
-            //var shouldBeRemoved = new List<int>();
-            //foreach (var line in table.Data)
-            //    foreach (var value in line.Columns)
-            //        if (Double.Parse(value) > LimiteSuperior
-            //            || Double.Parse(value) < LimiteInferior)
-            //            shouldBeRemoved.Add(line.Id);
-
-            ////var shouldBeRemoved = table.Data.Where(d => 
-            ////   Double.Parse(d.Columns[column]) > LimiteSuperior 
-            ////|| Double.Parse(d.Columns[column]) < LimiteInferior).Select(d => d.Id);
+            var shouldBeRemoved = new List<int>();
+            foreach (var line in table.Data)              
+                    if (Double.Parse(line.Columns[column]) > LimiteSuperior
+                        || Double.Parse(line.Columns[column]) < LimiteInferior)
+                        shouldBeRemoved.Add(line.Id);
 
             ////print shouldBeeRemoved
+
+            foreach (var id in shouldBeRemoved)
+                table.RemoveLine(id);
 
             return table;
         }
