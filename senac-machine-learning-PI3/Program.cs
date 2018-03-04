@@ -20,8 +20,10 @@ namespace senac_machine_learning_PI3
             foreach (var table in tables)
             {
                 table.ConvertEnums();
+                table.RemoveInconsistentLines();
+                //foreach (var column in table.Schema.Columns.Where(c => c.Value.Type != Column.ColumnType.Nominal))
+                //    table.RemoveOutliers(column.Key);
 
-                var teste = table.Data.OrderBy(o => o.Columns[0]);
             }
         }
 
@@ -177,7 +179,7 @@ namespace senac_machine_learning_PI3
             };
             var WhiteWineQualitySchema = new TableSchema(WhiteWineQualityColumns);
             WhiteWineQualitySchema.TotalOfRecords = 4898;
-            tables.Add(new Models.DataTable("Data/winequality-red.csv", WhiteWineQualitySchema));
+            tables.Add(new Models.DataTable("Data/winequality-white.csv", WhiteWineQualitySchema));
         }
     }
 }
