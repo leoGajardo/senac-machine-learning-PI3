@@ -21,8 +21,8 @@ namespace senac_machine_learning_PI3
             {
                 table.ConvertEnums();
                 table.RemoveInconsistentLines();
-                //foreach (var column in table.Schema.Columns.Where(c => c.Value.Type != Column.ColumnType.Nominal))
-                //    table.RemoveOutliers(column.Key);
+                foreach (var column in table.Schema.Columns.Where(c => c.Value.Type != Column.ColumnType.Nominal))
+                    table.RemoveOutliers(column.Key);
 
             }
         }

@@ -62,7 +62,7 @@ namespace senac_machine_learning_PI3.Models
             {
                 foreach (var column in Schema.Columns)
                 {
-                    Data[lineNumber].Columns[column.Key] = line.Split(',')[column.Key];
+                    Data[lineNumber].Columns[column.Key] = line.Split('/')[column.Key];
                 }
                 lineNumber++;
             }
