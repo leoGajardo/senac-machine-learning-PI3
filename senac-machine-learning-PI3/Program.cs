@@ -59,8 +59,6 @@ namespace senac_machine_learning_PI3
                 new Column(){ Name = "relationship", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Relationship) } ,
                 new Column(){ Name = "race", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Race) } ,
                 new Column(){ Name = "sex", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Sex) } ,
-                new Column(){ Name = "capital-gain", Type = Column.ColumnType.Continuous } ,
-                new Column(){ Name = "capital-loss", Type = Column.ColumnType.Continuous } ,
                 new Column(){ Name = "hours-per-week", Type = Column.ColumnType.Continuous } ,
                 new Column(){ Name = "native-country", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Native_Country) }
                  };
@@ -70,8 +68,7 @@ namespace senac_machine_learning_PI3
             tables.Add(new Models.DataTable("Data/adult.csv", AdultSchema));
 
             var BreastCancerColumns = new List<Column>
-            {
-                new Column(){ Name ="ID", Type=Column.ColumnType.Integer } ,
+            {                
                 new Column(){ Name ="Diagonis", Type=Column.ColumnType.Nominal, Enum = typeof(Enums.BreastCancer.Diagnosis) } ,
                 new Column(){ Name ="Radius_Cell-1",Type=Column.ColumnType.Continuous} ,
                 new Column(){ Name ="Texture_Cell-1",Type=Column.ColumnType.Continuous} ,
