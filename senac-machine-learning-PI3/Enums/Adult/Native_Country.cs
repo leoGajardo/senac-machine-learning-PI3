@@ -6,9 +6,9 @@
         Cambodia=2,
         England=3,
         Puerto_Rico=4,
-        Canada, Germany=5,
+        Germany=5,
         Outlying_US=6,
-        India, Japan=7,
+        Japan=7,
         Greece=8,
         South=9,
         China=10,
@@ -41,5 +41,7 @@
         Peru=37,
         Hong=38,
         Holand_Netherlands=39,
+        Canada = 40,
+        India = 41
     }
 }

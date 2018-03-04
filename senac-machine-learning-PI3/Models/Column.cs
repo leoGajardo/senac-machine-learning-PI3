@@ -10,7 +10,7 @@ namespace senac_machine_learning_PI3.Models
     {
         public ColumnType Type { get; set; }
         public string Name { get; set; }
-
+        public Type Enum { get; set; }
         public enum ColumnType
         {
             Continuous,

@@ -52,7 +52,10 @@ namespace senac_machine_learning_PI3.Models
             {
                 for (int i = 0; i < Schema.TotalOfRecords; i++)
                 {
-                    Data[i, column.Key] = Schema.ConvertStringToEnum(Schema.EnumsByColumn[column.Key], Data[i, column.Key]);
+                    var newVal = Schema.ConvertStringToEnum(Schema.Columns[column.Key].Enum, Data[i, column.Key]);
+                    if (newVal == "0")
+                        Console.WriteLine("deu ruim");
+                    Data[i, column.Key] = newVal;
                 }
             }
         }
