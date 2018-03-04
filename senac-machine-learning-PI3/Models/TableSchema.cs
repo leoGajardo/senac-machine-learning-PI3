@@ -19,7 +19,7 @@ namespace senac_machine_learning_PI3.Models
         public string ConvertStringToEnum(Type Enum, string value)
         {
             var EnumValues = Enum.GetEnumValues();
-            
+
             foreach (var item in EnumValues)
             {
                 if (value.Trim().ToLower() == Enum.GetEnumName(item).ToLower()) 

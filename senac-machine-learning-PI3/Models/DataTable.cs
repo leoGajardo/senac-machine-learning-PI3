@@ -38,8 +38,6 @@ namespace senac_machine_learning_PI3.Models
             linesOfFile = File.ReadAllLines(filePath);
 
             ParseInternal();
-
-            linesOfFile = null;
         }
 
         public void RemoveColumn(int column) => ColumnsToKeep.Remove(column);
@@ -72,6 +70,9 @@ namespace senac_machine_learning_PI3.Models
                 lineNumber++;
             }
         }
+
+
+
 
     }
 }

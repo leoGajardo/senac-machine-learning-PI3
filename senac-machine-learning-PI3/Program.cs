@@ -33,10 +33,8 @@ namespace senac_machine_learning_PI3
 
             ts.TotalOfRecords = 32561;
 
-
             var dt = new Models.DataTable("Data/adult.csv", ts);
 
-            dt.ConvertEnums();
 
         }
     }
