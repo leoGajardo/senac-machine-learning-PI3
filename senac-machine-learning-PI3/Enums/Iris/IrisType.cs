@@ -2,8 +2,8 @@
 {
     public enum IrisType
     {
-      Iris_Setosa=1,
-      Iris_Versicolour=2,
-      Iris_Virginica=3,
+      Iris_setosa = 1,
+      Iris_versicolor = 2,
+      Iris_virginica = 3,
     }
 }

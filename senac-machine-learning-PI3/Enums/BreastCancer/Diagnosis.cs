@@ -2,7 +2,7 @@
 {
     public enum Diagnosis
     {
-        M=1, //malignant
-        B =2,//Benigin
+        M = 1, //malignant
+        B = 2,//Benigin
     }
 }

@@ -21,7 +21,7 @@ namespace senac_machine_learning_PI3
             {
                 table.ConvertEnums();
                 table.RemoveInconsistentLines();
-                foreach (var column in table.Schema.Columns.Where(c => c.Value.Type != Column.ColumnType.Nominal))
+                foreach (var column in table.Schema.Columns.Where(c => c.Value.Type != Column.ColumnType.Nominal && c.Value.Type != Column.ColumnType.Integer))
                     table.RemoveOutliers(column.Key);
 
             }
@@ -49,11 +49,11 @@ namespace senac_machine_learning_PI3
 
 
             var AdultColumns = new List<Column> {
-                new Column(){ Name = "age", Type = Column.ColumnType.Continuous } ,
+                new Column(){ Name = "age", Type = Column.ColumnType.Integer } ,
                 new Column(){ Name = "workclass", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Workclass) } ,
-                new Column(){ Name = "fnlwgt", Type = Column.ColumnType.Continuous } ,
+                new Column(){ Name = "Final_Weight", Type = Column.ColumnType.Continuous } ,
                 new Column(){ Name = "education", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Education) } ,
-                new Column(){ Name = "education-num", Type = Column.ColumnType.Continuous } ,
+                new Column(){ Name = "education-num", Type = Column.ColumnType.Integer } ,
                 new Column(){ Name = "marital-status", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Marital_Status) } ,
                 new Column(){ Name = "occupation", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Occupation) } ,
                 new Column(){ Name = "relationship", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Relationship) } ,
@@ -64,11 +64,10 @@ namespace senac_machine_learning_PI3
                  };
             var AdultSchema = new TableSchema(AdultColumns);
             AdultSchema.TotalOfRecords = 48842;
-
             tables.Add(new Models.DataTable("Data/adult.csv", AdultSchema));
 
             var BreastCancerColumns = new List<Column>
-            {                
+            {
                 new Column(){ Name ="Diagonis", Type=Column.ColumnType.Nominal, Enum = typeof(Enums.BreastCancer.Diagnosis) } ,
                 new Column(){ Name ="Radius_Cell-1",Type=Column.ColumnType.Continuous} ,
                 new Column(){ Name ="Texture_Cell-1",Type=Column.ColumnType.Continuous} ,
@@ -126,14 +125,14 @@ namespace senac_machine_learning_PI3
                 new Column(){ Name ="Ash", Type=Column.ColumnType.Continuous } ,
                 new Column(){ Name ="Alcalinity-of-Ash", Type=Column.ColumnType.Continuous } ,
                 new Column(){ Name ="Magnesium", Type=Column.ColumnType.Continuous } ,
-                new Column(){ Name ="Total-Phenols", Type=Column.ColumnType.Integer } ,
+                new Column(){ Name ="Total-Phenols", Type=Column.ColumnType.Continuous } ,
                 new Column(){ Name ="Flavanoids", Type=Column.ColumnType.Continuous } ,
                 new Column(){ Name ="NonFlavanoids-Phenols", Type=Column.ColumnType.Continuous } ,
                 new Column(){ Name ="Proanthocyanins", Type=Column.ColumnType.Continuous } ,
                 new Column(){ Name ="Color-Intensity", Type=Column.ColumnType.Continuous } ,
                 new Column(){ Name ="Hue", Type=Column.ColumnType.Continuous } ,
                 new Column(){ Name ="OD280-OD315-of-diluted-wines", Type=Column.ColumnType.Continuous } ,
-                new Column(){ Name ="Proline", Type=Column.ColumnType.Integer } ,
+                new Column(){ Name ="Proline", Type=Column.ColumnType.Continuous } ,
             };
             var WineSchema = new TableSchema(WineColumns);
             WineSchema.TotalOfRecords = 178;
