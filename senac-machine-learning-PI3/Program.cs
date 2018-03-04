@@ -120,7 +120,7 @@ namespace senac_machine_learning_PI3
             IrisSchema.TotalOfRecords = 150;
             tables.Add(new Models.DataTable("Data/Iris.csv", IrisSchema));
 
-            var Wine = new List<Column>
+            var WineColumns = new List<Column>
             {
                 new Column(){ Name ="Alcohol", Type=Column.ColumnType.Integer } ,
                 new Column(){ Name ="Malic-Acid", Type=Column.ColumnType.Continuous } ,
@@ -136,6 +136,48 @@ namespace senac_machine_learning_PI3
                 new Column(){ Name ="OD280-OD315-of-diluted-wines", Type=Column.ColumnType.Continuous } ,
                 new Column(){ Name ="Proline", Type=Column.ColumnType.Integer } ,
             };
+            var WineSchema = new TableSchema(WineColumns);
+            WineSchema.TotalOfRecords = 178;
+            tables.Add(new Models.DataTable("Data/wine.csv", WineSchema));
+
+            var RedWineQualityColumns = new List<Column>
+            {
+                new Column(){ Name ="Fixed-Acidity", Type=Column.ColumnType.Continuous } ,
+                new Column(){ Name ="Violatile-Acidity", Type=Column.ColumnType.Continuous } ,
+                new Column(){ Name ="Citric-Acid", Type=Column.ColumnType.Continuous } ,
+                new Column(){ Name ="Residual-Sugar", Type=Column.ColumnType.Continuous } ,
+                new Column(){ Name ="Chlorides", Type=Column.ColumnType.Continuous } ,
+                new Column(){ Name ="Free-Sufor-Dioxide", Type=Column.ColumnType.Continuous } ,
+                new Column(){ Name ="Total-Sufor-Dioxide", Type=Column.ColumnType.Continuous } ,
+                new Column(){ Name ="Density", Type=Column.ColumnType.Continuous } ,
+                new Column(){ Name ="pH", Type=Column.ColumnType.Continuous } ,
+                new Column(){ Name ="Sulphates", Type=Column.ColumnType.Continuous } ,
+                new Column(){ Name ="Alcohol", Type=Column.ColumnType.Continuous } ,
+                new Column(){ Name ="Quality", Type=Column.ColumnType.Integer } ,
+            };
+            var RedWineQualitySchema = new TableSchema(RedWineQualityColumns);
+            RedWineQualitySchema.TotalOfRecords = 1599;
+            tables.Add(new Models.DataTable("Data/winequality-red.csv", RedWineQualitySchema));
+
+
+            var WhiteWineQualityColumns = new List<Column>
+            {
+                new Column(){ Name ="Fixed-Acidity", Type=Column.ColumnType.Continuous } ,
+                new Column(){ Name ="Violatile-Acidity", Type=Column.ColumnType.Continuous } ,
+                new Column(){ Name ="Citric-Acid", Type=Column.ColumnType.Continuous } ,
+                new Column(){ Name ="Residual-Sugar", Type=Column.ColumnType.Continuous } ,
+                new Column(){ Name ="Chlorides", Type=Column.ColumnType.Continuous } ,
+                new Column(){ Name ="Free-Sufor-Dioxide", Type=Column.ColumnType.Continuous } ,
+                new Column(){ Name ="Total-Sufor-Dioxide", Type=Column.ColumnType.Continuous } ,
+                new Column(){ Name ="Density", Type=Column.ColumnType.Continuous } ,
+                new Column(){ Name ="pH", Type=Column.ColumnType.Continuous } ,
+                new Column(){ Name ="Sulphates", Type=Column.ColumnType.Continuous } ,
+                new Column(){ Name ="Alcohol", Type=Column.ColumnType.Continuous } ,
+                new Column(){ Name ="Quality", Type=Column.ColumnType.Integer } ,
+            };
+            var WhiteWineQualitySchema = new TableSchema(WhiteWineQualityColumns);
+            WhiteWineQualitySchema.TotalOfRecords = 4898;
+            tables.Add(new Models.DataTable("Data/winequality-red.csv", WhiteWineQualitySchema));
         }
     }
 }
