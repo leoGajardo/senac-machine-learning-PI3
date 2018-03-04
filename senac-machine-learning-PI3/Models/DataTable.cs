@@ -7,7 +7,7 @@ using System.IO;
 
 namespace senac_machine_learning_PI3.Models
 {
-    class DataTable
+    public class DataTable
     {
         public Dictionary<int,string> ColumnsToKeep { get; private set; }
         public List<int> LinesToKeep { get; private set; }

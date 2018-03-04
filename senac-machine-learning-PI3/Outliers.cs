@@ -1,4 +1,5 @@
-﻿using System;
+﻿using senac_machine_learning_PI3.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,65 +7,49 @@ using System.Threading.Tasks;
 
 namespace senac_machine_learning_PI3
 {
-    class Outliers
+    public static class Outliers
     {
-        public double[] coluna;
-        public double IQR;
-        public double Q3;
-        public double Q1;
-        public double LimiteInferior;
-        public double LimiteSuperior;
-
-        public Outliers(double[] coluna)
+        
+        public static DataTable RemoveOutliers(this DataTable table, int column) 
         {
-            var result = coluna.OrderBy(x => x);
-            this.coluna = result.ToArray<double>();
-            this.Q1 = GetQuartil(this.coluna, 1);
-            this.Q3 = GetQuartil(this.coluna, 3);
-            this.IQR = GetIQR(Q3, Q1);
-            this.LimiteInferior = GetLimiteInferior(this.coluna, IQR);
-            this.LimiteSuperior = GetLimiteSuperior(this.coluna, IQR);
+            var coluna = table.Data.Select(d => Double.Parse(d.Columns[column])).OrderBy(x => x).ToArray<double>();
+            var Q1 = GetQuartil(coluna, 1);
+            var Q3 = GetQuartil(coluna, 3); 
+            var IQR = GetIQR(Q3, Q1); 
+            var LimiteInferior = GetLimiteInferior(coluna, IQR); 
+            var LimiteSuperior = GetLimiteSuperior(coluna, IQR);
 
+            var shouldBeRemoved = table.Data.Where(d => 
+               Double.Parse(d.Columns[column]) > LimiteSuperior 
+            || Double.Parse(d.Columns[column]) < LimiteInferior).Select(d => d.Id);
 
+            foreach (var id in shouldBeRemoved)
+                table.RemoveLine(id);
+
+            return table;
         }
 
-        public List<double> ListOutliers(double[] coluna){
-
-            List<double> outliers=new List<double>();
-            foreach (var item in coluna)
-            {
-                if (item > this.LimiteSuperior){
-                    outliers.Add(item);
-                }
-                else if (item < this.LimiteInferior){
-                    outliers.Add(item);
-                }
-            }
-
-            return outliers;
-        }
-
-        public double GetLimiteSuperior(double[] coluna, double IQR)
+        public static double GetLimiteSuperior(double[] coluna, double IQR)
         {
             //Calcula o Limite Superior da coluna, utilizando da média e da Amplitude do Interquartil
             double temp = coluna.Average() + 1.5 * IQR;
             return temp;
         }
 
-        public double GetLimiteInferior(double[] coluna, double IQR)
+        public static double GetLimiteInferior(double[] coluna, double IQR)
         {
             //Calcula o Limite Inferior da coluna, utilizando da média e da Amplitude do Interquartil
             double temp = coluna.Average() - 1.5 * IQR;
             return temp;
         }
 
-        public double GetIQR(double Q3, double Q1)
+        public static double GetIQR(double Q3, double Q1)
         {
             //Calcula a Amplitude Interquertil
-            return IQR = Q3 - Q1;
+            return Q3 - Q1;
         }
 
-        public double GetQuartil(double[] coluna, int QuartilNumber)
+        public static double GetQuartil(double[] coluna, int QuartilNumber)
         {
             double temp;
             if (QuartilNumber == 1)
@@ -72,8 +57,7 @@ namespace senac_machine_learning_PI3
                 temp = ((double)coluna.Length + 1) / 4; //temporário que acha a Interpolação do Quartil 1        
                 int k = (int)temp; //Parte inteira da Interpolação, para as posições do array
                 double fk = temp - k; // parte fracionaria da interpolação para multiplicar para o valor do Quartil
-                Q1 = coluna[k - 1] + fk * (coluna[k] - coluna[k - 1]);
-                return Q1;
+                return coluna[k - 1] + fk * (coluna[k] - coluna[k - 1]);
             }
             
             if (QuartilNumber == 3)
@@ -81,8 +65,7 @@ namespace senac_machine_learning_PI3
                 temp =  (3 * ((double)coluna.Length + 1) / 4);//temporário que acha a Interpolação do Quartil 2
                 int k = (int)temp; //Parte inteira da Interpolação, para as posições do array
                 double fk = temp - k; // parte fracionaria da interpolação para multiplicar para o valor do Quartil
-                Q3 = coluna[k - 1] + fk * (coluna[k] - coluna[k - 1]);
-                return Q3;
+                return coluna[k - 1] + fk * (coluna[k] - coluna[k - 1]); 
             }
 
             return -1;         
