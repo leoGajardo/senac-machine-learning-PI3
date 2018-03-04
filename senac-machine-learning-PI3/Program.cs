@@ -63,7 +63,7 @@ namespace senac_machine_learning_PI3
                 new Column(){ Name = "native-country", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Native_Country) }
                  };
             var AdultSchema = new TableSchema(AdultColumns);
-            AdultSchema.TotalOfRecords = 32561;
+            AdultSchema.TotalOfRecords = 48842;
 
             tables.Add(new Models.DataTable("Data/adult.csv", AdultSchema));
 

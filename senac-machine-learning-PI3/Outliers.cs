@@ -62,14 +62,16 @@ namespace senac_machine_learning_PI3
                 int k = (int)temp; //Parte inteira da Interpolação, para as posições do array
                 double fk = temp - k; // parte fracionaria da interpolação para multiplicar para o valor do Quartil
                 return coluna[k - 1] + fk * (coluna[k] - coluna[k - 1]);
+                //Considerando Array iniciado na posição 0, precisa-se retirar 1 de K e o k+1 se torna somente k
             }
-            
+
             if (QuartilNumber == 3)
             {
-                temp =  (3 * ((double)coluna.Length + 1) / 4);//temporário que acha a Interpolação do Quartil 2
+                temp =  ( (3 * (double)coluna.Length + 1) / 4);//temporário que acha a Interpolação do Quartil 3
                 int k = (int)temp; //Parte inteira da Interpolação, para as posições do array
                 double fk = temp - k; // parte fracionaria da interpolação para multiplicar para o valor do Quartil
-                return coluna[k - 1] + fk * (coluna[k] - coluna[k - 1]); 
+                return coluna[k - 1] + fk * (coluna[k] - coluna[k - 1]);
+                //Considerando Array iniciado na posição 0, precisa-se retirar 1 de K e o k+1 se torna somente k
             }
 
             return -1;         
