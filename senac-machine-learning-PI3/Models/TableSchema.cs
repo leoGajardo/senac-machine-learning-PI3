@@ -18,16 +18,16 @@ namespace senac_machine_learning_PI3.Models
                 Columns.Add(a++, column);
         }
 
-        public int ConvertStringToEnum(Type Enum, string value)
+        public string ConvertStringToEnum(Type Enum, string value)
         {
             var EnumValues = Enum.GetEnumValues();
-
+            
             foreach (var item in EnumValues)
             {
                 if (value == Enum.GetEnumName(item)) 
-                    return (int)item;
+                    return ((int)item).ToString();
             }
-            return 0;
+            return "0";
         }
 
     }

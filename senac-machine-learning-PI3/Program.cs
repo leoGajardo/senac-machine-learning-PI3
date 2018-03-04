@@ -27,7 +27,11 @@ namespace senac_machine_learning_PI3
             ts.EnumsByColumn.Add(0, typeof(Enums.Abalone.Sex));
             ts.TotalOfRecords = 4177;
 
+
+
             var dt = new Models.DataTable("Data/Abalone.csv", ts);
+
+            dt.ConvertEnums();
 
         }
     }
