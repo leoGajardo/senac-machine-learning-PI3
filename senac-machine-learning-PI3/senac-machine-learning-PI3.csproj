@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="InconsistentColumns.cs" />
     <Compile Include="InconsistentLines.cs" />
     <Compile Include="Models\Column.cs" />
     <Compile Include="Models\DataTable.cs" />
@@ -57,6 +58,7 @@
     <Compile Include="Enums\BreastCancer\Diagnosis.cs" />
     <Compile Include="Enums\Iris\IrisType.cs" />
     <Compile Include="Models\Line.cs" />
+    <Compile Include="NormalizeData.cs" />
     <Compile Include="Outliers.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
