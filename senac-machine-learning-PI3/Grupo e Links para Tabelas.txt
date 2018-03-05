@@ -1,0 +1,15 @@
+Grupo:
+Gabriel Pereira Pinto
+Leonardo Gajardo
+
+Links do Google Sheets para tabelas:
+(Para Legendas verificar as abas de cada uma das tabelas )
+
+Abalone: 		https://docs.google.com/spreadsheets/d/1GmmUaF3N6u_ucxSBBGMQR6dEuvOzvtyitWUUaAYEcRw/edit?usp=sharing
+Adult: 			https://docs.google.com/spreadsheets/d/18Xx3FQOzxEwHqJ_c-IOTaSmnctHQWLxn2NpuAf0lXPM/edit?usp=sharing
+Breast Cancer 		https://docs.google.com/spreadsheets/d/1EBr2LG17pn5zf0kDvPOlw7i37WUNIxuVZ1HYx4S5iaw/edit?usp=sharing
+Iris:			https://docs.google.com/spreadsheets/d/1vsNdEO4UCglcTH2WgfP4k2luLaTkYDu727spbUWIKAY/edit?usp=sharing
+Wine:			https://docs.google.com/spreadsheets/d/1vUdX5qp8cPdURyhcdt-eq5S7clwHDNEcWB1DIpNuYuY/edit?usp=sharing
+Red Wine Quality:	https://docs.google.com/spreadsheets/d/1TVImHdCctjh96wXz9L5fq0JFqzhpK1LRyG5ucw-Ycz8/edit?usp=sharing
+White Wine Quality:	https://docs.google.com/spreadsheets/d/1WC3TEDOasX7iGXCYpJBl-umQBLgRnN4DdC1HlYFbPOA/edit?usp=sharing
+
