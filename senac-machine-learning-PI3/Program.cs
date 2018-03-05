@@ -24,6 +24,8 @@ namespace senac_machine_learning_PI3
                 foreach (var column in table.Schema.Columns.Where(c => c.Value.Type != Column.ColumnType.Nominal && c.Value.Type != Column.ColumnType.Integer))
                     table.RemoveOutliers(column.Key);
 
+                table.NomalizeData();
+                table.PrintOutputTable();
             }
         }
 
