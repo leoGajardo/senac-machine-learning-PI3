@@ -18,7 +18,10 @@ namespace senac_machine_learning_PI3.Models
             var convertion = new List<double>(Columns.Count());
             foreach (var column in Columns)
                 convertion.Add(double.Parse(column));
-            return convertion;
+
+            var temp = convertion.ToArray<double>();
+
+            return temp;
         }
     }
 }
