@@ -13,5 +13,12 @@ namespace senac_machine_learning_PI3.Models
 
         public override string ToString() => string.Join("/", Columns);
 
+        public double[] getColumnsAsDouble()
+        {
+            var convertion = new List<double>(Columns.Count());
+            foreach (var column in Columns)
+                convertion.Add(double.Parse(column));
+            return convertion;
+        }
     }
 }

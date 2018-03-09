@@ -1,4 +1,5 @@
-﻿using System;
+﻿using senac_machine_learning_PI3.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,8 +10,28 @@ namespace senac_machine_learning_PI3
     public static class Knn
     {
 
+        public static void Run(List<Line> trainData, List<Line> testData, int[] columns, int k)
+        {
 
-        public static double Distancia(int[] columns, double[] a, double[] b)
+        }
+
+        public static void CalculateLine(List<Line> trainData, Line testData, int[] columns, int k, int classColumn)
+        {
+            var distances = new Dictionary<int, double>();
+            foreach (var baseData in trainData)
+            {
+                var distance = GetDistance(columns, testData.getColumnsAsDouble(), baseData.getColumnsAsDouble());
+                distances.Add(baseData.Id, distance);
+            }
+            var ordenedDistances = distances.OrderByDescending(o => o.Value);
+            var neighbours = ordenedDistances.Take(k).Select(n => n.Key);
+
+            var neighboursLines = trainData.Where(t => neighbours.Contains(t.Id));
+            var a = neighboursLines.GroupBy(g => g.Columns[classColumn]);
+        }
+         
+
+        private static double GetDistance(int[] columns, double[] a, double[] b)
         {
             double distancia = 0;
             foreach (var column in columns)
