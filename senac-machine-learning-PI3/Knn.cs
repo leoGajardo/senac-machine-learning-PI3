@@ -27,7 +27,19 @@ namespace senac_machine_learning_PI3
             var neighbours = ordenedDistances.Take(k).Select(n => n.Key);
 
             var neighboursLines = trainData.Where(t => neighbours.Contains(t.Id));
-            var a = neighboursLines.GroupBy(g => g.Columns[classColumn]);
+            var neighboursGrouped = neighboursLines.GroupBy(g => g.Columns[classColumn]);
+            var maxVal = neighboursGrouped.Max(m => m.Count());
+            var matches = neighboursGrouped.Count(c => c.Count() == maxVal);
+            if (matches == 1)
+            {
+                var calculatedClass = neighboursGrouped.First(f => f.Count() == maxVal).First().Columns[classColumn];
+            }
+            else if(matches > 1)
+            {
+                // Regra para desempate
+            }
+
+
         }
          
 
