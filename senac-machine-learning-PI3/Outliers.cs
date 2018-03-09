@@ -12,7 +12,8 @@ namespace senac_machine_learning_PI3
         
         public static DataTable RemoveOutliers(this DataTable table, int column) 
         {
-            var coluna = table.Data.Select(d => Double.Parse(d.Columns[column])).OrderBy(x => x).ToArray<double>();
+            var coluna = table.Data.Select(d => Double.Parse(d.Columns[column].Replace(',','.'))).OrderBy(x => x).ToArray<double>();
+            
             var Q1 = GetQuartil(coluna, 1);
             var Q3 = GetQuartil(coluna, 3); 
             var IQR = GetIQR(Q3, Q1); 

@@ -11,7 +11,7 @@ namespace senac_machine_learning_PI3
     {
         public static DataTable NomalizeData(this DataTable data)
         {
-            foreach (var column in data.Schema.Columns.Where(c => c.Value.Type != Column.ColumnType.Nominal))
+            foreach (var column in data.Schema.Columns.Where(c => c.Value.Type != Column.ColumnType.Class))
             {
                 var maxVal = data.Data.Max(d => double.Parse(d.Columns[column.Key]));
                 var minVal = data.Data.Min(d => double.Parse(d.Columns[column.Key]));

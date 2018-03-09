@@ -15,7 +15,8 @@ namespace senac_machine_learning_PI3.Models
         {
             Continuous,
             Nominal,
-            Integer
+            Integer,
+            Class
         }
     }
 }

@@ -8,9 +8,10 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>senac_machine_learning_PI3</RootNamespace>
     <AssemblyName>senac-machine-learning-PI3</AssemblyName>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -42,8 +43,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enums\Adult\Class.cs" />
     <Compile Include="InconsistentColumns.cs" />
     <Compile Include="InconsistentLines.cs" />
+    <Compile Include="Knn.cs" />
     <Compile Include="Models\Column.cs" />
     <Compile Include="Models\DataTable.cs" />
     <Compile Include="Enums\Abalone\Sex.cs" />

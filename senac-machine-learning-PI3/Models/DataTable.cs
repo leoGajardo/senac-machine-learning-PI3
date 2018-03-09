@@ -32,12 +32,10 @@ namespace senac_machine_learning_PI3.Models
             this.Schema = schema;
 
             // Loading File
-            var file = File.Open(filePath, FileMode.Open);
-            fileName = file.Name;
-            file.Close();
-            linesOfFile = File.ReadAllLines(filePath);
-           
+            var fileInfo = new FileInfo(filePath);
+            fileName = fileInfo.Name;
 
+            linesOfFile = File.ReadAllLines(filePath);
             ParseInternal();
         }
 

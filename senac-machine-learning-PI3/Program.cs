@@ -21,7 +21,7 @@ namespace senac_machine_learning_PI3
             {
                 table.ConvertEnums();
                 table.RemoveInconsistentLines();
-                foreach (var column in table.Schema.Columns.Where(c => c.Value.Type != Column.ColumnType.Nominal && c.Value.Type != Column.ColumnType.Integer))
+                foreach (var column in table.Schema.Columns.Where(c => c.Value.Type != Column.ColumnType.Nominal && c.Value.Type != Column.ColumnType.Class))
                     table.RemoveOutliers(column.Key);
 
                 table.NomalizeData();
@@ -35,7 +35,7 @@ namespace senac_machine_learning_PI3
             tables = new List<Models.DataTable>();
 
             var AbaloneColumns = new List<Column> {
-                new Column(){ Name = "Sex", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Abalone.Sex) } ,
+                new Column(){ Name = "Sex", Type = Column.ColumnType.Class, Enum = typeof(Enums.Abalone.Sex) } ,
                 new Column(){ Name = "Length", Type = Column.ColumnType.Continuous } ,
                 new Column(){ Name = "Diameter", Type = Column.ColumnType.Continuous } ,
                 new Column(){ Name = "Height", Type = Column.ColumnType.Continuous } ,
@@ -51,18 +51,19 @@ namespace senac_machine_learning_PI3
 
 
             var AdultColumns = new List<Column> {
-                new Column(){ Name = "age", Type = Column.ColumnType.Integer } ,
-                new Column(){ Name = "workclass", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Workclass) } ,
+                new Column(){ Name = "Age", Type = Column.ColumnType.Integer } ,
+                new Column(){ Name = "Workclass", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Workclass) } ,
                 new Column(){ Name = "Final_Weight", Type = Column.ColumnType.Continuous } ,
-                new Column(){ Name = "education", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Education) } ,
-                new Column(){ Name = "education-num", Type = Column.ColumnType.Integer } ,
-                new Column(){ Name = "marital-status", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Marital_Status) } ,
-                new Column(){ Name = "occupation", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Occupation) } ,
-                new Column(){ Name = "relationship", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Relationship) } ,
-                new Column(){ Name = "race", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Race) } ,
-                new Column(){ Name = "sex", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Sex) } ,
-                new Column(){ Name = "hours-per-week", Type = Column.ColumnType.Continuous } ,
-                new Column(){ Name = "native-country", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Native_Country) }
+                new Column(){ Name = "Education", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Education) } ,
+                new Column(){ Name = "Education-Num", Type = Column.ColumnType.Integer } ,
+                new Column(){ Name = "Marital_Status", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Marital_Status) } ,
+                new Column(){ Name = "Occupation", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Occupation) } ,
+                new Column(){ Name = "Relationship", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Relationship) } ,
+                new Column(){ Name = "Race", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Race) } ,
+                new Column(){ Name = "Sex", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Sex) } ,
+                new Column(){ Name = "Hours_per_Week", Type = Column.ColumnType.Continuous } ,
+                new Column(){ Name = "Native_Country", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Native_Country) },
+                new Column(){ Name = "Class", Type = Column.ColumnType.Class, Enum = typeof(Enums.Adult.Class) } ,
                  };
             var AdultSchema = new TableSchema(AdultColumns);
             AdultSchema.TotalOfRecords = 48842;
@@ -70,7 +71,7 @@ namespace senac_machine_learning_PI3
 
             var BreastCancerColumns = new List<Column>
             {
-                new Column(){ Name ="Diagonis", Type=Column.ColumnType.Nominal, Enum = typeof(Enums.BreastCancer.Diagnosis) } ,
+                new Column(){ Name ="Diagonis", Type=Column.ColumnType.Class, Enum = typeof(Enums.BreastCancer.Diagnosis) } ,
                 new Column(){ Name ="Radius_Cell-1",Type=Column.ColumnType.Continuous} ,
                 new Column(){ Name ="Texture_Cell-1",Type=Column.ColumnType.Continuous} ,
                 new Column(){ Name ="Perimeter_Cell-1",Type=Column.ColumnType.Continuous} ,
@@ -114,7 +115,7 @@ namespace senac_machine_learning_PI3
                 new Column(){ Name ="Sepal-Width", Type=Column.ColumnType.Continuous } ,
                 new Column(){ Name ="Petal-Lengh", Type=Column.ColumnType.Continuous } ,
                 new Column(){ Name ="Petal-Width", Type=Column.ColumnType.Continuous } ,
-                new Column(){ Name ="Class", Type=Column.ColumnType.Nominal, Enum = typeof(Enums.Iris.IrisType) } ,
+                new Column(){ Name ="Class", Type=Column.ColumnType.Class, Enum = typeof(Enums.Iris.IrisType) } ,
             };
             var IrisSchema = new TableSchema(IrisColumns);
             IrisSchema.TotalOfRecords = 150;
@@ -122,7 +123,7 @@ namespace senac_machine_learning_PI3
 
             var WineColumns = new List<Column>
             {
-                new Column(){ Name ="Alcohol", Type=Column.ColumnType.Integer } ,
+                new Column(){ Name ="Alcohol", Type=Column.ColumnType.Class } ,
                 new Column(){ Name ="Malic-Acid", Type=Column.ColumnType.Continuous } ,
                 new Column(){ Name ="Ash", Type=Column.ColumnType.Continuous } ,
                 new Column(){ Name ="Alcalinity-of-Ash", Type=Column.ColumnType.Continuous } ,
@@ -153,7 +154,7 @@ namespace senac_machine_learning_PI3
                 new Column(){ Name ="pH", Type=Column.ColumnType.Continuous } ,
                 new Column(){ Name ="Sulphates", Type=Column.ColumnType.Continuous } ,
                 new Column(){ Name ="Alcohol", Type=Column.ColumnType.Continuous } ,
-                new Column(){ Name ="Quality", Type=Column.ColumnType.Integer } ,
+                new Column(){ Name ="Quality", Type=Column.ColumnType.Class } ,
             };
             var RedWineQualitySchema = new TableSchema(RedWineQualityColumns);
             RedWineQualitySchema.TotalOfRecords = 1599;
