@@ -12,7 +12,7 @@ namespace senac_machine_learning_PI3
         
         public static DataTable RemoveOutliers(this DataTable table, int column) 
         {
-            var coluna = table.Data.Select(d => Double.Parse(d.Columns[column].Replace(',','.'))).OrderBy(x => x).ToArray<double>();
+            var coluna = table.Data.Select(d => Double.Parse(d.Columns[column])).OrderBy(x => x).ToArray<double>();
             
             var Q1 = GetQuartil(coluna, 1);
             var Q3 = GetQuartil(coluna, 3); 
@@ -62,6 +62,10 @@ namespace senac_machine_learning_PI3
                 temp = ((double)coluna.Length + 1) / 4; //temporário que acha a Interpolação do Quartil 1        
                 int k = (int)temp; //Parte inteira da Interpolação, para as posições do array
                 double fk = temp - k; // parte fracionaria da interpolação para multiplicar para o valor do Quartil
+                if (k == 0)
+                {
+                    return coluna[k] + fk * (coluna[k] - coluna[k]);
+                }
                 return coluna[k - 1] + fk * (coluna[k] - coluna[k - 1]);
                 //Considerando Array iniciado na posição 0, precisa-se retirar 1 de K e o k+1 se torna somente k
             }
