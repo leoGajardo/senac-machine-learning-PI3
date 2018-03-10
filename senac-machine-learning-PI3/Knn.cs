@@ -30,9 +30,10 @@ namespace senac_machine_learning_PI3
             var neighboursGrouped = neighboursLines.GroupBy(g => g.Columns[classColumn]);
             var maxVal = neighboursGrouped.Max(m => m.Count());
             var matches = neighboursGrouped.Count(c => c.Count() == maxVal);
+            var calculatedClass = "";
             if (matches == 1)
             {
-                var calculatedClass = neighboursGrouped.First(f => f.Count() == maxVal).First().Columns[classColumn];
+                calculatedClass = neighboursGrouped.First(f => f.Count() == maxVal).First().Columns[classColumn];
             }
             else if(matches > 1)
             {
