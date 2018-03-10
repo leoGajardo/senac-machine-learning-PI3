@@ -14,7 +14,7 @@ namespace senac_machine_learning_PI3.Models
         public TableSchema Schema { get; private set; }
 
         private string[] linesOfFile;
-        private string fileName;
+        public string fileName;
 
         public List<Line> Data { get; set; }
         public DataTable(string filePath, TableSchema schema)
@@ -44,7 +44,7 @@ namespace senac_machine_learning_PI3.Models
         public void RemoveLine(int line) => Data.Remove(Data.FirstOrDefault(d => d.Id == line));
 
         public void ConvertEnums()
-        {
+        {   
             foreach (var column in Schema.Columns.Where(c => c.Value.Type == Column.ColumnType.Nominal))
             {
                 for (int i = 0; i < Schema.TotalOfRecords; i++)
@@ -55,6 +55,7 @@ namespace senac_machine_learning_PI3.Models
                     Data[i].Columns[column.Key] = newVal;
                 }
             }
+
         }
 
         public void PrintOutputTable()

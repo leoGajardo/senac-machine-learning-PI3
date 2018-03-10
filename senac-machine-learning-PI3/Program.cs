@@ -17,21 +17,74 @@ namespace senac_machine_learning_PI3
         static void Main(string[] args)
         {
             BuildSchemaTables();
+
+            Console.WriteLine("**********************************************************************************************");
+            Console.WriteLine("");
+            Console.WriteLine("Normalizando Tabelas");
+
             foreach (var table in tables)
             {
+                Console.WriteLine("");
+                Console.WriteLine("============================================================================");
+                Console.WriteLine("");
+                Console.WriteLine("Convertendo Atributos da Tabela: {0}",table.fileName);
+
                 table.ConvertEnums();
+
+                Console.WriteLine("Atributos da Tabela: {0}, Convertidos com Sucesso!", table.fileName);
+                Console.WriteLine("");
+                Console.WriteLine("============================================================================");
+                Console.WriteLine("");
+                Console.WriteLine("Removendo Linhas Inconsistentes da Tabela: {0}", table.fileName);
+
                 table.RemoveInconsistentLines();
+
+                Console.WriteLine("");
+                Console.WriteLine("Linhas Inconsistentes da Tabela: {0}, Removidas com Sucesso!", table.fileName);
+                Console.WriteLine("");
+                Console.WriteLine("============================================================================");
+                Console.WriteLine("============================================================================");
+                Console.WriteLine("");
+                Console.WriteLine("Removendo Outliers da Tabela: {0}", table.fileName);
+
                 foreach (var column in table.Schema.Columns.Where(c => c.Value.Type != Column.ColumnType.Nominal && c.Value.Type != Column.ColumnType.Class))
                     table.RemoveOutliers(column.Key);
 
+                Console.WriteLine("");
+                Console.WriteLine("Outliers da Tabela: {0}, Removidas com Sucesso!", table.fileName);
+                Console.WriteLine("");
+                Console.WriteLine("============================================================================");
+                Console.WriteLine("============================================================================");
+                Console.WriteLine("");
+                Console.WriteLine("Normalizando Dados da Tabela: {0}", table.fileName);
+
                 table.NomalizeData();
+
+                Console.WriteLine("");
+                Console.WriteLine("Dados da Tabela: {0}, Normalizados com Sucesso!", table.fileName);
+                Console.WriteLine("");
+                Console.WriteLine("============================================================================");
+
                 table.PrintOutputTable();
+                //for(int i = 0; i<table.Data.Count; i++)
+                //{
+                //   (trainData:,testData:(table.Data.Take(10 * i));
+                //}
             }
+
+            Console.WriteLine("");
+            Console.WriteLine("Tabelas Normalizadas com Sucesso!");
+            Console.WriteLine("**********************************************************************************************");
+
+
+
         }
 
         private static void BuildSchemaTables()
         {
-
+            Console.WriteLine("");
+            Console.WriteLine("**********************************************************************************************");
+            Console.WriteLine("Construindo Schema das Tabelas");
             tables = new List<Models.DataTable>();
 
             var AbaloneColumns = new List<Column> {
@@ -48,6 +101,8 @@ namespace senac_machine_learning_PI3
             var AbaloneSchema = new TableSchema(AbaloneColumns);
             AbaloneSchema.TotalOfRecords = 4177;
             tables.Add(new Models.DataTable("Data/abalone.csv", AbaloneSchema));
+
+            Console.WriteLine("Abalone OK");
 
 
             var AdultColumns = new List<Column> {
@@ -68,6 +123,10 @@ namespace senac_machine_learning_PI3
             var AdultSchema = new TableSchema(AdultColumns);
             AdultSchema.TotalOfRecords = 48842;
             tables.Add(new Models.DataTable("Data/adult.csv", AdultSchema));
+
+            Console.WriteLine("Adult OK");
+
+
 
             var BreastCancerColumns = new List<Column>
             {
@@ -109,6 +168,9 @@ namespace senac_machine_learning_PI3
             BreastCancerSchema.TotalOfRecords = 569;
             tables.Add(new Models.DataTable("Data/BreastCancer.csv", BreastCancerSchema));
 
+            Console.WriteLine("Breast Cancer OK");
+
+
             var IrisColumns = new List<Column>
             {
                 new Column(){ Name ="Sepal-Lengh", Type=Column.ColumnType.Continuous } ,
@@ -120,6 +182,8 @@ namespace senac_machine_learning_PI3
             var IrisSchema = new TableSchema(IrisColumns);
             IrisSchema.TotalOfRecords = 150;
             tables.Add(new Models.DataTable("Data/Iris.csv", IrisSchema));
+
+            Console.WriteLine("Iris OK");
 
             var WineColumns = new List<Column>
             {
@@ -141,6 +205,8 @@ namespace senac_machine_learning_PI3
             WineSchema.TotalOfRecords = 178;
             tables.Add(new Models.DataTable("Data/wine.csv", WineSchema));
 
+            Console.WriteLine("Wine OK");
+
             var RedWineQualityColumns = new List<Column>
             {
                 new Column(){ Name ="Fixed-Acidity", Type=Column.ColumnType.Continuous } ,
@@ -159,6 +225,8 @@ namespace senac_machine_learning_PI3
             var RedWineQualitySchema = new TableSchema(RedWineQualityColumns);
             RedWineQualitySchema.TotalOfRecords = 1599;
             tables.Add(new Models.DataTable("Data/winequality-red.csv", RedWineQualitySchema));
+
+            Console.WriteLine("Red Wine Quality OK");
 
 
             var WhiteWineQualityColumns = new List<Column>
@@ -179,6 +247,13 @@ namespace senac_machine_learning_PI3
             var WhiteWineQualitySchema = new TableSchema(WhiteWineQualityColumns);
             WhiteWineQualitySchema.TotalOfRecords = 4898;
             tables.Add(new Models.DataTable("Data/winequality-white.csv", WhiteWineQualitySchema));
+
+            Console.WriteLine("White Wine Quality OK");
+
+            Console.WriteLine("Schema das Tabelas Construido com Sucesso!");
+            Console.WriteLine("**********************************************************************************************");
+            Console.WriteLine("");
+
         }
     }
 }
