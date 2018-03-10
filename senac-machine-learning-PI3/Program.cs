@@ -66,18 +66,31 @@ namespace senac_machine_learning_PI3
                 Console.WriteLine("============================================================================");
 
                 table.PrintOutputTable();
-                //for(int i = 0; i<table.Data.Count; i++)
-                //{
-                //   (trainData:,testData:(table.Data.Take(10 * i));
-                //}
+
             }
 
             Console.WriteLine("");
             Console.WriteLine("Tabelas Normalizadas com Sucesso!");
             Console.WriteLine("**********************************************************************************************");
 
+            Console.WriteLine("**********************************************************************************************");
+            Console.WriteLine("");
+            Console.WriteLine("Aplicando Algoritimos de KNN e Cross-Validation");
 
+            foreach (var table in tables)
+            {
+                var TenFold = table.Data.Count / 10;
+                for (int i = 0; i < table.Data.Count; i++)
+                {
+                    var TestData = table.Data.Skip(i* TenFold).Take(TenFold);
+                    var TrainData = table.Data;
+                    TrainData.RemoveRange(i * TenFold, TenFold); //Arrumar - Está Removendo direto da tabela e não da cópia da tabela
+                }
+            }
 
+            Console.WriteLine("");
+            Console.WriteLine("Algoritimos Aplicados com Sucesso!");
+            Console.WriteLine("**********************************************************************************************");
         }
 
         private static void BuildSchemaTables()
