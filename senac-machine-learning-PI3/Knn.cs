@@ -15,7 +15,28 @@ namespace senac_machine_learning_PI3
 
         }
 
-        public static void CalculateLine(List<Line> trainData, Line testData, int[] columns, int k, int classColumn)
+        public static int GetK(int ImplementOfK, DataTable table)
+        {
+            switch(ImplementOfK)
+            {
+                case 1: return 1;
+
+                case 2: return 3;
+
+                case 3: return 11;
+
+                case 4:
+                    if (table.Data.Count % 2 == 0)
+                        return (table.Data.Count / 2) + 1;
+                    else
+                        return (table.Data.Count / 2);
+            }
+
+            return -1;
+        }
+
+
+        private static void CalculateLine(List<Line> trainData, Line testData, int[] columns, int k, int classColumn)
         {
             var distances = new Dictionary<int, double>();
             foreach (var baseData in trainData)

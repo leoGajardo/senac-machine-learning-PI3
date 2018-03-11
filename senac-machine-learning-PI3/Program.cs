@@ -80,11 +80,17 @@ namespace senac_machine_learning_PI3
             foreach (var table in tables)
             {
                 var TenFold = table.Data.Count / 10;
-                for (int i = 0; i < table.Data.Count; i++)
+
+                for (int ImpleementOfk = 1; ImpleementOfk < 5; ImpleementOfk++)
                 {
-                    var TestData = table.Data.Skip(i* TenFold).Take(TenFold);
-                    var TrainData = table.Data;
-                    TrainData.RemoveRange(i * TenFold, TenFold); //Arrumar - Está Removendo direto da tabela e não da cópia da tabela
+
+                    for (int i = 0; i < 11; i++)
+                    {
+                        var TestData = table.Data.Skip(i * TenFold).Take(TenFold).ToList();
+                        var TrainData = table.Data.Except(TestData).ToList();
+                        var columns = table.ColumnsToKeep.Keys.ToArray();
+                        Knn.Run(TrainData, TestData, columns, Knn.GetK(ImpleementOfk, table));
+                    }
                 }
             }
 
