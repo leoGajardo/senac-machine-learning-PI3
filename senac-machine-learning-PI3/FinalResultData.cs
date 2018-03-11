@@ -28,5 +28,10 @@ namespace senac_machine_learning_PI3
         {
             
         }
+
+        public int GetBestK()
+        {
+            return SimpleErrors.GroupBy(se => se.K).OrderBy(g => GetCrossError(g.Key)).First().Key;
+        }
     }
 }
