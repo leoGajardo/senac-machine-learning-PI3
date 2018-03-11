@@ -10,9 +10,28 @@ namespace senac_machine_learning_PI3
     public static class Knn
     {
 
-        public static void Run(List<Line> trainData, List<Line> testData, int[] columns, int k)
+        public static void Run(List<Line> trainData, List<Line> testData, int[] columns, int k, int classColumn, ref FinalResultData results)
         {
+            var rnd = new Random();
+            var randomTrainData = trainData.OrderBy(o => rnd.Next()).ToList();
+            rnd = new Random();
+            var randomTestData = testData.OrderBy(o => rnd.Next()).ToList();
+            var simpleError = new SimpleError(k);
 
+            var EnumValues = results.ReferenceTable.Schema.Columns[classColumn].Enum.GetEnumValues();
+            
+            foreach (var data in randomTestData)
+            {
+                var result = CalculateLine(randomTrainData, data, columns, k, classColumn);
+                simpleError.Predictions.Add(
+                    new Prediction()
+                    {
+                        ExpectedClass = EnumValues.GetValue(Int32.Parse(data.Columns[classColumn])).ToString(),
+                        PreviewedClass = EnumValues.GetValue((int)result).ToString()
+                    });
+            }
+
+            results.SimpleErrors.Add(simpleError);
         }
 
         public static int GetK(int ImplementOfK, DataTable table)
@@ -36,7 +55,7 @@ namespace senac_machine_learning_PI3
         }
 
 
-        private static void CalculateLine(List<Line> trainData, Line testData, int[] columns, int k, int classColumn)
+        private static double CalculateLine(List<Line> trainData, Line testData, int[] columns, int k, int classColumn)
         {
             var distances = new Dictionary<int, double>();
             foreach (var baseData in trainData)
@@ -51,17 +70,17 @@ namespace senac_machine_learning_PI3
             var neighboursGrouped = neighboursLines.GroupBy(g => g.Columns[classColumn]);
             var maxVal = neighboursGrouped.Max(m => m.Count());
             var matches = neighboursGrouped.Count(c => c.Count() == maxVal);
-            var calculatedClass = "";
+            double calculatedClass = 0;
             if (matches == 1)
             {
-                calculatedClass = neighboursGrouped.First(f => f.Count() == maxVal).First().Columns[classColumn];
+                calculatedClass = neighboursGrouped.First(f => f.Count() == maxVal).First().getColumnsAsDouble()[classColumn];
             }
             else if(matches > 1)
             {
                 // Regra para desempate
             }
 
-
+            return calculatedClass;
         }
          
 
