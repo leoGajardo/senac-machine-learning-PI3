@@ -19,9 +19,9 @@ namespace senac_machine_learning_PI3
 
         public List<SimpleError> SimpleErrors { get; set; }
 
-        public double GetCrossError()
+        public double GetCrossError(int k)
         {
-            return SimpleErrors.Average(a => a.ErrorValue());
+            return SimpleErrors.Where(se => se.K == k).Average(a => a.ErrorValue());
         }
 
         public void PrintConfusionMatrix()
