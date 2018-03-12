@@ -94,6 +94,7 @@ namespace senac_machine_learning_PI3
                         
                     }
                 }
+                result.PrintResult();
             }
 
             Console.WriteLine("");
