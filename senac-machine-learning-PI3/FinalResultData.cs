@@ -39,7 +39,8 @@ namespace senac_machine_learning_PI3
         public void PrintResult()
         {
             var ks = SimpleErrors.Select(se => se.K).Distinct();
-
+            if (Directory.Exists("result/"))
+                File.Delete("result/" + ReferenceTable.fileName);
             foreach (var k in ks)
             {
                 var type = ReferenceTable.Schema.Type;
@@ -55,22 +56,22 @@ namespace senac_machine_learning_PI3
 
         private void PrintBestK()
         {
-            File.AppendAllText("result/" + ReferenceTable.fileName + "Result", $"The best K for this situation is {GetBestK()} with error Rate of {GetCrossError(GetBestK())}");
+            File.AppendAllText("result/" + ReferenceTable.fileName, $"The best K for this situation is {GetBestK()} with error Rate of {GetCrossError(GetBestK())}");
         }
 
         private void PrintHeader(int k)
         {
             if (k==1)
-            File.AppendAllText("result/" + ReferenceTable.fileName + "Result", $"Running K = 1-NN for file {ReferenceTable.fileName}");
+            File.AppendAllText("result/" + ReferenceTable.fileName, $"Running K = 1-NN for file {ReferenceTable.fileName}");
 
             else if (k == 3)
-                File.AppendAllText("result/" + ReferenceTable.fileName + "Result", $"Running K = (M+2)-NN for file {ReferenceTable.fileName}");
+                File.AppendAllText("result/" + ReferenceTable.fileName, $"Running K = (M+2)-NN for file {ReferenceTable.fileName}");
 
             else if (k==11)
-                File.AppendAllText("result/" + ReferenceTable.fileName + "Result", $"Running K = (M*10+1)-NN for file {ReferenceTable.fileName}");
+                File.AppendAllText("result/" + ReferenceTable.fileName, $"Running K = (M*10+1)-NN for file {ReferenceTable.fileName}");
 
             else
-                File.AppendAllText("result/" + ReferenceTable.fileName + "Result", $"Running K = (Q/2+1)-NN or (Q/2)-NN for file {ReferenceTable.fileName}");
+                File.AppendAllText("result/" + ReferenceTable.fileName, $"Running K = (Q/2+1)-NN or (Q/2)-NN for file {ReferenceTable.fileName}");
 
         }
 
@@ -84,7 +85,7 @@ namespace senac_machine_learning_PI3
             Recall = TP / (TP + FN);
 
             var print = System.String.Format("Sensibility: {0}  ; Specifity: {1} ; Precision: {2} ; Recall: {3}", Sensibility, Specifity, Precision, Recall);
-            File.AppendAllText("result/" + ReferenceTable.fileName + "Result", print);
+            File.AppendAllText("result/" + ReferenceTable.fileName, print);
         }
 
         private void SetInternalStatistics(int k)
@@ -116,10 +117,10 @@ namespace senac_machine_learning_PI3
                 lines.Add(line.ToString());
             }
 
-            File.AppendAllText("result/" + ReferenceTable.fileName + "Result", header.ToString());
-            File.AppendAllLines("result/" + ReferenceTable.fileName + "Result", lines);
+            File.AppendAllText("result/" + ReferenceTable.fileName, header.ToString());
+            File.AppendAllLines("result/" + ReferenceTable.fileName, lines);
             var accuracy = SimpleErrors.Where(se => se.K == k).Sum(s => s.NumOfErrors) / SimpleErrors.Where(se => se.K == k).Sum(s => s.NumOfRecords);
-            File.AppendAllText("result/" + ReferenceTable.fileName + "Result", $"Accuracy of {accuracy}");
+            File.AppendAllText("result/" + ReferenceTable.fileName, $"Accuracy of {accuracy}");
         }
 
     }
