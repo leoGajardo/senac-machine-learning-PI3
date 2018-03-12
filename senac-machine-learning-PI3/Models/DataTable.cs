@@ -47,7 +47,7 @@ namespace senac_machine_learning_PI3.Models
 
         public void ConvertEnums()
         {   
-            foreach (var column in Schema.Columns.Where(c => c.Value.Type == Column.ColumnType.Nominal))
+            foreach (var column in Schema.Columns.Where(c => c.Value.Type == Column.ColumnType.Nominal || c.Value.Type == Column.ColumnType.Class))
             {
                 for (int i = 0; i < Schema.TotalOfRecords; i++)
                 {
