@@ -90,6 +90,8 @@ namespace senac_machine_learning_PI3
                         var TrainData = table.Data.Except(TestData).ToList();
                         var columns = table.ColumnsToKeep.Keys.ToArray();
                         Knn.Run(TrainData, TestData, columns, Knn.GetK(ImpleementOfk, table), table.Schema.Columns.First(c => c.Value.Type == Column.ColumnType.Class).Key, ref result);
+
+                        PrintFinalResult.PrintResult(table.Schema.Type,result, table.fileName);
                     }
                 }
             }
@@ -119,6 +121,7 @@ namespace senac_machine_learning_PI3
             };
             var AbaloneSchema = new TableSchema(AbaloneColumns);
             AbaloneSchema.TotalOfRecords = 4177;
+            AbaloneSchema.Type = "Multi";
             tables.Add(new Models.DataTable("Data/abalone.csv", AbaloneSchema));
 
             Console.WriteLine("Abalone OK");
@@ -141,6 +144,7 @@ namespace senac_machine_learning_PI3
                  };
             var AdultSchema = new TableSchema(AdultColumns);
             AdultSchema.TotalOfRecords = 48842;
+            AdultSchema.Type = "Binary";
             tables.Add(new Models.DataTable("Data/adult.csv", AdultSchema));
 
             Console.WriteLine("Adult OK");
@@ -185,6 +189,7 @@ namespace senac_machine_learning_PI3
             };
             var BreastCancerSchema = new TableSchema(BreastCancerColumns);
             BreastCancerSchema.TotalOfRecords = 569;
+            BreastCancerSchema.Type = "Binary";
             tables.Add(new Models.DataTable("Data/BreastCancer.csv", BreastCancerSchema));
 
             Console.WriteLine("Breast Cancer OK");
@@ -200,6 +205,7 @@ namespace senac_machine_learning_PI3
             };
             var IrisSchema = new TableSchema(IrisColumns);
             IrisSchema.TotalOfRecords = 150;
+            IrisSchema.Type = "Multi";
             tables.Add(new Models.DataTable("Data/Iris.csv", IrisSchema));
 
             Console.WriteLine("Iris OK");
@@ -222,6 +228,7 @@ namespace senac_machine_learning_PI3
             };
             var WineSchema = new TableSchema(WineColumns);
             WineSchema.TotalOfRecords = 178;
+            WineSchema.Type = "Multi";
             tables.Add(new Models.DataTable("Data/wine.csv", WineSchema));
 
             Console.WriteLine("Wine OK");
@@ -243,6 +250,7 @@ namespace senac_machine_learning_PI3
             };
             var RedWineQualitySchema = new TableSchema(RedWineQualityColumns);
             RedWineQualitySchema.TotalOfRecords = 1599;
+            RedWineQualitySchema.Type = "Multi";
             tables.Add(new Models.DataTable("Data/winequality-red.csv", RedWineQualitySchema));
 
             Console.WriteLine("Red Wine Quality OK");
@@ -265,6 +273,7 @@ namespace senac_machine_learning_PI3
             };
             var WhiteWineQualitySchema = new TableSchema(WhiteWineQualityColumns);
             WhiteWineQualitySchema.TotalOfRecords = 4898;
+            WhiteWineQualitySchema.Type = "Multi";
             tables.Add(new Models.DataTable("Data/winequality-white.csv", WhiteWineQualitySchema));
 
             Console.WriteLine("White Wine Quality OK");
