@@ -91,7 +91,7 @@ namespace senac_machine_learning_PI3
                         var columns = table.ColumnsToKeep.Keys.ToArray();
                         Knn.Run(TrainData, TestData, columns, Knn.GetK(ImpleementOfk, table), table.Schema.Columns.First(c => c.Value.Type == Column.ColumnType.Class).Key, ref result);
 
-                        PrintFinalResult.PrintResult(table.Schema.Type,result, table.fileName);
+                        
                     }
                 }
             }
