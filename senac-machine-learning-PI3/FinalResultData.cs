@@ -60,7 +60,18 @@ namespace senac_machine_learning_PI3
 
         private void PrintHeader(int k)
         {
-            File.AppendAllText("result/" + ReferenceTable.fileName + "Result", $"Running K = {k} for file {ReferenceTable.fileName}");
+            if (k==1)
+            File.AppendAllText("result/" + ReferenceTable.fileName + "Result", $"Running K = 1-NN for file {ReferenceTable.fileName}");
+
+            else if (k == 3)
+                File.AppendAllText("result/" + ReferenceTable.fileName + "Result", $"Running K = (M+2)-NN for file {ReferenceTable.fileName}");
+
+            else if (k==11)
+                File.AppendAllText("result/" + ReferenceTable.fileName + "Result", $"Running K = (M*10+1)-NN for file {ReferenceTable.fileName}");
+
+            else
+                File.AppendAllText("result/" + ReferenceTable.fileName + "Result", $"Running K = (Q/2+1)-NN or (Q/2)-NN for file {ReferenceTable.fileName}");
+
         }
 
         private void PrintBinaryType(int k)
