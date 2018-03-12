@@ -12,5 +12,9 @@ namespace senac_machine_learning_PI3.Models
         public string ExpectedClass { get; set; }
         public string PreviewedClass { get; set; }
 
+        public int ExpectedClassNumber { get; set; }
+
+        public int PreviewedClassNumber { get; set; }
+
     }
 }

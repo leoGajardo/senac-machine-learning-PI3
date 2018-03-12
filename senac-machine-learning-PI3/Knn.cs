@@ -27,7 +27,9 @@ namespace senac_machine_learning_PI3
                     new Prediction()
                     {
                         ExpectedClass = EnumValues.GetValue(Int32.Parse(data.Columns[classColumn])).ToString(),
-                        PreviewedClass = EnumValues.GetValue((int)result).ToString()
+                        PreviewedClass = EnumValues.GetValue((int)result).ToString(),
+                        ExpectedClassNumber = Int32.Parse(data.Columns[classColumn]),
+                        PreviewedClassNumber = (int)result
                     });
             }
 

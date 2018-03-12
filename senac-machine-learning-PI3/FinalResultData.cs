@@ -46,8 +46,10 @@ namespace senac_machine_learning_PI3
                 PrintBinaryType(finalResult);
         }
 
-        private void PrintBinaryType(FinalResultData binaryResult)
+        private void PrintBinaryType(int k)
         {
+            SetInternalStatistics(k);
+
             Sensibility = TP / (TP + FN);
             Specifity = TN / (TN + FP);
             Precision = TP / (TP + FP);
@@ -57,6 +59,14 @@ namespace senac_machine_learning_PI3
             File.WriteAllText("result/" + ReferenceTable.fileName + "Result", print);
         }
 
+        private void SetInternalStatistics(int k)
+        {
+            var predictions = SimpleErrors.Where(se => se.K == k);
+            TP = predictions.Sum(se => se.Predictions.Count(p => p.ExpectedClassNumber == p.PreviewedClassNumber && p.PreviewedClassNumber == 1));
+            FP = predictions.Sum(se => se.Predictions.Count(p => p.PreviewedClassNumber == 1 && p.ExpectedClassNumber == 0));
+            TN = predictions.Sum(se => se.Predictions.Count(p => p.ExpectedClassNumber == p.PreviewedClassNumber && p.PreviewedClassNumber == 0));
+            FN = predictions.Sum(se => se.Predictions.Count(p => p.PreviewedClassNumber == 0 && p.ExpectedClassNumber == 1));
+        }
 
         private void PrintMultiType(FinalResultData multiTypeResult)
         {
