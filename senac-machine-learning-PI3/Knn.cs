@@ -79,7 +79,7 @@ namespace senac_machine_learning_PI3
             }
             else if(matches > 1)
             {
-                // Regra para desempate
+                calculatedClass = neighboursGrouped.OrderBy(m => m.Sum(s => distances[s.Id])).First().First().getColumnsAsDouble()[classColumn];
             }
 
             return calculatedClass;
