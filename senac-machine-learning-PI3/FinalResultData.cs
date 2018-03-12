@@ -118,6 +118,8 @@ namespace senac_machine_learning_PI3
 
             File.AppendAllText("result/" + ReferenceTable.fileName + "Result", header.ToString());
             File.AppendAllLines("result/" + ReferenceTable.fileName + "Result", lines);
+            var accuracy = SimpleErrors.Where(se => se.K == k).Sum(s => s.NumOfErrors) / SimpleErrors.Where(se => se.K == k).Sum(s => s.NumOfRecords);
+            File.AppendAllText("result/" + ReferenceTable.fileName + "Result", $"Accuracy of {accuracy}");
         }
 
     }
