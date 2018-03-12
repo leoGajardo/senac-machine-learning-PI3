@@ -36,14 +36,31 @@ namespace senac_machine_learning_PI3
         }
 
 
-        public void PrintResult(FinalResultData finalResult)
+        public void PrintResult()
         {
-            var type = ReferenceTable.Schema.Type;
-            if (type == "Multi")
-                PrintMultiType(finalResult);
+            var ks = SimpleErrors.Select(se => se.K).Distinct();
 
-            else
-                PrintBinaryType(finalResult);
+            foreach (var k in ks)
+            {
+                var type = ReferenceTable.Schema.Type;
+                PrintHeader(k);
+                if (type == "Multi")
+                    PrintMultiType(k);
+
+                else
+                    PrintBinaryType(k);
+            }
+            PrintBestK();
+        }
+
+        private void PrintBestK()
+        {
+            File.AppendAllText("result/" + ReferenceTable.fileName + "Result", $"The best K for this situation is {GetBestK()} with error Rate of {GetCrossError(GetBestK())}");
+        }
+
+        private void PrintHeader(int k)
+        {
+            File.AppendAllText("result/" + ReferenceTable.fileName + "Result", $"Running K = {k} for file {ReferenceTable.fileName}");
         }
 
         private void PrintBinaryType(int k)
@@ -56,7 +73,7 @@ namespace senac_machine_learning_PI3
             Recall = TP / (TP + FN);
 
             var print = System.String.Format("Sensibility: {0}  ; Specifity: {1} ; Precision: {2} ; Recall: {3}", Sensibility, Specifity, Precision, Recall);
-            File.WriteAllText("result/" + ReferenceTable.fileName + "Result", print);
+            File.AppendAllText("result/" + ReferenceTable.fileName + "Result", print);
         }
 
         private void SetInternalStatistics(int k)
@@ -68,7 +85,7 @@ namespace senac_machine_learning_PI3
             FN = predictions.Sum(se => se.Predictions.Count(p => p.PreviewedClassNumber == 0 && p.ExpectedClassNumber == 1));
         }
 
-        private void PrintMultiType(FinalResultData multiTypeResult)
+        private void PrintMultiType(int k)
         {
 
 
