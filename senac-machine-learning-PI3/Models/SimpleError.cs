@@ -37,7 +37,7 @@ namespace senac_machine_learning_PI3.Models
 
         public double ErrorValue()
         {
-            return NumOfErrors / NumOfRecords;
+            return (double)NumOfErrors / (double)NumOfRecords;
         }
 
 

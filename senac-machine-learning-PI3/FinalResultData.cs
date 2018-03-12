@@ -56,22 +56,22 @@ namespace senac_machine_learning_PI3
 
         private void PrintBestK()
         {
-            File.AppendAllText("result/" + ReferenceTable.fileName, $"The best K for this situation is {GetBestK()} with error Rate of {GetCrossError(GetBestK())}");
+            File.AppendAllText("result/" + ReferenceTable.fileName, $"The best K for this situation is {GetBestK()} with error Rate of {GetCrossError(GetBestK())} ");
         }
 
         private void PrintHeader(int k)
         {
             if (k==1)
-            File.AppendAllText("result/" + ReferenceTable.fileName, $"Running K = 1-NN for file {ReferenceTable.fileName}");
+            File.AppendAllText("result/" + ReferenceTable.fileName, $"Running K = 1-NN for file {ReferenceTable.fileName} \n\r");
 
             else if (k == 3)
-                File.AppendAllText("result/" + ReferenceTable.fileName, $"Running K = (M+2)-NN for file {ReferenceTable.fileName}");
+                File.AppendAllText("result/" + ReferenceTable.fileName, $"Running K = (M+2)-NN for file {ReferenceTable.fileName} \n\r");
 
             else if (k==11)
-                File.AppendAllText("result/" + ReferenceTable.fileName, $"Running K = (M*10+1)-NN for file {ReferenceTable.fileName}");
+                File.AppendAllText("result/" + ReferenceTable.fileName, $"Running K = (M*10+1)-NN for file {ReferenceTable.fileName} \n\r");
 
             else
-                File.AppendAllText("result/" + ReferenceTable.fileName, $"Running K = (Q/2+1)-NN or (Q/2)-NN for file {ReferenceTable.fileName}");
+                File.AppendAllText("result/" + ReferenceTable.fileName, $"Running K = (Q/2+1)-NN or (Q/2)-NN for file {ReferenceTable.fileName} \n\r");
 
         }
 
@@ -79,12 +79,12 @@ namespace senac_machine_learning_PI3
         {
             SetInternalStatistics(k);
 
-            Sensibility = TP / (TP + FN);
-            Specifity = TN / (TN + FP);
-            Precision = TP / (TP + FP);
-            Recall = TP / (TP + FN);
+            Sensibility = (double)TP / ((double)TP + (double)FN);
+            Specifity = (double)TN / ((double)TN + (double)FP);
+            Precision = (double)TP / ((double)TP + (double)FP);
+            Recall = (double)TP / ((double)TP + (double)FN);
 
-            var print = System.String.Format("Sensibility: {0}  ; Specifity: {1} ; Precision: {2} ; Recall: {3}", Sensibility, Specifity, Precision, Recall);
+            var print = System.String.Format("Sensibility: {0}  ; Specifity: {1} ; Precision: {2} ; Recall: {3} \n\r", Sensibility, Specifity, Precision, Recall);
             File.AppendAllText("result/" + ReferenceTable.fileName, print);
         }
 
@@ -101,26 +101,26 @@ namespace senac_machine_learning_PI3
         {
             var enumValues = ReferenceTable.Schema.Columns.First(c => c.Value.Type == Column.ColumnType.Class).Value.Enum.GetEnumValues();
             var values = SimpleErrors.Where(se => se.K == k).SelectMany(s => s.Predictions);
-            StringBuilder header = new StringBuilder();
+            StringBuilder header = new StringBuilder($"\t\t");
             var lines = new List<string>();
             foreach (var enumNamePredicted in enumValues)
                 header.Append(enumNamePredicted.ToString() + "\t\t");
 
             foreach (var enumNameExpected in enumValues)
             {
-                StringBuilder line = new StringBuilder();
+                StringBuilder line = new StringBuilder(enumNameExpected.ToString() + "\t\t");
                 foreach (var enumNamePreviewed in enumValues)
                 {
                     var val = values.Count(v => v.ExpectedClass == enumNameExpected.ToString() && v.PreviewedClass == enumNamePreviewed.ToString());
                     line.Append(val + "\t\t");
                 }
-                lines.Add(line.ToString());
+                lines.Add(line.ToString() + $"\n\r");
             }
 
-            File.AppendAllText("result/" + ReferenceTable.fileName, header.ToString());
+            File.AppendAllText("result/" + ReferenceTable.fileName, header.ToString() + $"\n\r");
             File.AppendAllLines("result/" + ReferenceTable.fileName, lines);
-            var accuracy = SimpleErrors.Where(se => se.K == k).Sum(s => s.NumOfErrors) / SimpleErrors.Where(se => se.K == k).Sum(s => s.NumOfRecords);
-            File.AppendAllText("result/" + ReferenceTable.fileName, $"Accuracy of {accuracy}");
+            var accuracy = ((double)SimpleErrors.Where(se => se.K == k).Sum(s => s.NumOfRecords) - (double)SimpleErrors.Where(se => se.K == k).Sum(s => s.NumOfErrors)) / (double)SimpleErrors.Where(se => se.K == k).Sum(s => s.NumOfRecords);
+            File.AppendAllText("result/" + ReferenceTable.fileName, $"Accuracy of {accuracy} \n\r");
         }
 
     }

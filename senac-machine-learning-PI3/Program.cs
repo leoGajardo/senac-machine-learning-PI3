@@ -88,10 +88,10 @@ namespace senac_machine_learning_PI3
                     {
                         var TestData = table.Data.Skip(i * TenFold).Take(TenFold).ToList();
                         var TrainData = table.Data.Except(TestData).ToList();
-                        var columns = table.ColumnsToKeep.Keys.ToArray();
-                        Knn.Run(TrainData, TestData, columns, Knn.GetK(ImpleementOfk, table), table.Schema.Columns.First(c => c.Value.Type == Column.ColumnType.Class).Key, ref result);
+                        var classColumn = table.Schema.Columns.First(c => c.Value.Type == Column.ColumnType.Class).Key;
+                        var columns = table.ColumnsToKeep.Keys.Where(k => k != classColumn).ToArray();
+                        Knn.Run(TrainData, TestData, columns, Knn.GetK(ImpleementOfk, table), classColumn, ref result);
 
-                        
                     }
                 }
                 result.PrintResult();

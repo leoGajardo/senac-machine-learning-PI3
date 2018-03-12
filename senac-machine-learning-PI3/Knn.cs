@@ -65,7 +65,7 @@ namespace senac_machine_learning_PI3
                 var distance = GetDistance(columns, testData.getColumnsAsDouble(), baseData.getColumnsAsDouble());
                 distances.Add(baseData.Id, distance);
             }
-            var ordenedDistances = distances.OrderByDescending(o => o.Value);
+            var ordenedDistances = distances.OrderBy(o => o.Value);
             var neighbours = ordenedDistances.Take(k).Select(n => n.Key);
 
             var neighboursLines = trainData.Where(t => neighbours.Contains(t.Id));
