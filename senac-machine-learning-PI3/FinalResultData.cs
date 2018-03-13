@@ -99,7 +99,10 @@ namespace senac_machine_learning_PI3
 
         private void PrintMultiType(int k)
         {
-            var enumValues = ReferenceTable.Schema.Columns.First(c => c.Value.Type == Column.ColumnType.Class).Value.Enum.GetEnumValues();
+            var classColumn = ReferenceTable.Schema.Columns.First(c => c.Value.Type == Column.ColumnType.Class);
+            var enumValues = classColumn.Value.Enum?.GetEnumValues();
+            if (enumValues == null)
+                enumValues = ReferenceTable.Data.SelectMany(s => s.Columns[classColumn.Key]).Distinct().ToArray();
             var values = SimpleErrors.Where(se => se.K == k).SelectMany(s => s.Predictions);
             StringBuilder header = new StringBuilder($"\t\t");
             var lines = new List<string>();

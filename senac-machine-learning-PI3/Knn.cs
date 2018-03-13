@@ -18,16 +18,18 @@ namespace senac_machine_learning_PI3
             var randomTestData = testData.OrderBy(o => rnd.Next()).ToList();
             var simpleError = new SimpleError(k);
 
-            var EnumValues = results.ReferenceTable.Schema.Columns[classColumn].Enum.GetEnumValues();
+            var EnumValues = results.ReferenceTable.Schema.Columns[classColumn].Enum?.GetEnumValues();
             
             foreach (var data in randomTestData)
             {
                 var result = CalculateLine(randomTrainData, data, columns, k, classColumn);
+                var expectedClass = EnumValues != null ? EnumValues.GetValue(Int32.Parse(data.Columns[classColumn]) - 1).ToString() : data.Columns[classColumn];
+                var previewedClass = EnumValues != null ? EnumValues?.GetValue((int)result - 1).ToString() : result.ToString();
                 simpleError.Predictions.Add(
                     new Prediction()
                     {
-                        ExpectedClass = EnumValues.GetValue(Int32.Parse(data.Columns[classColumn])-1).ToString(),
-                        PreviewedClass = EnumValues.GetValue((int)result-1).ToString(),
+                        ExpectedClass = expectedClass,
+                        PreviewedClass = previewedClass,
                         ExpectedClassNumber = Int32.Parse(data.Columns[classColumn]),
                         PreviewedClassNumber = (int)result
                     });
@@ -60,26 +62,28 @@ namespace senac_machine_learning_PI3
         private static double CalculateLine(List<Line> trainData, Line testData, int[] columns, int k, int classColumn)
         {
             var distances = new Dictionary<int, double>();
+
             foreach (var baseData in trainData)
             {
                 var distance = GetDistance(columns, testData.getColumnsAsDouble(), baseData.getColumnsAsDouble());
                 distances.Add(baseData.Id, distance);
             }
+
             var ordenedDistances = distances.OrderBy(o => o.Value);
             var neighbours = ordenedDistances.Take(k).Select(n => n.Key);
 
             var neighboursLines = trainData.Where(t => neighbours.Contains(t.Id));
-            var neighboursGrouped = neighboursLines.GroupBy(g => g.Columns[classColumn]);
-            var maxVal = neighboursGrouped.Max(m => m.Count());
+            var neighboursGrouped = neighboursLines.GroupBy(g => g.Columns[classColumn]).OrderByDescending(o => o.Count());
+            var maxVal = neighboursGrouped.First().Count();
             var matches = neighboursGrouped.Count(c => c.Count() == maxVal);
             double calculatedClass = 0;
             if (matches == 1)
             {
-                calculatedClass = neighboursGrouped.First(f => f.Count() == maxVal).First().getColumnsAsDouble()[classColumn];
+                calculatedClass = neighboursGrouped.First().First().getColumnsAsDouble()[classColumn];
             }
             else if(matches > 1)
             {
-                calculatedClass = neighboursGrouped.OrderBy(m => m.Sum(s => distances[s.Id])).First().First().getColumnsAsDouble()[classColumn];
+                calculatedClass = neighboursGrouped.Where(n => n.Count() == maxVal).OrderBy(m => m.Sum(s => distances[s.Id])).First().First().getColumnsAsDouble()[classColumn];
             }
 
             return calculatedClass;
