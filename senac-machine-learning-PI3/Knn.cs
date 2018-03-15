@@ -19,8 +19,8 @@ namespace senac_machine_learning_PI3
             var simpleError = new SimpleError(k);
 
             var EnumValues = results.ReferenceTable.Schema.Columns[classColumn].Enum?.GetEnumValues();
-            
-            foreach (var data in randomTestData)
+
+            var task = Parallel.ForEach(randomTestData, (data) =>
             {
                 var result = CalculateLine(randomTrainData, data, columns, k, classColumn);
                 var expectedClass = EnumValues != null ? EnumValues.GetValue(Int32.Parse(data.Columns[classColumn]) - 1).ToString() : data.Columns[classColumn];
@@ -33,14 +33,17 @@ namespace senac_machine_learning_PI3
                         ExpectedClassNumber = Int32.Parse(data.Columns[classColumn]),
                         PreviewedClassNumber = (int)result
                     });
-            }
+            });
+
+            while (!task.IsCompleted)
+            { }
 
             results.SimpleErrors.Add(simpleError);
         }
 
         public static int GetK(int ImplementOfK, DataTable table)
         {
-            switch(ImplementOfK)
+            switch (ImplementOfK)
             {
                 case 1: return 1;
 
@@ -61,44 +64,63 @@ namespace senac_machine_learning_PI3
 
         private static double CalculateLine(List<Line> trainData, Line testData, int[] columns, int k, int classColumn)
         {
-            var distances = new Dictionary<int, double>();
+            var distances = new Dictionary<int, LighweightData>();
+
+            int[] maxValArray = new int[20];
 
             foreach (var baseData in trainData)
             {
                 var distance = GetDistance(columns, testData.getColumnsAsDouble(), baseData.getColumnsAsDouble());
-                distances.Add(baseData.Id, distance);
+                distances.Add(baseData.Id, new LighweightData(distance, Int32.Parse(baseData.Columns[classColumn])));
             }
 
-            var ordenedDistances = distances.OrderBy(o => o.Value);
-            var neighbours = ordenedDistances.Take(k).Select(n => n.Key);
-
-            var neighboursLines = trainData.Where(t => neighbours.Contains(t.Id));
-            var neighboursGrouped = neighboursLines.GroupBy(g => g.Columns[classColumn]).OrderByDescending(o => o.Count());
-            var maxVal = neighboursGrouped.First().Count();
-            var matches = neighboursGrouped.Count(c => c.Count() == maxVal);
+            var neighbours = distances.OrderBy(o => o.Value.distance).Take(k);
+            foreach (var neighbour in neighbours)
+                maxValArray[neighbour.Value.classVal] += 1;
+            //var neighbours = ordenedDistances.Take(k).Select(n => n.Key);
+            
+            //var neighboursLines = trainData.Where(t => neighbours.Contains(t.Id));
+            //var neighboursGrouped = neighboursLines.GroupBy(g => g.Columns[classColumn]).OrderByDescending(o => o.Count());
+            //var maxVal = neighboursGrouped.First().Count();
+            var maxVal = maxValArray.Max();
+            var matches = maxValArray.Count(c => c == maxVal);
             double calculatedClass = 0;
             if (matches == 1)
             {
-                calculatedClass = neighboursGrouped.First().First().getColumnsAsDouble()[classColumn];
+                calculatedClass = Array.IndexOf(maxValArray, maxVal);
             }
-            else if(matches > 1)
+            else if (matches > 1)
             {
-                calculatedClass = neighboursGrouped.Where(n => n.Count() == maxVal).OrderBy(m => m.Sum(s => distances[s.Id])).First().First().getColumnsAsDouble()[classColumn];
+                calculatedClass = neighbours.GroupBy(g => g.Value.classVal).Where(d => d.Count() == maxVal).OrderBy(m => m.Sum(s => s.Value.distance)).First().Key;
+                //calculatedClass = neighboursGrouped.Where(n => n.Count() == maxVal).OrderBy(m => m.Sum(s => distances[s.Id])).First().First().getColumnsAsDouble()[classColumn];
             }
 
             return calculatedClass;
         }
-         
+
 
         private static double GetDistance(int[] columns, double[] a, double[] b)
         {
             double distancia = 0;
             foreach (var column in columns)
-            {                   
+            {
                 distancia += Math.Pow((a[column] - b[column]), 2);
             }
 
             return Math.Sqrt(distancia);
         }
+    }
+
+    internal class LighweightData{
+
+        public LighweightData(double distance, int classVal)
+        {
+            this.distance = distance;
+            this.classVal = classVal;
+        }
+
+        public double distance { get; set; }
+        public int classVal { get; set; }
+
     }
 }

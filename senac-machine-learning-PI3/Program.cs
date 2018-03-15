@@ -76,14 +76,15 @@ namespace senac_machine_learning_PI3
             Console.WriteLine("**********************************************************************************************");
             Console.WriteLine("");
             Console.WriteLine("Aplicando Algoritimos de KNN e Cross-Validation");
+            var results = new List<FinalResultData>();
             foreach (var table in tables)
             {
                 var TenFold = table.Data.Count / 10;
                 var result = new FinalResultData(table);
-                for (int ImpleementOfk = 1; ImpleementOfk < 5; ImpleementOfk++)
+                var task2 = Parallel.For(1, 5, (ImpleementOfk) => 
                 {
 
-                    for (int i = 0; i < 11; i++)
+                    var task = Parallel.For(0, 11, (i) => 
                     {
                         var TestData = table.Data.Skip(i * TenFold).Take(TenFold).ToList();
                         var TrainData = table.Data.Except(TestData).ToList();
@@ -91,10 +92,17 @@ namespace senac_machine_learning_PI3
                         var columns = table.ColumnsToKeep.Keys.Where(k => k != classColumn).ToArray();
                         Knn.Run(TrainData, TestData, columns, Knn.GetK(ImpleementOfk, table), classColumn, ref result);
 
-                    }
-                }
-                result.PrintResult();
+                    });
+                    while (!task.IsCompleted)
+                    { }
+                });
+                while (!task2.IsCompleted)
+                { }
+                results.Add(result);
             }
+
+            foreach (var result in results)
+                result.PrintResult();
 
             Console.WriteLine("");
             Console.WriteLine("Algoritimos Aplicados com Sucesso!");
