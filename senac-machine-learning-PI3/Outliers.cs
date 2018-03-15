@@ -30,9 +30,11 @@ namespace senac_machine_learning_PI3
 
         public static void PrintOutliers(DataTable table, List<int> shouldBeRemoved)
         {
+            if (!Directory.Exists("outliers"))
+                Directory.CreateDirectory("outliers");
             if (Directory.Exists("outliers"))
-                File.Delete("outliers_" + table.fileName);
-            File.WriteAllLines("outliers_" + table.fileName, table.Data.Where(d => shouldBeRemoved.Contains(d.Id)).Select(s => s.ToString()));
+                File.Delete("outliers\\outliers_" + table.fileName);
+            File.WriteAllLines("outliers\\outliers_" + table.fileName, table.Data.Where(d => shouldBeRemoved.Contains(d.Id)).Select(s => s.ToString()));
         }
 
         public static double GetLimiteSuperior(double[] coluna, double IQR)
@@ -65,7 +67,7 @@ namespace senac_machine_learning_PI3
                 double fk = temp - k; // parte fracionaria da interpolação para multiplicar para o valor do Quartil
                 if (k == 0)
                 {
-                    return coluna[k] + fk * (coluna[k] - coluna[k]);
+                    return coluna[k];
                 }
                 return coluna[k - 1] + fk * (coluna[k] - coluna[k - 1]);
                 //Considerando Array iniciado na posição 0, precisa-se retirar 1 de K e o k+1 se torna somente k

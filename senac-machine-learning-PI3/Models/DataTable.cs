@@ -75,7 +75,43 @@ namespace senac_machine_learning_PI3.Models
 
         }
 
+        public void PrintStatisticData()
+        {
+            if (!Directory.Exists("staistics"))
+                Directory.CreateDirectory("staistics");
+            if (Directory.Exists("staistics"))
+                File.Delete("staistics\\staistics" + fileName);
 
+            var lines = new StringBuilder();
+            lines.Append("Atributo \t\t Menor Valor \t\t Maior valor \t\t Média \t\t Desvio Padrão \n\r");
+
+            foreach (var column in Schema.Columns.Where(c => c.Value.Type != Column.ColumnType.Nominal && c.Value.Type != Column.ColumnType.Class))
+            {
+                var average = Data.Average(d => d.getColumnsAsDouble()[column.Key]);
+                var min = Data.Min(d => d.getColumnsAsDouble()[column.Key]);
+                var max = Data.Max(d => d.getColumnsAsDouble()[column.Key]);
+                var stdDeviation = CalculateStdDev(Data.Select(d => d.getColumnsAsDouble()[column.Key]));
+
+                lines.Append(column.Value.Name + "\t\t" + min + "\t\t" + max + "\t\t" + average + "\t\t" + stdDeviation + " \n\r");
+
+            }
+            File.WriteAllText("staistics\\staistics" + fileName, lines.ToString());
+        }
+
+        private double CalculateStdDev(IEnumerable<double> values)
+        {
+            double ret = 0;
+            if (values.Count() > 0)
+            {
+                //Compute the Average      
+                double avg = values.Average();
+                //Perform the Sum of (value-avg)_2_2      
+                double sum = values.Sum(d => Math.Pow(d - avg, 2));
+                //Put it all together      
+                ret = Math.Sqrt((sum) / (values.Count() - 1));
+            }
+            return ret;
+        }
 
         private void CheckIfOutputDirectoryExists()
         {
