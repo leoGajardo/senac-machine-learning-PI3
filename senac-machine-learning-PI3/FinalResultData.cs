@@ -11,7 +11,7 @@ namespace senac_machine_learning_PI3
     public class FinalResultData
     {
         public DataTable ReferenceTable { get; private set; }
-        public double Sensibility, Specifity, Precision, Recall;
+        public double Sensibility, Specifity, Precision, Recall, Accuracy;
         public double TP, TN, FN, FP;
 
 
@@ -61,13 +61,13 @@ namespace senac_machine_learning_PI3
 
         private void PrintHeader(int k)
         {
-            if (k==1)
-            File.AppendAllText("result/" + ReferenceTable.fileName, $"Running K = 1-NN for file {ReferenceTable.fileName} \n\r");
+            if (k == 1)
+                File.AppendAllText("result/" + ReferenceTable.fileName, $"Running K = 1-NN for file {ReferenceTable.fileName} \n\r");
 
             else if (k == 3)
                 File.AppendAllText("result/" + ReferenceTable.fileName, $"Running K = (M+2)-NN for file {ReferenceTable.fileName} \n\r");
 
-            else if (k==11)
+            else if (k == 11)
                 File.AppendAllText("result/" + ReferenceTable.fileName, $"Running K = (M*10+1)-NN for file {ReferenceTable.fileName} \n\r");
 
             else
@@ -83,8 +83,9 @@ namespace senac_machine_learning_PI3
             Specifity = (double)TN / ((double)TN + (double)FP);
             Precision = (double)TP / ((double)TP + (double)FP);
             Recall = (double)TP / ((double)TP + (double)FN);
+            Accuracy = ((double)TP + (double)TN) / ((double)TP + (double)TN + (double)FN + (double)FP);
 
-            var print = System.String.Format("Sensibility: {0}  ; Specifity: {1} ; Precision: {2} ; Recall: {3} \n\r", Sensibility, Specifity, Precision, Recall);
+            var print = System.String.Format("Sensibility: {0}  ; Specifity: {1} ; Precision: {2} ; Recall: {3} ; Accuracy: {4}\n\r", Sensibility, Specifity, Precision, Recall, Accuracy);
             File.AppendAllText("result/" + ReferenceTable.fileName, print);
         }
 
@@ -102,7 +103,7 @@ namespace senac_machine_learning_PI3
             var classColumn = ReferenceTable.Schema.Columns.First(c => c.Value.Type == Column.ColumnType.Class);
             var enumValues = classColumn.Value.Enum?.GetEnumValues();
             if (enumValues == null)
-                enumValues = ReferenceTable.Data.SelectMany(s => s.Columns[classColumn.Key]).Distinct().ToArray();
+                enumValues = ReferenceTable.Data.SelectMany(s => s.Columns[classColumn.Key]).Distinct().OrderBy(o => o).ToArray();
             var values = SimpleErrors.Where(se => se.K == k).SelectMany(s => s.Predictions);
             StringBuilder header = new StringBuilder($"\t\t");
             var lines = new List<string>();

@@ -144,27 +144,27 @@ namespace senac_machine_learning_PI3
             //Console.WriteLine("Abalone OK");
 
 
-            //var AdultColumns = new List<Column> {
-            //    new Column(){ Name = "Age", Type = Column.ColumnType.Integer } ,
-            //    new Column(){ Name = "Workclass", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Workclass) } ,
-            //    new Column(){ Name = "Final_Weight", Type = Column.ColumnType.Continuous } ,
-            //    new Column(){ Name = "Education", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Education) } ,
-            //    new Column(){ Name = "Education-Num", Type = Column.ColumnType.Integer } ,
-            //    new Column(){ Name = "Marital_Status", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Marital_Status) } ,
-            //    new Column(){ Name = "Occupation", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Occupation) } ,
-            //    new Column(){ Name = "Relationship", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Relationship) } ,
-            //    new Column(){ Name = "Race", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Race) } ,
-            //    new Column(){ Name = "Sex", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Sex) } ,
-            //    new Column(){ Name = "Hours_per_Week", Type = Column.ColumnType.Continuous } ,
-            //    new Column(){ Name = "Native_Country", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Native_Country) },
-            //    new Column(){ Name = "Class", Type = Column.ColumnType.Class, Enum = typeof(Enums.Adult.Class) } ,
-            //     };
-            //var AdultSchema = new TableSchema(AdultColumns);
-            //AdultSchema.TotalOfRecords = 48842;
-            //AdultSchema.Type = "Binary";
-            //tables.Add(new Models.DataTable("Data/adult.csv", AdultSchema));
+            var AdultColumns = new List<Column> {
+                new Column(){ Name = "Age", Type = Column.ColumnType.Integer } ,
+                new Column(){ Name = "Workclass", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Workclass) } ,
+                new Column(){ Name = "Final_Weight", Type = Column.ColumnType.Continuous } ,
+                new Column(){ Name = "Education", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Education) } ,
+                new Column(){ Name = "Education-Num", Type = Column.ColumnType.Integer } ,
+                new Column(){ Name = "Marital_Status", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Marital_Status) } ,
+                new Column(){ Name = "Occupation", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Occupation) } ,
+                new Column(){ Name = "Relationship", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Relationship) } ,
+                new Column(){ Name = "Race", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Race) } ,
+                new Column(){ Name = "Sex", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Sex) } ,
+                new Column(){ Name = "Hours_per_Week", Type = Column.ColumnType.Continuous } ,
+                new Column(){ Name = "Native_Country", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Native_Country) },
+                new Column(){ Name = "Class", Type = Column.ColumnType.Class, Enum = typeof(Enums.Adult.Class) } ,
+                 };
+            var AdultSchema = new TableSchema(AdultColumns);
+            AdultSchema.TotalOfRecords = 48842;
+            AdultSchema.Type = "Binary";
+            tables.Add(new Models.DataTable("Data/adult.csv", AdultSchema));
 
-            //Console.WriteLine("Adult OK");
+            Console.WriteLine("Adult OK");
 
 
 
@@ -273,27 +273,27 @@ namespace senac_machine_learning_PI3
             //Console.WriteLine("Red Wine Quality OK");
 
 
-            var WhiteWineQualityColumns = new List<Column>
-            {
-                new Column(){ Name ="Fixed-Acidity", Type=Column.ColumnType.Continuous } ,
-                new Column(){ Name ="Violatile-Acidity", Type=Column.ColumnType.Continuous } ,
-                new Column(){ Name ="Citric-Acid", Type=Column.ColumnType.Continuous } ,
-                new Column(){ Name ="Residual-Sugar", Type=Column.ColumnType.Continuous } ,
-                new Column(){ Name ="Chlorides", Type=Column.ColumnType.Continuous } ,
-                new Column(){ Name ="Free-Sufor-Dioxide", Type=Column.ColumnType.Continuous } ,
-                new Column(){ Name ="Total-Sufor-Dioxide", Type=Column.ColumnType.Continuous } ,
-                new Column(){ Name ="Density", Type=Column.ColumnType.Continuous } ,
-                new Column(){ Name ="pH", Type=Column.ColumnType.Continuous } ,
-                new Column(){ Name ="Sulphates", Type=Column.ColumnType.Continuous } ,
-                new Column(){ Name ="Alcohol", Type=Column.ColumnType.Continuous } ,
-                new Column(){ Name ="Quality", Type=Column.ColumnType.Class } ,
-            };
-            var WhiteWineQualitySchema = new TableSchema(WhiteWineQualityColumns);
-            WhiteWineQualitySchema.TotalOfRecords = 4898;
-            WhiteWineQualitySchema.Type = "Multi";
-            tables.Add(new Models.DataTable("Data/winequality-white.csv", WhiteWineQualitySchema));
+            //var WhiteWineQualityColumns = new List<Column>
+            //{
+            //    new Column(){ Name ="Fixed-Acidity", Type=Column.ColumnType.Continuous } ,
+            //    new Column(){ Name ="Violatile-Acidity", Type=Column.ColumnType.Continuous } ,
+            //    new Column(){ Name ="Citric-Acid", Type=Column.ColumnType.Continuous } ,
+            //    new Column(){ Name ="Residual-Sugar", Type=Column.ColumnType.Continuous } ,
+            //    new Column(){ Name ="Chlorides", Type=Column.ColumnType.Continuous } ,
+            //    new Column(){ Name ="Free-Sufor-Dioxide", Type=Column.ColumnType.Continuous } ,
+            //    new Column(){ Name ="Total-Sufor-Dioxide", Type=Column.ColumnType.Continuous } ,
+            //    new Column(){ Name ="Density", Type=Column.ColumnType.Continuous } ,
+            //    new Column(){ Name ="pH", Type=Column.ColumnType.Continuous } ,
+            //    new Column(){ Name ="Sulphates", Type=Column.ColumnType.Continuous } ,
+            //    new Column(){ Name ="Alcohol", Type=Column.ColumnType.Continuous } ,
+            //    new Column(){ Name ="Quality", Type=Column.ColumnType.Class } ,
+            //};
+            //var WhiteWineQualitySchema = new TableSchema(WhiteWineQualityColumns);
+            //WhiteWineQualitySchema.TotalOfRecords = 4898;
+            //WhiteWineQualitySchema.Type = "Multi";
+            //tables.Add(new Models.DataTable("Data/winequality-white.csv", WhiteWineQualitySchema));
 
-            Console.WriteLine("White Wine Quality OK");
+            //Console.WriteLine("White Wine Quality OK");
 
             Console.WriteLine("Schema das Tabelas Construido com Sucesso!");
             Console.WriteLine("**********************************************************************************************");
