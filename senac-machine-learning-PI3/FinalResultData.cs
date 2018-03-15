@@ -92,9 +92,9 @@ namespace senac_machine_learning_PI3
         {
             var predictions = SimpleErrors.Where(se => se.K == k);
             TP = predictions.Sum(se => se.Predictions.Count(p => p.ExpectedClassNumber == p.PreviewedClassNumber && p.PreviewedClassNumber == 1));
-            FP = predictions.Sum(se => se.Predictions.Count(p => p.PreviewedClassNumber == 1 && p.ExpectedClassNumber == 0));
-            TN = predictions.Sum(se => se.Predictions.Count(p => p.ExpectedClassNumber == p.PreviewedClassNumber && p.PreviewedClassNumber == 0));
-            FN = predictions.Sum(se => se.Predictions.Count(p => p.PreviewedClassNumber == 0 && p.ExpectedClassNumber == 1));
+            FP = predictions.Sum(se => se.Predictions.Count(p => p.PreviewedClassNumber == 1 && p.ExpectedClassNumber == 2));
+            TN = predictions.Sum(se => se.Predictions.Count(p => p.ExpectedClassNumber == p.PreviewedClassNumber && p.PreviewedClassNumber == 2));
+            FN = predictions.Sum(se => se.Predictions.Count(p => p.PreviewedClassNumber == 2 && p.ExpectedClassNumber == 1));
         }
 
         private void PrintMultiType(int k)

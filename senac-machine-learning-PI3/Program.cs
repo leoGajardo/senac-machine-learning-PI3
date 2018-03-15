@@ -47,9 +47,13 @@ namespace senac_machine_learning_PI3
                 Console.WriteLine("");
                 Console.WriteLine("Removendo Outliers da Tabela: {0}", table.fileName);
 
-                foreach (var column in table.Schema.Columns.Where(c => c.Value.Type != Column.ColumnType.Nominal && c.Value.Type != Column.ColumnType.Class))
-                    table.RemoveOutliers(column.Key);
+                var idsToBeRemoved = new List<int>();
 
+                foreach (var column in table.Schema.Columns.Where(c => c.Value.Type != Column.ColumnType.Nominal && c.Value.Type != Column.ColumnType.Class))
+                    table.RemoveOutliers(column.Key, ref idsToBeRemoved);
+
+                Outliers.PrintOutliers(table, idsToBeRemoved);
+                table.RemoveLines(idsToBeRemoved.ToArray());
                 Console.WriteLine("");
                 Console.WriteLine("Outliers da Tabela: {0}, Removidas com Sucesso!", table.fileName);
                 Console.WriteLine("");
@@ -116,46 +120,46 @@ namespace senac_machine_learning_PI3
             Console.WriteLine("Construindo Schema das Tabelas");
             tables = new List<Models.DataTable>();
 
-            var AbaloneColumns = new List<Column> {
-                new Column(){ Name = "Sex", Type = Column.ColumnType.Class, Enum = typeof(Enums.Abalone.Sex) } ,
-                new Column(){ Name = "Length", Type = Column.ColumnType.Continuous } ,
-                new Column(){ Name = "Diameter", Type = Column.ColumnType.Continuous } ,
-                new Column(){ Name = "Height", Type = Column.ColumnType.Continuous } ,
-                new Column(){ Name = "Whole weight", Type = Column.ColumnType.Continuous } ,
-                new Column(){ Name = "Shucked weight", Type = Column.ColumnType.Continuous } ,
-                new Column(){ Name = "Viscera weight", Type = Column.ColumnType.Continuous } ,
-                new Column(){ Name = "Shell weight", Type = Column.ColumnType.Continuous } ,
-                new Column(){ Name = "Rings", Type = Column.ColumnType.Integer }
-            };
-            var AbaloneSchema = new TableSchema(AbaloneColumns);
-            AbaloneSchema.TotalOfRecords = 4177;
-            AbaloneSchema.Type = "Multi";
-            tables.Add(new Models.DataTable("Data/abalone.csv", AbaloneSchema));
+            //var AbaloneColumns = new List<Column> {
+            //    new Column(){ Name = "Sex", Type = Column.ColumnType.Class, Enum = typeof(Enums.Abalone.Sex) } ,
+            //    new Column(){ Name = "Length", Type = Column.ColumnType.Continuous } ,
+            //    new Column(){ Name = "Diameter", Type = Column.ColumnType.Continuous } ,
+            //    new Column(){ Name = "Height", Type = Column.ColumnType.Continuous } ,
+            //    new Column(){ Name = "Whole weight", Type = Column.ColumnType.Continuous } ,
+            //    new Column(){ Name = "Shucked weight", Type = Column.ColumnType.Continuous } ,
+            //    new Column(){ Name = "Viscera weight", Type = Column.ColumnType.Continuous } ,
+            //    new Column(){ Name = "Shell weight", Type = Column.ColumnType.Continuous } ,
+            //    new Column(){ Name = "Rings", Type = Column.ColumnType.Integer }
+            //};
+            //var AbaloneSchema = new TableSchema(AbaloneColumns);
+            //AbaloneSchema.TotalOfRecords = 4177;
+            //AbaloneSchema.Type = "Multi";
+            //tables.Add(new Models.DataTable("Data/abalone.csv", AbaloneSchema));
 
-            Console.WriteLine("Abalone OK");
+            //Console.WriteLine("Abalone OK");
 
 
-            //var AdultColumns = new List<Column> {
-            //    new Column(){ Name = "Age", Type = Column.ColumnType.Integer } ,
-            //    new Column(){ Name = "Workclass", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Workclass) } ,
-            //    new Column(){ Name = "Final_Weight", Type = Column.ColumnType.Continuous } ,
-            //    new Column(){ Name = "Education", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Education) } ,
-            //    new Column(){ Name = "Education-Num", Type = Column.ColumnType.Integer } ,
-            //    new Column(){ Name = "Marital_Status", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Marital_Status) } ,
-            //    new Column(){ Name = "Occupation", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Occupation) } ,
-            //    new Column(){ Name = "Relationship", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Relationship) } ,
-            //    new Column(){ Name = "Race", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Race) } ,
-            //    new Column(){ Name = "Sex", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Sex) } ,
-            //    new Column(){ Name = "Hours_per_Week", Type = Column.ColumnType.Continuous } ,
-            //    new Column(){ Name = "Native_Country", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Native_Country) },
-            //    new Column(){ Name = "Class", Type = Column.ColumnType.Class, Enum = typeof(Enums.Adult.Class) } ,
-            //     };
-            //var AdultSchema = new TableSchema(AdultColumns);
-            //AdultSchema.TotalOfRecords = 48842;
-            //AdultSchema.Type = "Binary";
-            //tables.Add(new Models.DataTable("Data/adult.csv", AdultSchema));
+            var AdultColumns = new List<Column> {
+                new Column(){ Name = "Age", Type = Column.ColumnType.Integer } ,
+                new Column(){ Name = "Workclass", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Workclass) } ,
+                new Column(){ Name = "Final_Weight", Type = Column.ColumnType.Continuous } ,
+                new Column(){ Name = "Education", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Education) } ,
+                new Column(){ Name = "Education-Num", Type = Column.ColumnType.Integer } ,
+                new Column(){ Name = "Marital_Status", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Marital_Status) } ,
+                new Column(){ Name = "Occupation", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Occupation) } ,
+                new Column(){ Name = "Relationship", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Relationship) } ,
+                new Column(){ Name = "Race", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Race) } ,
+                new Column(){ Name = "Sex", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Sex) } ,
+                new Column(){ Name = "Hours_per_Week", Type = Column.ColumnType.Continuous } ,
+                new Column(){ Name = "Native_Country", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Native_Country) },
+                new Column(){ Name = "Class", Type = Column.ColumnType.Class, Enum = typeof(Enums.Adult.Class) } ,
+                 };
+            var AdultSchema = new TableSchema(AdultColumns);
+            AdultSchema.TotalOfRecords = 48842;
+            AdultSchema.Type = "Binary";
+            tables.Add(new Models.DataTable("Data/adult.csv", AdultSchema));
 
-            //Console.WriteLine("Adult OK");
+            Console.WriteLine("Adult OK");
 
 
 
