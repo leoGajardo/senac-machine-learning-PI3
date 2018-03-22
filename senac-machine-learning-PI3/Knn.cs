@@ -12,17 +12,13 @@ namespace senac_machine_learning_PI3
 
         public static void Run(List<Line> trainData, List<Line> testData, int[] columns, int k, int classColumn, ref FinalResultData results)
         {
-            var rnd = new Random();
-            var randomTrainData = trainData.OrderBy(o => rnd.Next()).ToList();
-            rnd = new Random();
-            var randomTestData = testData.OrderBy(o => rnd.Next()).ToList();
             var simpleError = new SimpleError(k);
 
             var EnumValues = results.ReferenceTable.Schema.Columns[classColumn].Enum?.GetEnumValues();
 
-            var task = Parallel.ForEach(randomTestData, (data) =>
+            var task = Parallel.ForEach(testData, (data) =>
             {
-                var result = CalculateLine(randomTrainData, data, columns, k, classColumn);
+                var result = CalculateLine(trainData, data, columns, k, classColumn);
                 var expectedClass = EnumValues != null ? EnumValues.GetValue(Int32.Parse(data.Columns[classColumn]) - 1).ToString() : data.Columns[classColumn];
                 var previewedClass = EnumValues != null ? EnumValues?.GetValue((int)result - 1).ToString() : result.ToString();
                 simpleError.Predictions.Add(

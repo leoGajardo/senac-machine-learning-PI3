@@ -99,7 +99,13 @@ namespace senac_machine_learning_PI3
                         var TrainData = table.Data.Except(TestData).ToList();
                         var classColumn = table.Schema.Columns.First(c => c.Value.Type == Column.ColumnType.Class).Key;
                         var columns = table.ColumnsToKeep.Keys.Where(k => k != classColumn).ToArray();
-                        Knn.Run(TrainData, TestData, columns, Knn.GetK(ImpleementOfk, table), classColumn, ref result);
+
+                        var rnd = new Random();
+                        var randomTrainData = TrainData.OrderBy(o => rnd.Next()).ToList();
+                        rnd = new Random();
+                        var randomTestData = TestData.OrderBy(o => rnd.Next()).ToList();
+
+                        Knn.Run(randomTrainData, randomTestData, columns, Knn.GetK(ImpleementOfk, table), classColumn, ref result);
 
                     });
                     while (!task.IsCompleted)
