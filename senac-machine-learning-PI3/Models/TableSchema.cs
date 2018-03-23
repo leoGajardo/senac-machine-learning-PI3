@@ -8,6 +8,7 @@ namespace senac_machine_learning_PI3.Models
         public Dictionary<int, Column> Columns { get; private set; }
         public int TotalOfRecords { get; set; }
         public string Type { get; set; }
+        public int TotalOfClassValues { get; set; }
 
         public TableSchema(List<Column> columns)
         {

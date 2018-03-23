@@ -73,11 +73,7 @@ namespace senac_machine_learning_PI3
             var neighbours = distances.OrderBy(o => o.Value.distance).Take(k);
             foreach (var neighbour in neighbours)
                 maxValArray[neighbour.Value.classVal] += 1;
-            //var neighbours = ordenedDistances.Take(k).Select(n => n.Key);
-            
-            //var neighboursLines = trainData.Where(t => neighbours.Contains(t.Id));
-            //var neighboursGrouped = neighboursLines.GroupBy(g => g.Columns[classColumn]).OrderByDescending(o => o.Count());
-            //var maxVal = neighboursGrouped.First().Count();
+
             var maxVal = maxValArray.Max();
             var matches = maxValArray.Count(c => c == maxVal);
             double calculatedClass = 0;
@@ -88,7 +84,6 @@ namespace senac_machine_learning_PI3
             else if (matches > 1)
             {
                 calculatedClass = neighbours.GroupBy(g => g.Value.classVal).Where(d => d.Count() == maxVal).OrderBy(m => m.Sum(s => s.Value.distance)).First().Key;
-                //calculatedClass = neighboursGrouped.Where(n => n.Count() == maxVal).OrderBy(m => m.Sum(s => distances[s.Id])).First().First().getColumnsAsDouble()[classColumn];
             }
 
             return calculatedClass;
