@@ -121,6 +121,7 @@ namespace senac_machine_learning_PI3
         }
     }
 
+    //clase interna criada para melhorar a performance do projeto, nela são guardadas algumas informaçõs como a distancia e o valor da classe.
     internal class LighweightData{
 
         public LighweightData(double distance, int classVal)
