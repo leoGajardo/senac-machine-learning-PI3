@@ -106,14 +106,14 @@ namespace senac_machine_learning_PI3
             {
                 var TenFold = table.Data.Count / 10; // calcula o valor de um dos TenFolds
                 var result = new FinalResultData(table); // cria uma variavel do modelo de resultado
-                var task2 = Parallel.For(1, 5, (ImpleementOfk) =>  // executa de forma paralela cada implementação do Algoritimo
+                var task2 = Parallel.For(1, 5, (ImpleementOfk) =>  // executa de forma paralela cada implementação do Algoritimo utilizando de threads
                 {
-                    //executa todas as 10 folds do algoritimo do cross-validation
+                    //executa todas as 10 folds do algoritimo do cross-validation e tem uma folga (a décima primeira iteração) caso ao dividir em 10 folds diferentes ainda tenha sobrado algumas instâncias
                     var task = Parallel.For(0, 11, (i) => 
                     {
                         //cria os valores do cross-validation
-                        var TestData = table.Data.Skip(i * TenFold).Take(TenFold).ToList(); // cria o grupo de teste
-                        var TrainData = table.Data.Except(TestData).ToList(); //cria o grupo de treino
+                        var TestData = table.Data.Skip(i * TenFold).Take(TenFold).ToList(); // seleciona o grupo de teste
+                        var TrainData = table.Data.Except(TestData).ToList(); //seleciona o grupo de treino
                         var classColumn = table.Schema.Columns.First(c => c.Value.Type == Column.ColumnType.Class).Key; // recebe qual é a classe de coluna daquela tabela
                         var columns = table.ColumnsToKeep.Keys.Where(k => k != classColumn).ToArray(); //recebe todas as colunas daquela tabela que não sejam as colunas de classe
 
@@ -126,6 +126,7 @@ namespace senac_machine_learning_PI3
                         Knn.Run(randomTrainData, randomTestData, columns, Knn.GetK(ImpleementOfk, table), classColumn, ref result);
 
                     });
+                    //Serve de trava para que todas as threads dessa task terminem antes de seguir para a proxima task
                     while (!task.IsCompleted)
                     { }
                 });
