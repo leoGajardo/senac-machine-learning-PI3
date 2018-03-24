@@ -106,32 +106,43 @@ namespace senac_machine_learning_PI3
             {
                 var TenFold = table.Data.Count / 10; // calcula o valor de um dos TenFolds
                 var result = new FinalResultData(table); // cria uma variavel do modelo de resultado
-                var task2 = Parallel.For(1, 5, (ImpleementOfk) =>  // executa de forma paralela cada implementação do Algoritimo utilizando de threads
+                //var task2 = Parallel.For(1, 5, (ImpleementOf) =>  // executa de forma paralela cada implementação do Algoritimo utilizando de threads
+                for (int ImpleementOf = 1; ImpleementOf < 5; ImpleementOf++)
                 {
                     //executa todas as 10 folds do algoritimo do cross-validation e tem uma folga (a décima primeira iteração) caso ao dividir em 10 folds diferentes ainda tenha sobrado algumas instâncias
-                    var task = Parallel.For(0, 11, (i) => 
+                    //var task = Parallel.For(0, 11, (i) => 
+                    for (int i = 0; i < 12; i++)
                     {
                         //cria os valores do cross-validation
                         var TestData = table.Data.Skip(i * TenFold).Take(TenFold).ToList(); // seleciona o grupo de teste
                         var TrainData = table.Data.Except(TestData).ToList(); //seleciona o grupo de treino
+
                         var classColumn = table.Schema.Columns.First(c => c.Value.Type == Column.ColumnType.Class).Key; // recebe qual é a classe de coluna daquela tabela
+
                         var columns = table.ColumnsToKeep.Keys.Where(k => k != classColumn).ToArray(); //recebe todas as colunas daquela tabela que não sejam as colunas de classe
+
+
 
                         var rnd = new Random();//cria uma variavel do tipo random para randomizar os dados do cross-validation
                         var randomTrainData = TrainData.OrderBy(o => rnd.Next()).ToList();//randomiza os dados de treino
                         rnd = new Random();
                         var randomTestData = TestData.OrderBy(o => rnd.Next()).ToList(); // randomiza os dados de teste
 
-                        //roda o algoritimo de KNN
-                        Knn.Run(randomTrainData, randomTestData, columns, Knn.GetK(ImpleementOfk, table), classColumn, ref result);
 
-                    });
-                    //Serve de trava para que todas as threads dessa task terminem antes de seguir para a proxima task
-                    while (!task.IsCompleted)
-                    { }
-                });
-                while (!task2.IsCompleted)
-                { }
+                        ////roda o algoritimo de KNN
+                        //Knn.Run(randomTrainData, randomTestData, columns, Knn.GetK(ImpleementOf, table), classColumn, ref result);
+
+                        //roda o algoritimo de LVQ
+                        LVQ.Run(TrainData, TestData, columns, ImpleementOf,  classColumn, ref result);
+                    }
+                    //});
+                }
+                //Serve de trava para que todas as threads dessa task terminem antes de seguir para a proxima task
+                //    while (!task.IsCompleted)
+                //    { }
+                //});
+                //while (!task2.IsCompleted)
+                //{ }
                 results.Add(result); // adiona aquela variavel de resultado criada anteriormente a lista de resultados, onde contém o resultado de todas as tabelas
             }
 
@@ -176,27 +187,27 @@ namespace senac_machine_learning_PI3
             //Console.WriteLine("Abalone OK");
 
 
-            var AdultColumns = new List<Column> {
-                new Column(){ Name = "Age", Type = Column.ColumnType.Integer } ,
-                new Column(){ Name = "Workclass", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Workclass) } ,
-                new Column(){ Name = "Final_Weight", Type = Column.ColumnType.Continuous } ,
-                new Column(){ Name = "Education", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Education) } ,
-                new Column(){ Name = "Education-Num", Type = Column.ColumnType.Integer } ,
-                new Column(){ Name = "Marital_Status", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Marital_Status) } ,
-                new Column(){ Name = "Occupation", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Occupation) } ,
-                new Column(){ Name = "Relationship", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Relationship) } ,
-                new Column(){ Name = "Race", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Race) } ,
-                new Column(){ Name = "Sex", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Sex) } ,
-                new Column(){ Name = "Hours_per_Week", Type = Column.ColumnType.Continuous } ,
-                new Column(){ Name = "Native_Country", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Native_Country) },
-                new Column(){ Name = "Class", Type = Column.ColumnType.Class, Enum = typeof(Enums.Adult.Class) } ,
-                 };
-            var AdultSchema = new TableSchema(AdultColumns);
-            AdultSchema.TotalOfRecords = 48842;
-            AdultSchema.Type = "Binary";
-            tables.Add(new Models.DataTable("Data/adult.csv", AdultSchema));
+            //var AdultColumns = new List<Column> {
+            //    new Column(){ Name = "Age", Type = Column.ColumnType.Integer } ,
+            //    new Column(){ Name = "Workclass", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Workclass) } ,
+            //    new Column(){ Name = "Final_Weight", Type = Column.ColumnType.Continuous } ,
+            //    new Column(){ Name = "Education", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Education) } ,
+            //    new Column(){ Name = "Education-Num", Type = Column.ColumnType.Integer } ,
+            //    new Column(){ Name = "Marital_Status", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Marital_Status) } ,
+            //    new Column(){ Name = "Occupation", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Occupation) } ,
+            //    new Column(){ Name = "Relationship", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Relationship) } ,
+            //    new Column(){ Name = "Race", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Race) } ,
+            //    new Column(){ Name = "Sex", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Sex) } ,
+            //    new Column(){ Name = "Hours_per_Week", Type = Column.ColumnType.Continuous } ,
+            //    new Column(){ Name = "Native_Country", Type = Column.ColumnType.Nominal, Enum = typeof(Enums.Adult.Native_Country) },
+            //    new Column(){ Name = "Class", Type = Column.ColumnType.Class, Enum = typeof(Enums.Adult.Class) } ,
+            //     };
+            //var AdultSchema = new TableSchema(AdultColumns);
+            //AdultSchema.TotalOfRecords = 48842;
+            //AdultSchema.Type = "Binary";
+            //tables.Add(new Models.DataTable("Data/adult.csv", AdultSchema));
 
-            Console.WriteLine("Adult OK");
+            //Console.WriteLine("Adult OK");
 
 
 
@@ -244,18 +255,18 @@ namespace senac_machine_learning_PI3
             //Console.WriteLine("Breast Cancer OK");
 
 
-            //var IrisColumns = new List<Column>
-            //{
-            //    new Column(){ Name ="Sepal-Lengh", Type=Column.ColumnType.Continuous } ,
-            //    new Column(){ Name ="Sepal-Width", Type=Column.ColumnType.Continuous } ,
-            //    new Column(){ Name ="Petal-Lengh", Type=Column.ColumnType.Continuous } ,
-            //    new Column(){ Name ="Petal-Width", Type=Column.ColumnType.Continuous } ,
-            //    new Column(){ Name ="Class", Type=Column.ColumnType.Class, Enum = typeof(Enums.Iris.IrisType) } ,
-            //};
-            //var IrisSchema = new TableSchema(IrisColumns);
-            //IrisSchema.TotalOfRecords = 150;
-            //IrisSchema.Type = "Multi";
-            //tables.Add(new Models.DataTable("Data/Iris.csv", IrisSchema));
+            var IrisColumns = new List<Column>
+            {
+                new Column(){ Name ="Sepal-Lengh", Type=Column.ColumnType.Continuous } ,
+                new Column(){ Name ="Sepal-Width", Type=Column.ColumnType.Continuous } ,
+                new Column(){ Name ="Petal-Lengh", Type=Column.ColumnType.Continuous } ,
+                new Column(){ Name ="Petal-Width", Type=Column.ColumnType.Continuous } ,
+                new Column(){ Name ="Class", Type=Column.ColumnType.Class, Enum = typeof(Enums.Iris.IrisType) } ,
+            };
+            var IrisSchema = new TableSchema(IrisColumns);
+            IrisSchema.TotalOfRecords = 150;
+            IrisSchema.Type = "Multi";
+            tables.Add(new Models.DataTable("Data/Iris.csv", IrisSchema));
 
             //Console.WriteLine("Iris OK");
 
