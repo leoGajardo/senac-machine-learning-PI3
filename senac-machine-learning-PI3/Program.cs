@@ -16,12 +16,14 @@ namespace senac_machine_learning_PI3
 
         static void Main(string[] args)
         {
+            //Função que criará a ordem e esquema do projeto, como são as tabelas, nome das colunas e etc.
             BuildSchemaTables();
 
             Console.WriteLine("**********************************************************************************************");
             Console.WriteLine("");
             Console.WriteLine("Normalizando Tabelas");
 
+            //agora para cada uma das tabelas criadas na função anterior será feita a normalização dos dados
             foreach (var table in tables)
             {
                 Console.WriteLine("");
@@ -29,6 +31,7 @@ namespace senac_machine_learning_PI3
                 Console.WriteLine("");
                 Console.WriteLine("Convertendo Atributos da Tabela: {0}",table.fileName);
 
+                //Primeiramente são convertidos os dados de String para os seus respequitivos enums
                 table.ConvertEnums();
 
                 Console.WriteLine("Atributos da Tabela: {0}, Convertidos com Sucesso!", table.fileName);
@@ -37,8 +40,9 @@ namespace senac_machine_learning_PI3
                 Console.WriteLine("");
                 Console.WriteLine("Removendo Linhas Inconsistentes da Tabela: {0}", table.fileName);
 
+                //Depois é criada uma lista de inteiros para guardar os IDs das instâncias que contém algum nulo nos seus dados
                 var idsToBeRemovedFirst = new List<int>();
-                table.RemoveInconsistentLines(ref idsToBeRemovedFirst);
+                table.RemoveInconsistentLines(ref idsToBeRemovedFirst); //função que verifica as instâncias que contém dados nulos
 
                 Console.WriteLine("");
                 Console.WriteLine("Linhas Inconsistentes da Tabela: {0}, Removidas com Sucesso!", table.fileName);
@@ -48,17 +52,25 @@ namespace senac_machine_learning_PI3
                 Console.WriteLine("");
                 Console.WriteLine("Removendo Outliers da Tabela: {0}", table.fileName);
 
+                //Com todos os IDs das instâncias com nulos é então chamada a função que irá remove-los de acordo com seus respetivos IDs
                 table.RemoveLines(idsToBeRemovedFirst.ToArray());
 
+
+                //Imprime todos os dados estatisticos da tabela
                 table.PrintStatisticData();
 
+                //Cria uma lista de inteiros que irá guardar os IDs dos outliers que precisam ser removidos dos dados
                 var idsToBeRemoved = new List<int>();
+                //Para cada uma das colunas da tabela irá chamar a função que verifica os outliers que precisam ser removidos, ignora as colunas de classe e do tipo nominal, ou seja, as colunas do tipo string que já foram trocadas para valores inteiros dos enums
                 foreach (var column in table.Schema.Columns.Where(c => c.Value.Type != Column.ColumnType.Nominal && c.Value.Type != Column.ColumnType.Class))
                     table.RemoveOutliers(column.Key, ref idsToBeRemoved);
 
+                //imprime todos os outliers 
                 Outliers.PrintOutliers(table, idsToBeRemoved);
                 
+                //remove toda as linhas que tiveram seus IDs identificados como outliers pela função anterior
                 table.RemoveLines(idsToBeRemoved.ToArray());
+
                 Console.WriteLine("");
                 Console.WriteLine("Outliers da Tabela: {0}, Removidas com Sucesso!", table.fileName);
                 Console.WriteLine("");
@@ -67,6 +79,7 @@ namespace senac_machine_learning_PI3
                 Console.WriteLine("");
                 Console.WriteLine("Normalizando Dados da Tabela: {0}", table.fileName);
 
+                //Chama a função que normaliza os dados da tabela
                 table.NomalizeData();
 
                 Console.WriteLine("");
@@ -74,6 +87,7 @@ namespace senac_machine_learning_PI3
                 Console.WriteLine("");
                 Console.WriteLine("============================================================================");
 
+                //imprime os dados normalizados em um arquivo de output
                 table.PrintOutputTable();
 
             }
@@ -85,26 +99,30 @@ namespace senac_machine_learning_PI3
             Console.WriteLine("**********************************************************************************************");
             Console.WriteLine("");
             Console.WriteLine("Aplicando Algoritimos de KNN e Cross-Validation");
+
+            //cria uma lista do modelo de Resultados
             var results = new List<FinalResultData>();
             foreach (var table in tables)
             {
-                var TenFold = table.Data.Count / 10;
-                var result = new FinalResultData(table);
-                var task2 = Parallel.For(1, 5, (ImpleementOfk) => 
+                var TenFold = table.Data.Count / 10; // calcula o valor de um dos TenFolds
+                var result = new FinalResultData(table); // cria uma variavel do modelo de resultado
+                var task2 = Parallel.For(1, 5, (ImpleementOfk) =>  // executa de forma paralela cada implementação do Algoritimo
                 {
-
+                    //executa todas as 10 folds do algoritimo do cross-validation
                     var task = Parallel.For(0, 11, (i) => 
                     {
-                        var TestData = table.Data.Skip(i * TenFold).Take(TenFold).ToList();
-                        var TrainData = table.Data.Except(TestData).ToList();
-                        var classColumn = table.Schema.Columns.First(c => c.Value.Type == Column.ColumnType.Class).Key;
-                        var columns = table.ColumnsToKeep.Keys.Where(k => k != classColumn).ToArray();
+                        //cria os valores do cross-validation
+                        var TestData = table.Data.Skip(i * TenFold).Take(TenFold).ToList(); // cria o grupo de teste
+                        var TrainData = table.Data.Except(TestData).ToList(); //cria o grupo de treino
+                        var classColumn = table.Schema.Columns.First(c => c.Value.Type == Column.ColumnType.Class).Key; // recebe qual é a classe de coluna daquela tabela
+                        var columns = table.ColumnsToKeep.Keys.Where(k => k != classColumn).ToArray(); //recebe todas as colunas daquela tabela que não sejam as colunas de classe
 
-                        var rnd = new Random();
-                        var randomTrainData = TrainData.OrderBy(o => rnd.Next()).ToList();
+                        var rnd = new Random();//cria uma variavel do tipo random para randomizar os dados do cross-validation
+                        var randomTrainData = TrainData.OrderBy(o => rnd.Next()).ToList();//randomiza os dados de treino
                         rnd = new Random();
-                        var randomTestData = TestData.OrderBy(o => rnd.Next()).ToList();
+                        var randomTestData = TestData.OrderBy(o => rnd.Next()).ToList(); // randomiza os dados de teste
 
+                        //roda o algoritimo de KNN
                         Knn.Run(randomTrainData, randomTestData, columns, Knn.GetK(ImpleementOfk, table), classColumn, ref result);
 
                     });
@@ -113,9 +131,10 @@ namespace senac_machine_learning_PI3
                 });
                 while (!task2.IsCompleted)
                 { }
-                results.Add(result);
+                results.Add(result); // adiona aquela variavel de resultado criada anteriormente a lista de resultados, onde contém o resultado de todas as tabelas
             }
 
+            //imprime os resultados de todas as tabelas
             foreach (var result in results)
                 result.PrintResult();
 
@@ -129,10 +148,15 @@ namespace senac_machine_learning_PI3
             Console.WriteLine("");
             Console.WriteLine("**********************************************************************************************");
             Console.WriteLine("Construindo Schema das Tabelas");
+
+            //Cria uma lista do modelo DataTable
             tables = new List<Models.DataTable>();
 
+            //Criamos uma lista do nosso modelo de Colunas para armazenar as colunas na ordem do arquivo de leitura
+
             //var AbaloneColumns = new List<Column> {
-            //    new Column(){ Name = "Sex", Type = Column.ColumnType.Class, Enum = typeof(Enums.Abalone.Sex) } ,
+            //    new Column(){ Name = "Sex", Type = Column.ColumnType.Class, Enum = typeof(Enums.Abalone.Sex) } , //para as colunas de classes ou nominais é passado um enum que contém um valor númerico para as strings contidas nessa coluna
+
             //    new Column(){ Name = "Length", Type = Column.ColumnType.Continuous } ,
             //    new Column(){ Name = "Diameter", Type = Column.ColumnType.Continuous } ,
             //    new Column(){ Name = "Height", Type = Column.ColumnType.Continuous } ,
@@ -142,9 +166,10 @@ namespace senac_machine_learning_PI3
             //    new Column(){ Name = "Shell weight", Type = Column.ColumnType.Continuous } ,
             //    new Column(){ Name = "Rings", Type = Column.ColumnType.Integer }
             //};
-            //var AbaloneSchema = new TableSchema(AbaloneColumns);
-            //AbaloneSchema.TotalOfRecords = 4177;
-            //AbaloneSchema.Type = "Multi";
+            //var AbaloneSchema = new TableSchema(AbaloneColumns); // É criado o esquema das tabelas dada a lista de colunas
+            //AbaloneSchema.TotalOfRecords = 4177; // o total de instâncias do arquivo original
+            //AbaloneSchema.Type = "Multi"; // o Tipo da Classe dos dados, ou seja Multi-Type ou Binary-Type
+            //Por fim é criado uma tabela com o respectivo caminho para os dados, o esquema da tabela e então adicionado a lista de tabelas
             //tables.Add(new Models.DataTable("Data/abalone.csv", AbaloneSchema));
 
             //Console.WriteLine("Abalone OK");

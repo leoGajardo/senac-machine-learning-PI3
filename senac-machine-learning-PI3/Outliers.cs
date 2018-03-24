@@ -15,12 +15,13 @@ namespace senac_machine_learning_PI3
         {
             var coluna = table.Data.Select(d => Double.Parse(d.Columns[column])).OrderBy(x => x).ToArray<double>();
 
-            var Q1 = GetQuartil(coluna, 1);
-            var Q3 = GetQuartil(coluna, 3);
-            var IQR = GetIQR(Q3, Q1);
-            var LimiteInferior = GetLimiteInferior(coluna, IQR);
-            var LimiteSuperior = GetLimiteSuperior(coluna, IQR);
+            var Q1 = GetQuartil(coluna, 1); //calcula o primeiro quartil
+            var Q3 = GetQuartil(coluna, 3); // calcula o terceiro quartil
+            var IQR = GetIQR(Q3, Q1); // calcula o IQR
+            var LimiteInferior = GetLimiteInferior(coluna, IQR); // calcula o limite inferior da coluna apartir do IQR
+            var LimiteSuperior = GetLimiteSuperior(coluna, IQR);//  calcula o superior inferior da coluna apartir do IQR
 
+            //faz a verificação para todas as linhas dos dados da tabela se eles possuem valores menores do que o limite inferior ou maior do que o limite superior e caso possua é adicionado o id daquela linha a lista dos valores que serão removidos
             foreach (var line in table.Data)
                 if (Double.Parse(line.Columns[column]) > LimiteSuperior
                     || Double.Parse(line.Columns[column]) < LimiteInferior)
@@ -30,10 +31,14 @@ namespace senac_machine_learning_PI3
 
         public static void PrintOutliers(DataTable table, List<int> shouldBeRemoved)
         {
+            //checa se o diretório de outliers já existe e caso não exista cria o diretório
             if (!Directory.Exists("outliers"))
                 Directory.CreateDirectory("outliers");
+
+            //checa se já existe um arquivo de outliers para aquela tabela e caso já existe dela o existnte para poder criar o novo
             if (Directory.Exists("outliers"))
                 File.Delete("outliers\\outliers_" + table.fileName);
+            //imprime todos os outliers em seu respectivo arquivo
             File.WriteAllLines("outliers\\outliers_" + table.fileName, table.Data.Where(d => shouldBeRemoved.Contains(d.Id)).Select(s => s.ToString()));
         }
 

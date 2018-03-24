@@ -14,7 +14,8 @@ namespace senac_machine_learning_PI3
         {
             foreach (var line in data.Data)
                 foreach (var value in line.Columns)
-                    if (value.Trim().ToLower() == "NULL".ToLower())
+                    // remove os nulos da tabela, nota, quando os dados forem convertidos com seus valores do enum, caso o valor de String não fosse encontrado no enum o valor null lhe era atribuido
+                    if (value.Trim().ToLower() == "NULL".ToLower()) 
                         shouldBeRemoved.Add(line.Id);
             return data;
         }

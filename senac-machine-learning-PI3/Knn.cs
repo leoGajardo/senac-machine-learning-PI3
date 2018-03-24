@@ -37,23 +37,25 @@ namespace senac_machine_learning_PI3
             results.SimpleErrors.Add(simpleError);
         }
 
+        //Pega o valor do K que deverá ser implementado
         public static int GetK(int ImplementOfK, DataTable table)
         {
             switch (ImplementOfK)
-            {
-                case 1: return 1;
+            {   
+                //No caso do projeto, todos os conjuntos de dados tem apenas 1 coluna de classe, assim o M se tornou valor 1 em todos os casos, sendo assim preferivel colocar seu valor final para agilizar o código.
+                case 1: return 1;// 1-NN
 
-                case 2: return 3;
+                case 2: return 3;// (M+2)-NN
 
-                case 3: return 11;
+                case 3: return 11; //(M*10 + 1)-NN
 
-                case 4:
-                    if (table.Data.Count % 2 == 0)
+                case 4: // (Q/2)-NN
+                    if (table.Data.Count % 2 == 0) // caso de total de instancias par
                         return (table.Data.Count / 2) + 1;
                     else
-                        return (table.Data.Count / 2);
+                        return (table.Data.Count / 2); // caso de total de instancias impar
             }
-
+            //retorna -1 caso alguma coisa tenha acontecido errado e tenha ignorado todos os casos de Ks anteriores
             return -1;
         }
 
@@ -90,6 +92,7 @@ namespace senac_machine_learning_PI3
         }
 
 
+        //Calcula a distância através da distancia eucliadiana 
         private static double GetDistance(int[] columns, double[] a, double[] b)
         {
             double distancia = 0;
