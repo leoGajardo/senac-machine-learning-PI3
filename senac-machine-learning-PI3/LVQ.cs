@@ -23,7 +23,7 @@ namespace senac_machine_learning_PI3
 
             if (neuronManager == null)
                 neuronManager = new NeuronManager();
-            var neurons = neuronManager.GetOrCreateNeurons(nR, numberClass, true);
+            var neurons = neuronManager.GetOrCreateNeurons(nR, numberClass, columns.Count(), true);
 
             var r = GetR(nR, neurons);
 

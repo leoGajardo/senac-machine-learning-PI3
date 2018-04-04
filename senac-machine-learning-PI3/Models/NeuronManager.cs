@@ -10,8 +10,12 @@ namespace senac_machine_learning_PI3.Models
     {
 
         public Dictionary<int,Neuron[]> Neurons { get; private set; }
+        public NeuronManager()
+        {
+            Neurons = new Dictionary<int, Neuron[]>();
+        }
 
-        public Neuron[] GetOrCreateNeurons(int nR, int n, bool shouldClear)
+        public Neuron[] GetOrCreateNeurons(int nR, int n, int nWeights ,bool shouldClear)
         {
             Neuron[] neurons;
             if (Neurons.ContainsKey(nR))
@@ -21,8 +25,13 @@ namespace senac_machine_learning_PI3.Models
                 int size = n * 10 % (int)Math.Sqrt(n * 10) == 0 ? (int)(n * 10) : (int)(Math.Floor(Math.Sqrt(n * 10)) * Math.Floor(Math.Sqrt(n * 10)));
                 neurons = new Neuron[size];
                 var id = 0;
-                foreach (var neuron in neurons)
-                    neuron.Id = id++;
+                for (int i = 0; i < size; i++)
+                {
+                    neurons[i] = new Neuron();
+                    neurons[i].Weights = new double[nWeights];
+                    neurons[i].Id = id++;
+                }
+                    
             }
 
             if (!shouldClear)
@@ -38,7 +47,7 @@ namespace senac_machine_learning_PI3.Models
             var rnd = new Random();
             foreach (var neuron in neurons)
                 for (int i = 0; i < neuron.Weights.Length; i++)
-                    neuron.Weights[i] = rnd.NextDouble();
+                    neuron.Weights[i] = -1 + (rnd.NextDouble() * 2);
             return neurons;
         }
     }
