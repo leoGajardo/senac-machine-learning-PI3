@@ -119,9 +119,9 @@ namespace senac_machine_learning_PI3
 
                         var classColumn = table.Schema.Columns.First(c => c.Value.Type == Column.ColumnType.Class).Key; // recebe qual é a classe de coluna daquela tabela
 
-                        var columns = table.ColumnsToKeep.Keys.Where(k => k != classColumn).ToArray(); //recebe todas as colunas daquela tabela que não sejam as colunas de classe
+                        var columnsToCompare = table.ColumnsToKeep.Keys.Where(k => k != classColumn).ToArray(); //recebe todas as colunas daquela tabela que não sejam as colunas de classe
 
-
+                        var nColumns = table.ColumnsToKeep.Keys.Count();
 
                         var rnd = new Random();//cria uma variavel do tipo random para randomizar os dados do cross-validation
                         var randomTrainData = TrainData.OrderBy(o => rnd.Next()).ToList();//randomiza os dados de treino
@@ -133,7 +133,7 @@ namespace senac_machine_learning_PI3
                         //Knn.Run(randomTrainData, randomTestData, columns, Knn.GetK(ImpleementOf, table), classColumn, ref result);
 
                         //roda o algoritimo de LVQ
-                        LVQ.Run(TrainData, TestData, columns, ImpleementOf,  classColumn, ref result);
+                        LVQ.Run(TrainData, TestData, columnsToCompare, nColumns, ImpleementOf,  classColumn, ref result);
                     }
                     //});
                 }
