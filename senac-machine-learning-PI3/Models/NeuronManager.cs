@@ -15,7 +15,7 @@ namespace senac_machine_learning_PI3.Models
             Neurons = new Dictionary<int, Neuron[]>();
         }
 
-        public Neuron[] GetOrCreateNeurons(int nR, int n, int nWeights ,bool shouldClear)
+        public Neuron[] GetOrCreateNeurons(int nR, int n, int nWeights, bool shouldClearWeights, bool shouldClearClass)
         {
             Neuron[] neurons;
             if (Neurons.ContainsKey(nR))
@@ -34,20 +34,27 @@ namespace senac_machine_learning_PI3.Models
                     
             }
 
-            if (!shouldClear)
-                return neurons;
-
-            neurons = ClearNeurons(neurons);
-
+            if (shouldClearWeights)
+                neurons = ClearNeuronsWeights(neurons);
+            if (shouldClearClass)
+                neurons = ClearNeuronClass(neurons);
+            Neurons[nR] = neurons;
             return neurons;
         }
 
-        private Neuron[] ClearNeurons(Neuron[] neurons)
+        private Neuron[] ClearNeuronsWeights(Neuron[] neurons)
         {
             var rnd = new Random();
             foreach (var neuron in neurons)
                 for (int i = 0; i < neuron.Weights.Length; i++)
                     neuron.Weights[i] = -1 + (rnd.NextDouble() * 2);
+            return neurons;
+        }
+
+        private Neuron[] ClearNeuronClass(Neuron[] neurons)
+        {
+            foreach (var neuron in neurons)
+                neuron.Class = 0;
             return neurons;
         }
     }

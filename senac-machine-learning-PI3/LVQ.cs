@@ -14,7 +14,7 @@ namespace senac_machine_learning_PI3
         //calcular neuronios
         //intanciar neuronios
         //Treinar dados
-	       // 3 formulas
+        // 3 formulas
         //Fazer previsões
 
         public static void Run(List<Line> trainData, List<Line> testData, int[] columns, int nR, int classColumn, ref FinalResultData results)
@@ -23,7 +23,7 @@ namespace senac_machine_learning_PI3
 
             if (neuronManager == null)
                 neuronManager = new NeuronManager();
-            var neurons = neuronManager.GetOrCreateNeurons(nR, numberClass, columns.Count(), true);
+            var neurons = neuronManager.GetOrCreateNeurons(nR, numberClass, columns.Count(), true, true);
 
             var r = GetR(nR, neurons);
 
@@ -37,27 +37,31 @@ namespace senac_machine_learning_PI3
 
         private static void TrainNeurons(List<Line> trainData, int[] columns, int classColumn, ref Neuron[] neurons)
         {
-            foreach (var data in trainData)
+            for (int iteration = 0; iteration < 500; iteration++)
             {
-                var distances = new Dictionary<int, LighweightData>();
-                foreach (var neuron in neurons)
+                //Deste modo esta rodando 500 iteraçoes e em cada uma ele checa todas instancias
+                foreach (var data in trainData)
                 {
-                    var distance = GetDistance(columns, data.getColumnsAsDouble(), neuron.Weights);
-                    distances.Add(neuron.Id, new LighweightData(distance, (int)data.getColumnsAsDouble()[classColumn]));
+                    var distances = new Dictionary<int, LighweightData>();
+                    foreach (var neuron in neurons)
+                    {
+                        var distance = GetDistance(columns, data.getColumnsAsDouble(), neuron.Weights);
+                        distances.Add(neuron.Id, new LighweightData(distance, (int)data.getColumnsAsDouble()[classColumn]));
+                    }
+                    var nearNeuronId = distances.OrderBy(d => d.Value.distance).First().Key;
+                    var nearNeuron = neurons.First(n => n.Id == nearNeuronId);
+                    UpdateBestMatchNeuron(nearNeuron, data, iteration);
+                    //UpdateNeighboursOfBestMatchNeurons(neurons, data)
                 }
-                var nearNeuronId = distances.OrderBy(d => d.Value.distance).First().Key;
-                var nearNeuron = neurons.First(n => n.Id == nearNeuronId);
-                UpdateNearNeuron(nearNeuron, data);
-                //UpdateNearNeurons(neurons, data)
             }
         }
 
-        private static void UpdateNearNeuron(Neuron neuron, Line Data)
+        private static void UpdateBestMatchNeuron(Neuron neuron, Line Data, int iteration)
         {
 
         }
 
-        private static void UpdateNearNeurons(Neuron[] neurons, Line Data, int line, int column)
+        private static void UpdateNeighboursOfBestMatchNeurons(Neuron[] neurons, Line Data, int line, int column)
         {
 
         }

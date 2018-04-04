@@ -144,6 +144,7 @@ namespace senac_machine_learning_PI3
                 //while (!task2.IsCompleted)
                 //{ }
                 results.Add(result); // adiona aquela variavel de resultado criada anteriormente a lista de resultados, onde contém o resultado de todas as tabelas
+                //GenerateHeatMap
             }
 
             //imprime os resultados de todas as tabelas
