@@ -158,13 +158,13 @@ namespace senac_machine_learning_PI3
         }
         private static void UpdateLearningRate(int n)
         {
-            if (learningRate == 0.1)
+            if (learningRate == 0.01)
                 return;
             var newVal = learningRate * Math.Exp(-n / 1000);
-            if (newVal >= 0.1)
+            if (newVal >= 0.01)
                 learningRate = newVal;
             else
-                learningRate = 0.1;
+                learningRate = 0.01;
         }
         private static int GetR(int ImplementOfR, Neuron[] neurons)
         {

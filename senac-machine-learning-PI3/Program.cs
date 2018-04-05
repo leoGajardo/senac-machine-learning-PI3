@@ -3,6 +3,7 @@ using senac_machine_learning_PI3.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -107,12 +108,16 @@ namespace senac_machine_learning_PI3
                 var TenFold = table.Data.Count / 10; // calcula o valor de um dos TenFolds
                 var result = new FinalResultData(table); // cria uma variavel do modelo de resultado
                 //var task2 = Parallel.For(1, 5, (ImpleementOf) =>  // executa de forma paralela cada implementação do Algoritimo utilizando de threads
+
+                var timer = new Stopwatch();
+
                 for (int ImpleementOf = 1; ImpleementOf < 5; ImpleementOf++)
                 {
                     //executa todas as 10 folds do algoritimo do cross-validation e tem uma folga (a décima primeira iteração) caso ao dividir em 10 folds diferentes ainda tenha sobrado algumas instâncias
                     //var task = Parallel.For(0, 11, (i) => 
                     for (int i = 0; i < 12; i++)
                     {
+                        timer.Start();
                         //cria os valores do cross-validation
                         var TestData = table.Data.Skip(i * TenFold).Take(TenFold).ToList(); // seleciona o grupo de teste
                         var TrainData = table.Data.Except(TestData).ToList(); //seleciona o grupo de treino
@@ -131,9 +136,11 @@ namespace senac_machine_learning_PI3
 
                         ////roda o algoritimo de KNN
                         //Knn.Run(randomTrainData, randomTestData, columns, Knn.GetK(ImpleementOf, table), classColumn, ref result);
-
+                        Console.WriteLine($"Running ");
                         //roda o algoritimo de LVQ
                         LVQ.Run(TrainData, TestData, columnsToCompare, nColumns, ImpleementOf,  classColumn, ref result);
+                        Console.WriteLine($"Executed LVQ R = {ImpleementOf} TenFold Validation Fold = {i} in {timer.Elapsed.ToString()}");
+                        timer.Reset();
                     }
                     //});
                 }

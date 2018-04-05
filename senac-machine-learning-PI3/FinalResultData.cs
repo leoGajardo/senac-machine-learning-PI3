@@ -44,8 +44,8 @@ namespace senac_machine_learning_PI3
         {
             //primeiramente separa os ks diferentes e verifica se existe algum arquivo na tabela de resultados, se existir é deletado
             var ks = SimpleErrors.Select(se => se.K).Distinct();
-            if (Directory.Exists("result/"))
-                File.Delete("result/" + ReferenceTable.fileName);
+            if (Directory.Exists("resultLVQ/"))
+                File.Delete("resultLVQ/" + ReferenceTable.fileName);
 
             //para cada um dos Ks irá ser feito a impressão dos dados
             foreach (var k in ks)
@@ -65,23 +65,23 @@ namespace senac_machine_learning_PI3
         //Imprime qual foi o melhor K calculado pelo código.
         private void PrintBestK()
         {
-            File.AppendAllText("result/" + ReferenceTable.fileName, $"The best K for this situation is {GetBestK()} with error Rate of {GetCrossError(GetBestK())} ");
+            File.AppendAllText("resultLVQ/" + ReferenceTable.fileName, $"The best K for this situation is {GetBestK()} with error Rate of {GetCrossError(GetBestK())} ");
         }
 
         //imprime um cabeçalho para diferenciar os ks 
         private void PrintHeader(int k)
         {
             if (k == 1)
-                File.AppendAllText("result/" + ReferenceTable.fileName, $"Running K = 1-NN for file {ReferenceTable.fileName} \n\r");
+                File.AppendAllText("resultLVQ/" + ReferenceTable.fileName, $"Running K = 1-NN for file {ReferenceTable.fileName} \n\r");
 
             else if (k == 3)
-                File.AppendAllText("result/" + ReferenceTable.fileName, $"Running K = (M+2)-NN for file {ReferenceTable.fileName} \n\r");
+                File.AppendAllText("resultLVQ/" + ReferenceTable.fileName, $"Running K = (M+2)-NN for file {ReferenceTable.fileName} \n\r");
 
             else if (k == 11)
-                File.AppendAllText("result/" + ReferenceTable.fileName, $"Running K = (M*10+1)-NN for file {ReferenceTable.fileName} \n\r");
+                File.AppendAllText("resultLVQ/" + ReferenceTable.fileName, $"Running K = (M*10+1)-NN for file {ReferenceTable.fileName} \n\r");
 
             else
-                File.AppendAllText("result/" + ReferenceTable.fileName, $"Running K = (Q/2+1)-NN or (Q/2)-NN for file {ReferenceTable.fileName} \n\r");
+                File.AppendAllText("resultLVQ/" + ReferenceTable.fileName, $"Running K = (Q/2+1)-NN or (Q/2)-NN for file {ReferenceTable.fileName} \n\r");
 
         }
 
@@ -99,7 +99,7 @@ namespace senac_machine_learning_PI3
 
             //Imprime no arquivo todas as estatisticas
             var print = System.String.Format("Sensibility: {0}  ; Specifity: {1} ; Precision: {2} ; Recall: {3} ; Accuracy: {4}\n\r", Sensibility, Specifity, Precision, Recall, Accuracy);
-            File.AppendAllText("result/" + ReferenceTable.fileName, print);
+            File.AppendAllText("resultLVQ/" + ReferenceTable.fileName, print);
         }
 
         //Calcula as estatisticas de acertos e erros daquele K 
@@ -143,10 +143,10 @@ namespace senac_machine_learning_PI3
             }
 
             //Imprime um cabeçalho contendo os dados dos resultados daquele K e imprime tudo que foi construido logo acima
-            File.AppendAllText("result/" + ReferenceTable.fileName, header.ToString() + $"\n\r");
-            File.AppendAllLines("result/" + ReferenceTable.fileName, lines);
+            File.AppendAllText("resultLVQ/" + ReferenceTable.fileName, header.ToString() + $"\n\r");
+            File.AppendAllLines("resultLVQ/" + ReferenceTable.fileName, lines);
             var accuracy = ((double)SimpleErrors.Where(se => se.K == k).Sum(s => s.NumOfRecords) - (double)SimpleErrors.Where(se => se.K == k).Sum(s => s.NumOfErrors)) / (double)SimpleErrors.Where(se => se.K == k).Sum(s => s.NumOfRecords);
-            File.AppendAllText("result/" + ReferenceTable.fileName, $"Accuracy of {accuracy} \n\r");
+            File.AppendAllText("resultLVQ/" + ReferenceTable.fileName, $"Accuracy of {accuracy} \n\r");
         }
 
     }
