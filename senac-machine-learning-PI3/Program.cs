@@ -122,6 +122,9 @@ namespace senac_machine_learning_PI3
                         var TestData = table.Data.Skip(i * TenFold).Take(TenFold).ToList(); // seleciona o grupo de teste
                         var TrainData = table.Data.Except(TestData).ToList(); //seleciona o grupo de treino
 
+                        if (TestData.Count == 0)
+                            continue;
+
                         var classColumn = table.Schema.Columns.First(c => c.Value.Type == Column.ColumnType.Class).Key; // recebe qual é a classe de coluna daquela tabela
 
                         var columnsToCompare = table.ColumnsToKeep.Keys.Where(k => k != classColumn).ToArray(); //recebe todas as colunas daquela tabela que não sejam as colunas de classe

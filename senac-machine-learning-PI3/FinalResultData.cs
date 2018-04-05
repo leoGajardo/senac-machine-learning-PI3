@@ -47,6 +47,11 @@ namespace senac_machine_learning_PI3
             if (Directory.Exists("resultLVQ/"))
                 File.Delete("resultLVQ/" + ReferenceTable.fileName);
 
+            if (!Directory.Exists("resultLVQ/"))
+                Directory.CreateDirectory("resultLVQ");
+
+            File.Create("resultLVQ/" + ReferenceTable.fileName).Close();
+
             //para cada um dos Ks irá ser feito a impressão dos dados
             foreach (var k in ks)
             {
