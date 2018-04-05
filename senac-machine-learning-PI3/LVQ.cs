@@ -38,7 +38,7 @@ namespace senac_machine_learning_PI3
             //cria uma instância do modelo de SimpleError que irá guardar as predições número de erros, total de predições e o valor de erro para poder fazer os calculos posteriores de erro
             var simpleError = new SimpleError(r);
 
-            TrainNeurons(trainData, columnsToCompare, classColumn, ref neurons);
+            TrainNeurons(trainData, columnsToCompare, classColumn, ref neurons, r);
 
             foreach (var data in testData)
             {
@@ -60,9 +60,11 @@ namespace senac_machine_learning_PI3
                         PreviewedClassNumber = (int)result
                     });
             }
+
+            results.SimpleErrors.Add(simpleError);
         }
 
-        private static void TrainNeurons(List<Line> trainData, int[] columns, int classColumn, ref Neuron[] neurons)
+        private static void TrainNeurons(List<Line> trainData, int[] columns, int classColumn, ref Neuron[] neurons, int r)
         {
             for (int iteration = 0; iteration < 500; iteration++)
             {
@@ -78,7 +80,7 @@ namespace senac_machine_learning_PI3
                     var nearNeuronId = distances.OrderBy(d => d.Value.distance).First().Key;
                     var nearNeuron = neurons.First(n => n.Id == nearNeuronId);
                     UpdateBestMatchNeuron(nearNeuron, data, iteration, classColumn, columns);
-                    //UpdateNeighboursOfBestMatchNeurons(neurons, data)
+                    UpdateNeighboursOfBestMatchNeurons(neurons, nearNeuron, data, r, columns, iteration, classColumn);
                 }
                 UpdateLearningRate(iteration);
                 UpdateStdDeviation(iteration);
@@ -102,9 +104,38 @@ namespace senac_machine_learning_PI3
             }
         }
 
-        private static void UpdateNeighboursOfBestMatchNeurons(Neuron[] neurons, Line Data, int line, int column)
+        private static void UpdateNeighboursOfBestMatchNeurons(Neuron[] neurons, Neuron bestMatch, Line Data, int r, int[] columns, int iteration, int classColumn)
         {
-            // fazer lista de neurons proximos e depois fazer update neles
+            var size = (int)Math.Sqrt(neurons.Count());
+            var index = neurons.ToList().IndexOf(bestMatch);
+
+            int bestMatchLine = (int)Math.Floor((double)(index / size));
+            int bestMatchColumn = index % size;
+
+            var neighbours = new List<Neuron>();
+            for (int col = 0; col < size; col++)
+            {
+                for (int line = 0; line < size; line++)
+                {
+                    var distance = Math.Sqrt(Math.Pow((bestMatchLine - line), 2) + Math.Pow((bestMatchColumn - col), 2));
+                    if (distance <= r)
+                        neighbours.Add(neurons.GetNeuron(line, col));
+                }
+            }
+
+            foreach (var neighbour in neighbours)
+            {
+                if (bestMatch.Class == Int32.Parse(Data.Columns[classColumn]))
+                {
+                    for (int i = 0; i < neighbour.Weights.Count(); i++)
+                        neighbour.Weights[i] = neighbour.Weights[i] + learningRate * GetH(columns, Data.getColumnsAsDouble(), neighbour.Weights, iteration) * (neighbour.Weights[i] - Data.getColumnsAsDouble()[i]);
+                }
+                else
+                {
+                    for (int i = 0; i < neighbour.Weights.Count(); i++)
+                        neighbour.Weights[i] = neighbour.Weights[i] - learningRate * GetH(columns, Data.getColumnsAsDouble(), neighbour.Weights, iteration) * (neighbour.Weights[i] - Data.getColumnsAsDouble()[i]);
+                }
+            }
         }
 
         private static double GetH(int[] columns, double[] x, double[] neuron, int n)
