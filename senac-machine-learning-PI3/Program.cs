@@ -122,7 +122,7 @@ namespace senac_machine_learning_PI3
 
                     var nColumns = table.ColumnsToKeep.Keys.Count();
 
-                    for (int i = 0; i < 12; i++)
+                    for (int i = 0; i < 11; i++)
                     {
                         timer.Start();
                         //cria os valores do cross-validation
@@ -179,25 +179,25 @@ namespace senac_machine_learning_PI3
 
             //Criamos uma lista do nosso modelo de Colunas para armazenar as colunas na ordem do arquivo de leitura
 
-            //var AbaloneColumns = new List<Column> {
-            //    new Column(){ Name = "Sex", Type = Column.ColumnType.Class, Enum = typeof(Enums.Abalone.Sex) } , //para as colunas de classes ou nominais é passado um enum que contém um valor númerico para as strings contidas nessa coluna
+            var AbaloneColumns = new List<Column> {
+                new Column(){ Name = "Sex", Type = Column.ColumnType.Class, Enum = typeof(Enums.Abalone.Sex) } , //para as colunas de classes ou nominais é passado um enum que contém um valor númerico para as strings contidas nessa coluna
 
-            //    new Column(){ Name = "Length", Type = Column.ColumnType.Continuous } ,
-            //    new Column(){ Name = "Diameter", Type = Column.ColumnType.Continuous } ,
-            //    new Column(){ Name = "Height", Type = Column.ColumnType.Continuous } ,
-            //    new Column(){ Name = "Whole weight", Type = Column.ColumnType.Continuous } ,
-            //    new Column(){ Name = "Shucked weight", Type = Column.ColumnType.Continuous } ,
-            //    new Column(){ Name = "Viscera weight", Type = Column.ColumnType.Continuous } ,
-            //    new Column(){ Name = "Shell weight", Type = Column.ColumnType.Continuous } ,
-            //    new Column(){ Name = "Rings", Type = Column.ColumnType.Integer }
-            //};
-            //var AbaloneSchema = new TableSchema(AbaloneColumns); // É criado o esquema das tabelas dada a lista de colunas
-            //AbaloneSchema.TotalOfRecords = 4177; // o total de instâncias do arquivo original
-            //AbaloneSchema.Type = "Multi"; // o Tipo da Classe dos dados, ou seja Multi-Type ou Binary-Type
-            //Por fim é criado uma tabela com o respectivo caminho para os dados, o esquema da tabela e então adicionado a lista de tabelas
-            //tables.Add(new Models.DataTable("Data/abalone.csv", AbaloneSchema));
+                new Column(){ Name = "Length", Type = Column.ColumnType.Continuous } ,
+                new Column(){ Name = "Diameter", Type = Column.ColumnType.Continuous } ,
+                new Column(){ Name = "Height", Type = Column.ColumnType.Continuous } ,
+                new Column(){ Name = "Whole weight", Type = Column.ColumnType.Continuous } ,
+                new Column(){ Name = "Shucked weight", Type = Column.ColumnType.Continuous } ,
+                new Column(){ Name = "Viscera weight", Type = Column.ColumnType.Continuous } ,
+                new Column(){ Name = "Shell weight", Type = Column.ColumnType.Continuous } ,
+                new Column(){ Name = "Rings", Type = Column.ColumnType.Integer }
+            };
+            var AbaloneSchema = new TableSchema(AbaloneColumns); // É criado o esquema das tabelas dada a lista de colunas
+            AbaloneSchema.TotalOfRecords = 4177; // o total de instâncias do arquivo original
+            AbaloneSchema.Type = "Multi"; // o Tipo da Classe dos dados, ou seja Multi-Type ou Binary-Type
+           // Por fim é criado uma tabela com o respectivo caminho para os dados, o esquema da tabela e então adicionado a lista de tabelas
+            tables.Add(new Models.DataTable("Data/abalone.csv", AbaloneSchema));
 
-            //Console.WriteLine("Abalone OK");
+            Console.WriteLine("Abalone OK");
 
 
             //var AdultColumns = new List<Column> {
@@ -268,20 +268,20 @@ namespace senac_machine_learning_PI3
             //Console.WriteLine("Breast Cancer OK");
 
 
-            var IrisColumns = new List<Column>
-            {
-                new Column(){ Name ="Sepal-Lengh", Type=Column.ColumnType.Continuous } ,
-                new Column(){ Name ="Sepal-Width", Type=Column.ColumnType.Continuous } ,
-                new Column(){ Name ="Petal-Lengh", Type=Column.ColumnType.Continuous } ,
-                new Column(){ Name ="Petal-Width", Type=Column.ColumnType.Continuous } ,
-                new Column(){ Name ="Class", Type=Column.ColumnType.Class, Enum = typeof(Enums.Iris.IrisType) } ,
-            };
-            var IrisSchema = new TableSchema(IrisColumns);
-            IrisSchema.TotalOfRecords = 150;
-            IrisSchema.Type = "Multi";
-            tables.Add(new Models.DataTable("Data/Iris.csv", IrisSchema));
+            //var IrisColumns = new List<Column>
+            //{
+            //    new Column(){ Name ="Sepal-Lengh", Type=Column.ColumnType.Continuous } ,
+            //    new Column(){ Name ="Sepal-Width", Type=Column.ColumnType.Continuous } ,
+            //    new Column(){ Name ="Petal-Lengh", Type=Column.ColumnType.Continuous } ,
+            //    new Column(){ Name ="Petal-Width", Type=Column.ColumnType.Continuous } ,
+            //    new Column(){ Name ="Class", Type=Column.ColumnType.Class, Enum = typeof(Enums.Iris.IrisType) } ,
+            //};
+            //var IrisSchema = new TableSchema(IrisColumns);
+            //IrisSchema.TotalOfRecords = 150;
+            //IrisSchema.Type = "Multi";
+            //tables.Add(new Models.DataTable("Data/Iris.csv", IrisSchema));
 
-            Console.WriteLine("Iris OK");
+            //Console.WriteLine("Iris OK");
 
             //var WineColumns = new List<Column>
             //{
