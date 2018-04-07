@@ -266,44 +266,44 @@ namespace senac_machine_learning_PI3
             //Console.WriteLine("Breast Cancer OK");
 
 
-            //var IrisColumns = new List<Column>
-            //{
-            //    new Column(){ Name ="Sepal-Lengh", Type=Column.ColumnType.Continuous } ,
-            //    new Column(){ Name ="Sepal-Width", Type=Column.ColumnType.Continuous } ,
-            //    new Column(){ Name ="Petal-Lengh", Type=Column.ColumnType.Continuous } ,
-            //    new Column(){ Name ="Petal-Width", Type=Column.ColumnType.Continuous } ,
-            //    new Column(){ Name ="Class", Type=Column.ColumnType.Class, Enum = typeof(Enums.Iris.IrisType) } ,
-            //};
-            //var IrisSchema = new TableSchema(IrisColumns);
-            //IrisSchema.TotalOfRecords = 150;
-            //IrisSchema.Type = "Multi";
-            //tables.Add(new Models.DataTable("Data/Iris.csv", IrisSchema));
-
-            //Console.WriteLine("Iris OK");
-
-            var WineColumns = new List<Column>
+            var IrisColumns = new List<Column>
             {
-                new Column(){ Name ="Alcohol", Type=Column.ColumnType.Class } ,
-                new Column(){ Name ="Malic-Acid", Type=Column.ColumnType.Continuous } ,
-                new Column(){ Name ="Ash", Type=Column.ColumnType.Continuous } ,
-                new Column(){ Name ="Alcalinity-of-Ash", Type=Column.ColumnType.Continuous } ,
-                new Column(){ Name ="Magnesium", Type=Column.ColumnType.Continuous } ,
-                new Column(){ Name ="Total-Phenols", Type=Column.ColumnType.Continuous } ,
-                new Column(){ Name ="Flavanoids", Type=Column.ColumnType.Continuous } ,
-                new Column(){ Name ="NonFlavanoids-Phenols", Type=Column.ColumnType.Continuous } ,
-                new Column(){ Name ="Proanthocyanins", Type=Column.ColumnType.Continuous } ,
-                new Column(){ Name ="Color-Intensity", Type=Column.ColumnType.Continuous } ,
-                new Column(){ Name ="Hue", Type=Column.ColumnType.Continuous } ,
-                new Column(){ Name ="OD280-OD315-of-diluted-wines", Type=Column.ColumnType.Continuous } ,
-                new Column(){ Name ="Proline", Type=Column.ColumnType.Continuous } ,
+                new Column(){ Name ="Sepal-Lengh", Type=Column.ColumnType.Continuous } ,
+                new Column(){ Name ="Sepal-Width", Type=Column.ColumnType.Continuous } ,
+                new Column(){ Name ="Petal-Lengh", Type=Column.ColumnType.Continuous } ,
+                new Column(){ Name ="Petal-Width", Type=Column.ColumnType.Continuous } ,
+                new Column(){ Name ="Class", Type=Column.ColumnType.Class, Enum = typeof(Enums.Iris.IrisType) } ,
             };
-            var WineSchema = new TableSchema(WineColumns);
-            WineSchema.TotalOfRecords = 178;
-            WineSchema.Type = "Multi";
-            WineSchema.TotalOfClassValues = 3;
-            tables.Add(new Models.DataTable("Data/wine.csv", WineSchema));
+            var IrisSchema = new TableSchema(IrisColumns);
+            IrisSchema.TotalOfRecords = 150;
+            IrisSchema.Type = "Multi";
+            tables.Add(new Models.DataTable("Data/Iris.csv", IrisSchema));
 
-            Console.WriteLine("Wine OK");
+            Console.WriteLine("Iris OK");
+
+            //var WineColumns = new List<Column>
+            //{
+            //    new Column(){ Name ="Alcohol", Type=Column.ColumnType.Class } ,
+            //    new Column(){ Name ="Malic-Acid", Type=Column.ColumnType.Continuous } ,
+            //    new Column(){ Name ="Ash", Type=Column.ColumnType.Continuous } ,
+            //    new Column(){ Name ="Alcalinity-of-Ash", Type=Column.ColumnType.Continuous } ,
+            //    new Column(){ Name ="Magnesium", Type=Column.ColumnType.Continuous } ,
+            //    new Column(){ Name ="Total-Phenols", Type=Column.ColumnType.Continuous } ,
+            //    new Column(){ Name ="Flavanoids", Type=Column.ColumnType.Continuous } ,
+            //    new Column(){ Name ="NonFlavanoids-Phenols", Type=Column.ColumnType.Continuous } ,
+            //    new Column(){ Name ="Proanthocyanins", Type=Column.ColumnType.Continuous } ,
+            //    new Column(){ Name ="Color-Intensity", Type=Column.ColumnType.Continuous } ,
+            //    new Column(){ Name ="Hue", Type=Column.ColumnType.Continuous } ,
+            //    new Column(){ Name ="OD280-OD315-of-diluted-wines", Type=Column.ColumnType.Continuous } ,
+            //    new Column(){ Name ="Proline", Type=Column.ColumnType.Continuous } ,
+            //};
+            //var WineSchema = new TableSchema(WineColumns);
+            //WineSchema.TotalOfRecords = 178;
+            //WineSchema.Type = "Multi";
+            //WineSchema.TotalOfClassValues = 3;
+            //tables.Add(new Models.DataTable("Data/wine.csv", WineSchema));
+
+            //Console.WriteLine("Wine OK");
 
             //var RedWineQualityColumns = new List<Column>
             //{

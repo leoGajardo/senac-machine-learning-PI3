@@ -99,12 +99,27 @@ namespace senac_machine_learning_PI3
             if (neuron.Class == Int32.Parse(Data.Columns[classColumn]))
             {
                 for (int i = 0; i < neuron.Weights.Count(); i++)
-                    neuron.Weights[i] = neuron.Weights[i] + learningRate * GetH(columns, Data.getColumnsAsDouble(), neuron.Weights, iteration) * (neuron.Weights[i] - Data.getColumnsAsDouble()[i]);
+                {
+                    var temp = neuron.Weights[i] + learningRate * GetH(columns, Data.getColumnsAsDouble(), neuron.Weights, iteration) * (Data.getColumnsAsDouble()[i] - neuron.Weights[i]);
+
+                    if (double.IsInfinity(temp) || double.IsNaN(temp))
+                        temp = 0;
+
+                    neuron.Weights[i] = temp;
+                }
+
             }
             else
             {
                 for (int i = 0; i < neuron.Weights.Count(); i++)
-                    neuron.Weights[i] = neuron.Weights[i] - learningRate * GetH(columns, Data.getColumnsAsDouble(), neuron.Weights, iteration) * (neuron.Weights[i] - Data.getColumnsAsDouble()[i]);
+                {
+                    var temp = neuron.Weights[i] - learningRate * GetH(columns, Data.getColumnsAsDouble(), neuron.Weights, iteration) * (Data.getColumnsAsDouble()[i] - neuron.Weights[i]);
+
+                    if (double.IsInfinity(temp) || double.IsNaN(temp))
+                        temp = 0;
+
+                    neuron.Weights[i] = temp;
+                }
             }
         }
 
@@ -132,12 +147,26 @@ namespace senac_machine_learning_PI3
                 if (bestMatch.Class == Int32.Parse(Data.Columns[classColumn]))
                 {
                     for (int i = 0; i < neighbour.Weights.Count(); i++)
-                        neighbour.Weights[i] = neighbour.Weights[i] + learningRate * GetH(columns, Data.getColumnsAsDouble(), neighbour.Weights, iteration) * (Data.getColumnsAsDouble()[i]- neighbour.Weights[i]);
+                    {
+                        var temp = neighbour.Weights[i] + learningRate * GetH(columns, Data.getColumnsAsDouble(), neighbour.Weights, iteration) * (Data.getColumnsAsDouble()[i] - neighbour.Weights[i]);
+
+                        if (double.IsInfinity(temp) || double.IsNaN(temp))
+                            temp = 0;
+
+                        neighbour.Weights[i] = temp;
+                    }
                 }
                 else
                 {
-                    for (int i = 0; i < neighbour.Weights.Count(); i++)
-                        neighbour.Weights[i] = neighbour.Weights[i] - learningRate * GetH(columns, Data.getColumnsAsDouble(), neighbour.Weights, iteration) * (Data.getColumnsAsDouble()[i] - neighbour.Weights[i]);
+                    for (int i = 0; i < neighbour.Weights.Count(); i++){
+                        
+                        var temp =neighbour.Weights[i] = neighbour.Weights[i] - learningRate * GetH(columns, Data.getColumnsAsDouble(), neighbour.Weights, iteration) * (Data.getColumnsAsDouble()[i] - neighbour.Weights[i]);
+
+                        if (double.IsInfinity(temp) || double.IsNaN(temp))
+                            temp = 0;
+
+                        neighbour.Weights[i] = temp;
+                    }
                 }
             }
         }
