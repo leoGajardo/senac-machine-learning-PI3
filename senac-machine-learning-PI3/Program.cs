@@ -137,6 +137,7 @@ namespace senac_machine_learning_PI3
                         rnd = new Random();
                         var randomTestData = TestData.OrderBy(o => rnd.Next()).ToList(); // randomiza os dados de teste
 
+                        
 
                         ////roda o algoritimo de KNN
                         //Knn.Run(randomTrainData, randomTestData, columns, Knn.GetK(ImpleementOf, table), classColumn, ref result);
@@ -145,8 +146,11 @@ namespace senac_machine_learning_PI3
                         LVQ.Run(randomTrainData, randomTestData, columnsToCompare, nColumns, ImpleementOf, classColumn, ref result);
                         Console.WriteLine($"Executed LVQ R = {ImpleementOf} TenFold Validation Fold = {i} in {timer.Elapsed.ToString()}");
                         timer.Reset();
+                        if (i == 9)
+                        {
+                            LVQ.PrintHeatMap(table.Data, columnsToCompare, nColumns, ImpleementOf, classColumn, table);
+                        }
                     }
-                    LVQ.PrintHeatMap(table.Data, columnsToCompare, nColumns, ImpleementOf, classColumn, table);
                     //});
                 }
                 //Serve de trava para que todas as threads dessa task terminem antes de seguir para a proxima task
@@ -179,25 +183,25 @@ namespace senac_machine_learning_PI3
 
             //Criamos uma lista do nosso modelo de Colunas para armazenar as colunas na ordem do arquivo de leitura
 
-            var AbaloneColumns = new List<Column> {
-                new Column(){ Name = "Sex", Type = Column.ColumnType.Class, Enum = typeof(Enums.Abalone.Sex) } , //para as colunas de classes ou nominais é passado um enum que contém um valor númerico para as strings contidas nessa coluna
+            // var AbaloneColumns = new List<Column> {
+            //     new Column(){ Name = "Sex", Type = Column.ColumnType.Class, Enum = typeof(Enums.Abalone.Sex) } , //para as colunas de classes ou nominais é passado um enum que contém um valor númerico para as strings contidas nessa coluna
 
-                new Column(){ Name = "Length", Type = Column.ColumnType.Continuous } ,
-                new Column(){ Name = "Diameter", Type = Column.ColumnType.Continuous } ,
-                new Column(){ Name = "Height", Type = Column.ColumnType.Continuous } ,
-                new Column(){ Name = "Whole weight", Type = Column.ColumnType.Continuous } ,
-                new Column(){ Name = "Shucked weight", Type = Column.ColumnType.Continuous } ,
-                new Column(){ Name = "Viscera weight", Type = Column.ColumnType.Continuous } ,
-                new Column(){ Name = "Shell weight", Type = Column.ColumnType.Continuous } ,
-                new Column(){ Name = "Rings", Type = Column.ColumnType.Integer }
-            };
-            var AbaloneSchema = new TableSchema(AbaloneColumns); // É criado o esquema das tabelas dada a lista de colunas
-            AbaloneSchema.TotalOfRecords = 4177; // o total de instâncias do arquivo original
-            AbaloneSchema.Type = "Multi"; // o Tipo da Classe dos dados, ou seja Multi-Type ou Binary-Type
-           // Por fim é criado uma tabela com o respectivo caminho para os dados, o esquema da tabela e então adicionado a lista de tabelas
-            tables.Add(new Models.DataTable("Data/abalone.csv", AbaloneSchema));
+            //     new Column(){ Name = "Length", Type = Column.ColumnType.Continuous } ,
+            //     new Column(){ Name = "Diameter", Type = Column.ColumnType.Continuous } ,
+            //     new Column(){ Name = "Height", Type = Column.ColumnType.Continuous } ,
+            //     new Column(){ Name = "Whole weight", Type = Column.ColumnType.Continuous } ,
+            //     new Column(){ Name = "Shucked weight", Type = Column.ColumnType.Continuous } ,
+            //     new Column(){ Name = "Viscera weight", Type = Column.ColumnType.Continuous } ,
+            //     new Column(){ Name = "Shell weight", Type = Column.ColumnType.Continuous } ,
+            //     new Column(){ Name = "Rings", Type = Column.ColumnType.Integer }
+            // };
+            // var AbaloneSchema = new TableSchema(AbaloneColumns); // É criado o esquema das tabelas dada a lista de colunas
+            // AbaloneSchema.TotalOfRecords = 4177; // o total de instâncias do arquivo original
+            // AbaloneSchema.Type = "Multi"; // o Tipo da Classe dos dados, ou seja Multi-Type ou Binary-Type
+            //// Por fim é criado uma tabela com o respectivo caminho para os dados, o esquema da tabela e então adicionado a lista de tabelas
+            // tables.Add(new Models.DataTable("Data/abalone.csv", AbaloneSchema));
 
-            Console.WriteLine("Abalone OK");
+            // Console.WriteLine("Abalone OK");
 
 
             //var AdultColumns = new List<Column> {
@@ -283,29 +287,29 @@ namespace senac_machine_learning_PI3
 
             //Console.WriteLine("Iris OK");
 
-            //var WineColumns = new List<Column>
-            //{
-            //    new Column(){ Name ="Alcohol", Type=Column.ColumnType.Class } ,
-            //    new Column(){ Name ="Malic-Acid", Type=Column.ColumnType.Continuous } ,
-            //    new Column(){ Name ="Ash", Type=Column.ColumnType.Continuous } ,
-            //    new Column(){ Name ="Alcalinity-of-Ash", Type=Column.ColumnType.Continuous } ,
-            //    new Column(){ Name ="Magnesium", Type=Column.ColumnType.Continuous } ,
-            //    new Column(){ Name ="Total-Phenols", Type=Column.ColumnType.Continuous } ,
-            //    new Column(){ Name ="Flavanoids", Type=Column.ColumnType.Continuous } ,
-            //    new Column(){ Name ="NonFlavanoids-Phenols", Type=Column.ColumnType.Continuous } ,
-            //    new Column(){ Name ="Proanthocyanins", Type=Column.ColumnType.Continuous } ,
-            //    new Column(){ Name ="Color-Intensity", Type=Column.ColumnType.Continuous } ,
-            //    new Column(){ Name ="Hue", Type=Column.ColumnType.Continuous } ,
-            //    new Column(){ Name ="OD280-OD315-of-diluted-wines", Type=Column.ColumnType.Continuous } ,
-            //    new Column(){ Name ="Proline", Type=Column.ColumnType.Continuous } ,
-            //};
-            //var WineSchema = new TableSchema(WineColumns);
-            //WineSchema.TotalOfRecords = 178;
-            //WineSchema.Type = "Multi";
-            //WineSchema.TotalOfClassValues = 3;
-            //tables.Add(new Models.DataTable("Data/wine.csv", WineSchema));
+            var WineColumns = new List<Column>
+            {
+                new Column(){ Name ="Alcohol", Type=Column.ColumnType.Class } ,
+                new Column(){ Name ="Malic-Acid", Type=Column.ColumnType.Continuous } ,
+                new Column(){ Name ="Ash", Type=Column.ColumnType.Continuous } ,
+                new Column(){ Name ="Alcalinity-of-Ash", Type=Column.ColumnType.Continuous } ,
+                new Column(){ Name ="Magnesium", Type=Column.ColumnType.Continuous } ,
+                new Column(){ Name ="Total-Phenols", Type=Column.ColumnType.Continuous } ,
+                new Column(){ Name ="Flavanoids", Type=Column.ColumnType.Continuous } ,
+                new Column(){ Name ="NonFlavanoids-Phenols", Type=Column.ColumnType.Continuous } ,
+                new Column(){ Name ="Proanthocyanins", Type=Column.ColumnType.Continuous } ,
+                new Column(){ Name ="Color-Intensity", Type=Column.ColumnType.Continuous } ,
+                new Column(){ Name ="Hue", Type=Column.ColumnType.Continuous } ,
+                new Column(){ Name ="OD280-OD315-of-diluted-wines", Type=Column.ColumnType.Continuous } ,
+                new Column(){ Name ="Proline", Type=Column.ColumnType.Continuous } ,
+            };
+            var WineSchema = new TableSchema(WineColumns);
+            WineSchema.TotalOfRecords = 178;
+            WineSchema.Type = "Multi";
+            WineSchema.TotalOfClassValues = 3;
+            tables.Add(new Models.DataTable("Data/wine.csv", WineSchema));
 
-            //Console.WriteLine("Wine OK");
+            Console.WriteLine("Wine OK");
 
             //var RedWineQualityColumns = new List<Column>
             //{
