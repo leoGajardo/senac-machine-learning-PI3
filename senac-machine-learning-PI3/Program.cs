@@ -115,6 +115,13 @@ namespace senac_machine_learning_PI3
                 {
                     //executa todas as 10 folds do algoritimo do cross-validation e tem uma folga (a décima primeira iteração) caso ao dividir em 10 folds diferentes ainda tenha sobrado algumas instâncias
                     //var task = Parallel.For(0, 11, (i) => 
+
+                    var classColumn = table.Schema.Columns.First(c => c.Value.Type == Column.ColumnType.Class).Key; // recebe qual é a classe de coluna daquela tabela
+
+                    var columnsToCompare = table.ColumnsToKeep.Keys.Where(k => k != classColumn).ToArray(); //recebe todas as colunas daquela tabela que não sejam as colunas de classe
+
+                    var nColumns = table.ColumnsToKeep.Keys.Count();
+
                     for (int i = 0; i < 12; i++)
                     {
                         timer.Start();
@@ -124,12 +131,6 @@ namespace senac_machine_learning_PI3
 
                         if (TestData.Count == 0)
                             continue;
-
-                        var classColumn = table.Schema.Columns.First(c => c.Value.Type == Column.ColumnType.Class).Key; // recebe qual é a classe de coluna daquela tabela
-
-                        var columnsToCompare = table.ColumnsToKeep.Keys.Where(k => k != classColumn).ToArray(); //recebe todas as colunas daquela tabela que não sejam as colunas de classe
-
-                        var nColumns = table.ColumnsToKeep.Keys.Count();
 
                         var rnd = new Random();//cria uma variavel do tipo random para randomizar os dados do cross-validation
                         var randomTrainData = TrainData.OrderBy(o => rnd.Next()).ToList();//randomiza os dados de treino
@@ -145,6 +146,7 @@ namespace senac_machine_learning_PI3
                         Console.WriteLine($"Executed LVQ R = {ImpleementOf} TenFold Validation Fold = {i} in {timer.Elapsed.ToString()}");
                         timer.Reset();
                     }
+                    LVQ.PrintHeatMap(table.Data, columnsToCompare, nColumns, ImpleementOf, classColumn, table);
                     //});
                 }
                 //Serve de trava para que todas as threads dessa task terminem antes de seguir para a proxima task
@@ -153,8 +155,8 @@ namespace senac_machine_learning_PI3
                 //});
                 //while (!task2.IsCompleted)
                 //{ }
+
                 results.Add(result); // adiona aquela variavel de resultado criada anteriormente a lista de resultados, onde contém o resultado de todas as tabelas
-                //GenerateHeatMap
             }
 
             //imprime os resultados de todas as tabelas

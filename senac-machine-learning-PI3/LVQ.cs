@@ -1,6 +1,7 @@
 ﻿using senac_machine_learning_PI3.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -66,6 +67,44 @@ namespace senac_machine_learning_PI3
             }
 
             results.SimpleErrors.Add(simpleError);
+        }
+
+        public static void PrintHeatMap(List<Line> Data, int[] columnsToCompare, int nColumns, int nR, int classColumn, DataTable table)
+        {
+            var EnumValues = table.Schema.Columns[classColumn].Enum?.GetEnumValues();
+            var numberClass = EnumValues?.Length ?? table.Schema.TotalOfClassValues;
+            var neurons = neuronManager.GetOrCreateNeurons(nR, numberClass, columnsToCompare, nColumns, false, true);
+
+            var size = Math.Sqrt(neurons.Count());
+
+            foreach (var data in Data)
+            {
+                var distances = new Dictionary<int, LighweightData>();
+                foreach (var neuron in neurons)
+                {
+                    var distance = GetDistance(columnsToCompare, data.getColumnsAsDouble(), neuron.Weights);
+                    distances.Add(neuron.Id, new LighweightData(distance, (int)data.getColumnsAsDouble()[classColumn]));
+                }
+                var nearNeuronId = distances.OrderBy(d => d.Value.distance).First().Key;
+                var nearNeuron = neurons.First(n => n.Id == nearNeuronId);
+                nearNeuron.Class = Int32.Parse(data.Columns[classColumn]);
+            }
+
+            var finalText = new List<string>();
+            for (int line = 0; line < size; line++)
+            {
+                finalText.Add(neurons.GetLineNeuronsAsString(line, (int)size));
+            }
+
+            if (Directory.Exists("Heatmap/"))
+                File.Delete("Heatmap/" + table.fileName);
+
+            if (!Directory.Exists("Heatmap/"))
+                Directory.CreateDirectory("Heatmap");
+
+            File.Create("Heatmap/" + table.fileName).Close();
+
+            File.AppendAllLines("Heatmap/R" + nR + table.fileName, finalText);
         }
 
         private static void TrainNeurons(List<Line> trainData, int[] columns, int classColumn, ref Neuron[] neurons, int r)
@@ -160,7 +199,7 @@ namespace senac_machine_learning_PI3
                 {
                     for (int i = 0; i < neighbour.Weights.Count(); i++){
                         
-                        var temp =neighbour.Weights[i] = neighbour.Weights[i] - learningRate * GetH(columns, Data.getColumnsAsDouble(), neighbour.Weights, iteration) * (Data.getColumnsAsDouble()[i] - neighbour.Weights[i]);
+                        var temp = neighbour.Weights[i] = neighbour.Weights[i] - learningRate * GetH(columns, Data.getColumnsAsDouble(), neighbour.Weights, iteration) * (Data.getColumnsAsDouble()[i] - neighbour.Weights[i]);
 
                         if (double.IsInfinity(temp) || double.IsNaN(temp))
                             temp = 0;

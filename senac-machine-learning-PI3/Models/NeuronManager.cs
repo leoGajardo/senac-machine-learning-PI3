@@ -22,7 +22,7 @@ namespace senac_machine_learning_PI3.Models
                 neurons = Neurons[nR];
             else
             {
-                int size = n * 10 % (int)Math.Sqrt(n * 10) == 0 ? (int)(n * 10) : (int)(Math.Floor(Math.Sqrt(n * 10)) * Math.Floor(Math.Sqrt(n * 10)));
+                int size = (double)(n * 10) % Math.Sqrt(n * 10) == 0 ? (int)(n * 10) : (int)((Math.Floor(Math.Sqrt(n * 10)) + 1) * (Math.Floor(Math.Sqrt(n * 10)) + 1));
                 neurons = new Neuron[size];
                 var id = 0;
                 for (int i = 0; i < size; i++)

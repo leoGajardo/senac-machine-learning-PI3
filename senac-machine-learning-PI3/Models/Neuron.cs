@@ -19,6 +19,16 @@ namespace senac_machine_learning_PI3.Models
         {
             return neurons[(int)Math.Sqrt(neurons.Count()) * line + col];
         }
+
+        public static string GetLineNeuronsAsString(this Neuron[] neurons, int line, int size)
+        {
+            var result = "";
+            for (int col = 0; col < size; col++)
+            {
+                result += "[" + neurons[size * line + col].Class + "],";
+            }
+            return result;
+        }
     }
 
 }
