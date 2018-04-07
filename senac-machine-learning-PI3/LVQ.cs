@@ -18,10 +18,13 @@ namespace senac_machine_learning_PI3
         //Fazer previsões
         private static double learningRate;
         private static double stdDeviation;
+        private static double InitialLearningRate;
+        private static double InitialStdDeviation;
         public static void Run(List<Line> trainData, List<Line> testData, int[] columnsToCompare, int nColumns, int nR, int classColumn, ref FinalResultData results)
         {
 
-            learningRate = 0.1;
+            InitialLearningRate = 0.1d;
+            learningRate = InitialLearningRate;
 
             //recebe os valores dos enums
             var EnumValues = results.ReferenceTable.Schema.Columns[classColumn].Enum?.GetEnumValues();
@@ -33,7 +36,8 @@ namespace senac_machine_learning_PI3
             var neurons = neuronManager.GetOrCreateNeurons(nR, numberClass, columnsToCompare, nColumns, true, true);
 
             var r = GetR(nR, neurons);
-            stdDeviation = r;
+            InitialStdDeviation = (double)r;
+            stdDeviation = (double)InitialStdDeviation;
 
             //cria uma instância do modelo de SimpleError que irá guardar as predições número de erros, total de predições e o valor de erro para poder fazer os calculos posteriores de erro
             var simpleError = new SimpleError(r);
@@ -117,7 +121,7 @@ namespace senac_machine_learning_PI3
             {
                 for (int line = 0; line < size; line++)
                 {
-                    var distance = Math.Sqrt(Math.Pow((bestMatchLine - line), 2) + Math.Pow((bestMatchColumn - col), 2));
+                    var distance = (double)Math.Sqrt((double)Math.Pow((bestMatchLine - line), 2) + (double)Math.Pow((bestMatchColumn - col), 2));
                     if (distance <= r)
                         neighbours.Add(neurons.GetNeuron(line, col));
                 }
@@ -128,43 +132,45 @@ namespace senac_machine_learning_PI3
                 if (bestMatch.Class == Int32.Parse(Data.Columns[classColumn]))
                 {
                     for (int i = 0; i < neighbour.Weights.Count(); i++)
-                        neighbour.Weights[i] = neighbour.Weights[i] + learningRate * GetH(columns, Data.getColumnsAsDouble(), neighbour.Weights, iteration) * (neighbour.Weights[i] - Data.getColumnsAsDouble()[i]);
+                        neighbour.Weights[i] = neighbour.Weights[i] + learningRate * GetH(columns, Data.getColumnsAsDouble(), neighbour.Weights, iteration) * (Data.getColumnsAsDouble()[i]- neighbour.Weights[i]);
                 }
                 else
                 {
                     for (int i = 0; i < neighbour.Weights.Count(); i++)
-                        neighbour.Weights[i] = neighbour.Weights[i] - learningRate * GetH(columns, Data.getColumnsAsDouble(), neighbour.Weights, iteration) * (neighbour.Weights[i] - Data.getColumnsAsDouble()[i]);
+                        neighbour.Weights[i] = neighbour.Weights[i] - learningRate * GetH(columns, Data.getColumnsAsDouble(), neighbour.Weights, iteration) * (Data.getColumnsAsDouble()[i] - neighbour.Weights[i]);
                 }
             }
         }
 
         private static double GetH(int[] columns, double[] x, double[] neuron, int n)
         {
-            double power = 0 ;
+            double power = 0;
             try
             {
-                power = Math.Pow(GetDistance(columns, x, neuron), 2) / (2 * Math.Pow(stdDeviation, 2)); 
+                power = (double)Math.Pow(GetDistance(columns, x, neuron), 2.0d) / (2.0d * (double)Math.Pow(stdDeviation, 2.0d));
             }
             catch (DivideByZeroException)
             {
                 power = 0;
             }
-            return Math.Exp(-power);
+            return (double)Math.Exp(-power);
         }
 
         private static void UpdateStdDeviation(int n)
         {
-            stdDeviation = stdDeviation * Math.Exp((-n * Math.Log(stdDeviation, 10)) / 1000);
+            double temp = (double)Math.Pow((double)Math.E, -(double)n * (double)Math.Log(stdDeviation, 10.0d) / 1000.0d);
+            stdDeviation = InitialStdDeviation * temp;
         }
         private static void UpdateLearningRate(int n)
         {
-            if (learningRate == 0.01)
+            if (learningRate == 0.01d)
                 return;
-            var newVal = learningRate * Math.Exp(-n / 1000);
-            if (newVal >= 0.01)
+            double temp = (double)Math.Pow((double)Math.E,(-(double)n/1000.0f));
+            double newVal = InitialLearningRate * temp;
+            if (newVal >= 0.01d)
                 learningRate = newVal;
             else
-                learningRate = 0.01;
+                learningRate = 0.01d;
         }
         private static int GetR(int ImplementOfR, Neuron[] neurons)
         {
@@ -204,9 +210,9 @@ namespace senac_machine_learning_PI3
         {
             double distancia = 0;
             foreach (var column in columns)
-                distancia += Math.Pow((a[column] - b[column]), 2);
+                distancia += (double)Math.Pow((a[column] - b[column]), 2);
 
-            return Math.Sqrt(distancia);
+            return (double)Math.Sqrt(distancia);
         }
     }
 }
