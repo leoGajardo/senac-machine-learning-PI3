@@ -21,7 +21,6 @@ opencv-python==3.4.0.12
 pbr==4.0.2
 Pillow==5.1.0
 protobuf==3.5.2.post1
-pycrypto==2.6.1
 pylint==1.8.4
 singledispatch==3.4.0.3
 six==1.11.0
