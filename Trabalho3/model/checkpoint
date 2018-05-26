@@ -1,0 +1,2 @@
+model_checkpoint_path: "C:\\senac-machine-learning-PI3\\Trabalho3\\model\\untrained-model.tflearn"
+all_model_checkpoint_paths: "C:\\senac-machine-learning-PI3\\Trabalho3\\model\\untrained-model.tflearn"
