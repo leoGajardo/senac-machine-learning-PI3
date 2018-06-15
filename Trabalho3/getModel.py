@@ -59,7 +59,7 @@ def trainModel():
 
     model= getModel()
     
-    model.fit({'input': x_data}, {'targets': x_class}, n_epoch=10,
+    model.fit({'input': x_data}, {'targets': x_class}, n_epoch=200,
         validation_set=({'input': y_data}, {'targets': y_class}),
         snapshot_epoch=500, show_metric=True)
 
@@ -85,3 +85,5 @@ def	GetPrediction(image_path):
     print("Isso é um:",highIndex,"com %.2f" % (result[0][highIndex] * 100),"% de certeza.")
 
     return highIndex
+
+trainModel()
