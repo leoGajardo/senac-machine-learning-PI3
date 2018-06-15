@@ -12,7 +12,7 @@ def get_data():
             img_path= "./Raw_DataSets/" + folderName + "/" + image
             imageData= cv2.imread(img_path, 0)
             imageData= cv2.resize(imageData,(32,32))
-            train_data.append([np.array(imageData), get_class(folderName)])        
+            train_data.append([np.array(imageData), get_class(folderName)]) 
     shuffle(train_data)
     quarter= len(train_data) / 10
     np.save("./DataSets/x_set.npy", train_data[int(quarter):])
@@ -41,4 +41,4 @@ def get_class(folderName):
     elif classe=='9':
         return np.array([0,0,0,0,0,0,0,0,0,1])
 
-get_data()
+

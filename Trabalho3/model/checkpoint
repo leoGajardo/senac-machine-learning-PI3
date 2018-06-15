@@ -1,2 +1,2 @@
-model_checkpoint_path: "C:\\senac-machine-learning-PI3\\Trabalho3\\model\\trained-model.tflean"
-all_model_checkpoint_paths: "C:\\senac-machine-learning-PI3\\Trabalho3\\model\\trained-model.tflean"
+model_checkpoint_path: "C:\\senac-machine-learning-PI3\\Trabalho3\\model\\trained-model-ownData.tflean"
+all_model_checkpoint_paths: "C:\\senac-machine-learning-PI3\\Trabalho3\\model\\trained-model-ownData.tflean"

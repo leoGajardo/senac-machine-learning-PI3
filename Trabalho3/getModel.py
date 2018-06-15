@@ -12,45 +12,46 @@ tamanho=32
 filtro=10
 
 x= np.load("./DataSets/x_set.npy")
-x_dat= np.array([i[0] for i in x]).reshape(-1, tamanho, tamanho,1)
+x_data= np.array([i[0] for i in x]).reshape(-1, tamanho, tamanho,1)
 x_class= [i[1] for i in x]
 
 y= np.load("./DataSets/y_set.npy")
-y_dat= np.array([i[0] for i in y]).reshape(-1,tamanho,tamanho,1)
+y_data= np.array([i[0] for i in y]).reshape(-1,tamanho,tamanho,1)
 y_class= [i[1] for i in y]
 
 def getModel():
     tf.reset_default_graph()
 
     #Input layer
-    convNet=input_data([None,tamanho,tamanho,1], name= "input")
+    network=input_data([None,tamanho,tamanho,1], name= "input")
 
     #Primeira layer
-    convNet= conv_2d(convNet,32,filtro,activation= "relu")
-    convNet= max_pool_2d(convNet,8)
+    network= conv_2d(network,32,filtro,activation= "relu")
+    network= max_pool_2d(network,2)
 
     #Segunda layer
-    convNet= conv_2d(convNet,64,filtro,activation= "relu")
-    convNet= max_pool_2d(convNet,8)
+    network= conv_2d(network,64,filtro,activation= "relu")
+    network= max_pool_2d(network,2)
 
     #Terceira layer
-    convNet= conv_2d(convNet,128,filtro,activation= "relu")
-    convNet= max_pool_2d(convNet,8)
+    network= conv_2d(network,128,filtro,activation= "relu")
+    network= max_pool_2d(network,2)
 
     #Quarta layer
-    convNet= conv_2d(convNet,64,filtro,activation= "relu")
-    convNet= max_pool_2d(convNet,8)
+    network= conv_2d(network,256,filtro,activation= "relu")
+    network= max_pool_2d(network,2)
 
     #Layer conectada
-    convNet = fully_connected(convNet, 1024, activation= "relu")
+    network = fully_connected(network, 1024, activation= "relu")
+    network = dropout(network, 0.8)
 
     #Output layer
-    convNet= fully_connected(convNet, 10, activation="softmax")
-    convNet= regression( convNet, optimizer= "adam", learning_rate=5,  loss= "categorical_crossentropy", name= "targets")
+    network= fully_connected(network, 10, activation="softmax")
+    network= regression( network, optimizer= "adam", learning_rate=0.01,  loss= "categorical_crossentropy", name= "targets")
 
     #Cria modelo
 
-    model = tflearn.DNN(convNet)
+    model = tflearn.DNN(network)
     model.save("./model/untrained-model.tflearn")
     return model
 
@@ -58,39 +59,29 @@ def trainModel():
 
     model= getModel()
     
-    model.fit({'input': x_dat}, {'targets': x_class}, n_epoch=10,
-    validation_set=({'input': y_dat}, {'targets': y_class}),
-    snapshot_epoch=True, show_metric=True)
+    model.fit({'input': x_data}, {'targets': x_class}, n_epoch=10,
+        validation_set=({'input': y_data}, {'targets': y_class}),
+        snapshot_epoch=500, show_metric=True)
 
-    model.save("./model/trained-model.tflean")
+    model.save("./model/trained-model-ownData.tflean")
 
-def PredictInput(imgPath):
-    model = GetModel()
-    model.load('./saved-models/mlgame.tflearn')
-    img = cv2.imread(imgPath, 0)
-    img = cv2.resize(img, (imgSize, imgSize))
-    return model.predict(np.array(img).reshape(-1, 64, 64, 1))
+def Prediction(image_path):
+    model = getModel()
+    model.load("./model/trained-model-ownData.tflean")
+    image_data = cv2.imread(image_path, 0)
+    image_data = cv2.resize(image_data, (tamanho, tamanho))
+    return model.predict(np.array(image_data).reshape(-1, tamanho, tamanho, 1))
 
-def	GetPrediction(imgPath):
-    result = PredictInput(imgPath)
+def	GetPrediction(image_path):
+    result = Prediction(image_path)
     highIndex = -1
-    for x in range(0,4):
+    for x in range(0,10):
         if(highIndex == -1):
             highIndex = 0
         if(result[0][x] > result[0][highIndex]):
-            highIndex = x
-
-    obj = ""
-    if(highIndex == 0):
-        obj = "Carro"
-    elif(highIndex == 1):
-        obj = "Moto"
-    elif(highIndex == 2):
-        obj = "Barco"
-    elif(highIndex == 3):
-        obj = "Avião"
+            highIndex = x   
 
     print(result[0])
-    print("Isso é um:",obj,"com %.2f" % (result[0][highIndex] * 100),"% de certeza.")
+    print("Isso é um:",highIndex,"com %.2f" % (result[0][highIndex] * 100),"% de certeza.")
 
     return highIndex
