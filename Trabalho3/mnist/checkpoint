@@ -1,2 +1,2 @@
-model_checkpoint_path: "C:\\senac-machine-learning-PI3\\Trabalho3\\mnist\\untrained-model-mnist.tflearn"
-all_model_checkpoint_paths: "C:\\senac-machine-learning-PI3\\Trabalho3\\mnist\\untrained-model-mnist.tflearn"
+model_checkpoint_path: "C:\\senac-machine-learning-PI3\\Trabalho3\\mnist\\trained-model-mnist.tflean"
+all_model_checkpoint_paths: "C:\\senac-machine-learning-PI3\\Trabalho3\\mnist\\trained-model-mnist.tflean"
