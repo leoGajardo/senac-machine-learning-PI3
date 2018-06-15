@@ -1,46 +1,44 @@
-import numpy as np
 import os
-import h5py
-from tflearn.data_utils import build_hdf5_image_dataset
-
-def build_dataset():
-    image_root_folder = "./Raw_DataSets/"
-    build_hdf5_image_dataset(image_root_folder, image_shape=(32, 32), mode='folder', output_path='dataset.h5', categorical_labels=True, normalize=True, grayscale=True)
-
-def generating_model():
-    # Load HDF5 dataset
-    h5f = h5py.File('dataset.h5', 'r')
-    
-    # Don't what is happening here
-    X = h5f['X']
-    Y = h5f['Y']
-
-    # Network layers
-    # model = DNN(network, ...)
-    model.fit(X, Y)
-    return model
+import cv2
+import numpy as np 
+from random import shuffle 
 
 
-    # Save a model
-    # model.save('my_model.tflearn')
-    # Load a model
-    # model.load('my_model.tflearn')
+def get_data():
+    path = os.listdir("./Raw_DataSets")
+    train_data= []
+    for folderName in path:
+        for image in os.listdir("./Raw_DataSets/"+folderName):
+            img_path= "./Raw_DataSets/" + folderName + "/" + image
+            imageData= cv2.imread(img_path, 0)
+            imageData= cv2.resize(imageData,(32,32))
+            train_data.append([np.array(imageData), get_class(folderName)])        
+    shuffle(train_data)
+    quarter= len(train_data) / 10
+    np.save("./DataSets/x_set.npy", train_data[int(quarter):])
+    np.save("./DataSets/y_set.npy", train_data[:int(quarter)])
 
-def trainModel():
-    # Set training mode ON (set is_training var to True)
-    # tflearn.is_training(True)
-    # Set training mode OFF (set is_training var to False)
-    # tflearn.is_training(False)
-    # trainop = TrainOp(net=my_network, loss=loss, metric=accuracy)
-    # model = Trainer(trainops=trainop, tensorboard_dir='/tmp/tflearn')
-    # model.fit(feed_dict={input_placeholder: X, target_placeholder: Y})
-    return ""
+def get_class(folderName):
+    classe = folderName.split('_')[1]
+    if classe == '0':
+        return np.array([1,0,0,0,0,0,0,0,0,0])
+    elif classe=='1':
+        return np.array([0,1,0,0,0,0,0,0,0,0])
+    elif classe=='2':
+        return np.array([0,0,1,0,0,0,0,0,0,0])
+    elif classe=='3':
+        return np.array([0,0,0,1,0,0,0,0,0,0])
+    elif classe=='4':
+        return np.array([0,0,0,0,1,0,0,0,0,0])
+    elif classe=='5':
+        return np.array([0,0,0,0,0,1,0,0,0,0])
+    elif classe=='6':
+        return np.array([0,0,0,0,0,0,1,0,0,0])
+    elif classe=='7':
+        return np.array([0,0,0,0,0,0,0,1,0,0])
+    elif classe=='8':
+        return np.array([0,0,0,0,0,0,0,0,1,0])
+    elif classe=='9':
+        return np.array([0,0,0,0,0,0,0,0,0,1])
 
-def predict():
-    # model = Evaluator(network)
-    # model.predict(feed_dict={input_placeholder: X})
-    return ""
-    
-
-build_dataset()
-
+get_data()
