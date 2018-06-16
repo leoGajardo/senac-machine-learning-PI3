@@ -59,7 +59,7 @@ def trainModel():
 
     model= getModel()
     
-    model.fit({'input': x_data}, {'targets': x_class}, n_epoch=200,
+    model.fit({'input': x_data}, {'targets': x_class}, n_epoch=400,
         validation_set=({'input': y_data}, {'targets': y_class}),
         snapshot_epoch=500, show_metric=True)
 
