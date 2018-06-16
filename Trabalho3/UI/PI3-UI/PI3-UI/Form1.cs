@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -25,7 +26,11 @@ namespace PI3_UI
         {
             // Pegar numero do algoritmo
 
+            //var prediction = File.ReadAllText("");
+
             var num = 1;
+
+                
 
             // fazer chamada pra API
 

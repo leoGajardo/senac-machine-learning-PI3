@@ -1,1 +1,1 @@
-py ./GetPrediction
+py ./GetPrediction.py
